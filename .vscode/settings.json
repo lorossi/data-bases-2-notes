@@ -59,11 +59,14 @@
   },
   "cSpell.words": [
     "auxlock",
+    "cleanstyle",
+    "deletetemp",
+    "JDBC",
+    "ODBC",
+    "serializability",
     "tikzit",
     "tikzstyle",
     "tikzstyles",
-    "tikztemp",
-    "deletetemp",
-    "cleanstyle"
+    "tikztemp"
   ]
 }

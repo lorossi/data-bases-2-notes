@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (2) at (1, 1) {};
+		\node [style=none] (3) at (7, 1) {};
+		\node [style=none] (4) at (4, 1) {serial schedules};
+		\node [style=none] (7) at (0, 0) {};
+		\node [style=none] (8) at (12, 0) {};
+		\node [style=none] (9) at (7, -1.5) {serializable schedules};
+		\node [style=none] (12) at (-1, -1) {};
+		\node [style=none] (13) at (17, -1) {};
+		\node [style=none] (14) at (10, -4.75) {all schedules};
+		\node [style=red] (15) at (13, -1.75) {};
+		\node [style=top align] (17) at (16, 5) {this schedule \textbf{may} cause issues};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=solid] (3.center)
+			 to [bend right=90, looseness=0.75] (2.center)
+			 to [bend right=90, looseness=0.75] cycle;
+		\draw [style=solid] (8.center)
+			 to [bend left=90] (7.center)
+			 to [bend left=90] cycle;
+		\draw [style=solid] (12.center)
+			 to [bend right=90] (13.center)
+			 to [bend right=90] cycle;
+		\draw [style=solid arrow] (17) to (15);
+	\end{pgfonlayer}
+\end{tikzpicture}
