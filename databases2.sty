@@ -1,0 +1,30 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{databases2}[2022/09/29 LaTeX template for my data bases 2 notes customization]
+
+\RequirePackage{diagbox}
+\RequirePackage{rotating}
+
+\ProcessOptions\relax
+
+\newcommand{\CC}{\shortfor{CC}}
+\newcommand{\CSR}{\shortfor{CSR}}
+\newcommand{\TPL}{\shortfor{2PL}}
+\newcommand{\STPL}{\shortfor{Strict 2PL}}
+\newcommand{\VSR}{\shortfor{VSR}}
+\newcommand{\CG}{\shortfor{CG}}
+\newcommand{\DBMS}{\shortfor{DBMS}}
+\newcommand{\TS}{\shortfor{TS}}
+\newcommand{\SI}{\shortfor{SI}}
+
+\newcommand{\NP}{\(\mathcal{NP}\)\xspace}
+\newcommand{\NPC}{\NP-\textit{complete}\xspace}
+
+% lstlsting style definition for C
+\lstdefinestyle{customsql}{
+  commentstyle=\color{darkgray},
+  keywordstyle=\color{black}\bfseries,
+  basicstyle=\ttfamily\footnotesize,
+  language=SQL,
+  showstringspaces=false,
+  tabsize=2,
+}
