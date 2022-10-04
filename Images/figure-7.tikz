@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (0, -1) {};
+		\node [style=none] (1) at (0, 6) {};
+		\node [style=none] (2) at (-1, 0) {};
+		\node [style=none] (3) at (14, 0) {};
+		\node [style=none] (4) at (0, 0) {};
+		\node [style=none] (5) at (5, 5) {};
+		\node [style=none] (6) at (9, 5) {};
+		\node [style=none] (7) at (9, 0) {};
+		\node [style=right align, rotate=90] (8) at (-0.5, 6) {\small resources requested};
+		\node [style=right align] (9) at (14, -0.5) {\small time};
+		\node [style=top align] (10) at (5, 9) {growing phase};
+		\node [style=none] (11) at (2.5, 3.5) {};
+		\node [style=top align] (12) at (10, 9) {falling phase};
+		\node [style=none] (13) at (9.5, 2.5) {};
+		\node [style=none] (14) at (5, 0) {};
+		\node [style=none] (15) at (9.25, 0) {};
+		\node [style=none] (16) at (7, 5.5) {};
+		\node [style=top align] (17) at (7, 7.5) {plateau};
+		\node [style=left align] (18) at (11.25, -2) {commit point};
+		\node [style=none] (19) at (9.25, -0.25) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=solid arrow] (0.center) to (1.center);
+		\draw [style=solid arrow] (2.center) to (3.center);
+		\draw [style=light fill] (5.center)
+			 to (4.center)
+			 to (7.center)
+			 to (6.center)
+			 to cycle;
+		\draw [style=red fill] (5.center)
+			 to (14.center)
+			 to (4.center)
+			 to cycle;
+		\draw [style=green fill] (7.center)
+			 to (15.center)
+			 to (6.center)
+			 to cycle;
+		\draw [style=red arrow, in=135, out=-150, looseness=1.25] (10) to (11.center);
+		\draw [style=green arrow, in=15, out=-30, looseness=1.25] (12) to (13.center);
+		\draw [style=solid arrow] (17) to (16.center);
+		\draw [style=solid arrow, in=-90, out=-180] (18) to (19.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

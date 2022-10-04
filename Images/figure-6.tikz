@@ -5,13 +5,16 @@
 		\node [style=none] (4) at (4, 1) {serial schedules};
 		\node [style=none] (7) at (0, 0) {};
 		\node [style=none] (8) at (12, 0) {};
-		\node [style=none] (9) at (7, -1.5) {\CSR schedules};
+		\node [style=none] (9) at (7, -1.5) {\TPL schedules};
 		\node [style=none] (12) at (-1, -1) {};
 		\node [style=none] (13) at (17, -1) {};
-		\node [style=none] (14) at (10.5, -4.5) {\VSR schedules};
+		\node [style=none] (14) at (10.5, -4.25) {\CSR schedules};
 		\node [style=none] (15) at (-2, -2) {};
 		\node [style=none] (16) at (22, -2) {};
-		\node [style=none] (17) at (15, -7) {all schedules};
+		\node [style=none] (17) at (15, -6.5) {\VSR schedules};
+		\node [style=none] (20) at (-3, -3) {};
+		\node [style=none] (21) at (27, -3) {};
+		\node [style=none] (22) at (19.75, -8.75) {all schedules};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=solid] (3.center)
@@ -25,5 +28,8 @@
 			 to [bend right=90] cycle;
 		\draw [style=solid, bend left=90] (16.center) to (15.center);
 		\draw [style=solid, bend right=90] (16.center) to (15.center);
+		\draw [style=solid] (20.center)
+			 to [bend left=90] (21.center)
+			 to [bend left=90] cycle;
 	\end{pgfonlayer}
 \end{tikzpicture}

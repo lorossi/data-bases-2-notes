@@ -9,8 +9,9 @@
 		\node [style=none] (12) at (-1, -1) {};
 		\node [style=none] (13) at (17, -1) {};
 		\node [style=none] (14) at (10, -4.75) {all schedules};
-		\node [style=red] (15) at (13, -1.75) {};
+		\node [style=red, minimum size=1pt] (15) at (13, -1.75) {};
 		\node [style=top align] (17) at (16, 5) {this schedule \textbf{may} cause issues};
+		\node [style=none] (18) at (13.25, -1.25) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=solid] (3.center)
@@ -22,6 +23,6 @@
 		\draw [style=solid] (12.center)
 			 to [bend right=90] (13.center)
 			 to [bend right=90] cycle;
-		\draw [style=solid arrow] (17) to (15);
+		\draw [style=big arrow] (17) to (18.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

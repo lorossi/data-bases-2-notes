@@ -1,5 +1,6 @@
 \documentclass[english]{article}
 \usepackage{notestemplate}
+\usepackage{databases2}
 
 \begin{document}
 
@@ -7,33 +8,33 @@
 
 \section{Introduction}
 
-\subsection{Architecture of the DBMS}
+\subsection{Architecture of the \DBMS}
 
-A \textbf{DBMS} is a system (or software product) capable of managing data collections that can be:
+A \textbf{\DBMS} is a system (or software product) capable of managing data collections that can be:
 
 \begin{itemize}
-  \item Large
+  \item \textbf{Large}
         \begin{itemize}[label=\(\rightarrow\)]
           \item much larger than the central memory available on the computer that runs the software
           \item often data must be stored on secondary storage devices
         \end{itemize}
-  \item Persistent
+  \item \textbf{Persistent}
         \begin{itemize}[label=\(\rightarrow\)]
           \item its lifespan is longer than the lifespan of the software that accesses it
         \end{itemize}
-  \item Shared
+  \item \textbf{Shared}
         \begin{itemize}[label=\(\rightarrow\)]
           \item used by several applications at the same time
           \item various users must be able to gain access to the same data
         \end{itemize}
-  \item Reliable
+  \item \textbf{Reliable}
         \begin{itemize}[label=\(\rightarrow\)]
           \item ensures tolerance to hardware and software failures
           \item the DBMS provides backup and recovery capabilities
         \end{itemize}
-  \item Data ownership respectful
+  \item \textbf{Data-ownership respectful}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item the data access is disciplined and controlled by the DBMS
+          \item the data access is disciplined and controlled by the \DBMS
           \item users can only access the data they are authorized to
         \end{itemize}
 \end{itemize}
@@ -43,34 +44,35 @@ A \textbf{DBMS} is a system (or software product) capable of managing data colle
   \bigskip
   \tikzfig{figure-1.tikz}
   \bigskip
-  \caption{Architecture of the DBMS}
+  \caption{Architecture of the \DBMS}
   \label{fig:architecture}
 \end{figure}
 
-Capabilities of the DBMS:
+\bigskip
+\textbf{Capabilities} of the \DBMS:
 
 \begin{itemize}
-  \item Transaction management
+  \item \textbf{Transaction} management
         \begin{itemize}[label=\(\rightarrow\)]
           \item ACID properties make sure that a set of operations is performed as a single unit
         \end{itemize}
-  \item Concurrency control
+  \item \textbf{Concurrency} control
         \begin{itemize}[label=\(\rightarrow\)]
-          \item CC theory, pessimistic and optimistic locking prevent data corruption in presence of concurrent accesses
+          \item \CC theory, pessimistic and optimistic locking prevent data corruption in presence of concurrent accesses
         \end{itemize}
-  \item Reliability control
+  \item \textbf{Reliability} control
         \begin{itemize}[label=\(\rightarrow\)]
           \item Log and recover protocols prevent data loss in case of failures
         \end{itemize}
-  \item Buffer and secondary memory management
+  \item \textbf{Buffer} and secondary memory management
         \begin{itemize}[label=\(\rightarrow\)]
           \item Paging and caching techniques improve performance by reducing the number of disk accesses
         \end{itemize}
-  \item Physical data structures and access structures
+  \item \textbf{Physical data structures} and \textbf{access} structures
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Sequential, hash-based and tree-based structures are some of the low level data structures used by the DBMS
+          \item Sequential, hash-based and tree-based structures are some of the low level data structures used by the \DBMS
         \end{itemize}
-  \item Query management
+  \item \textbf{Query} management
         \begin{itemize}[label=\(\rightarrow\)]
           \item Cost based query optimization techniques are used to find the best execution plan for a given query
         \end{itemize}
@@ -79,16 +81,16 @@ Capabilities of the DBMS:
 \subsection{Database-Application integration}
 
 \begin{itemize}
-  \item Impedance mismatch handling
+  \item \textbf{Impedance mismatch} handling
         \begin{itemize}[label=\(\rightarrow\)]
           \item Differences between database and application models are solved with code level procedures and object relational mapping
         \end{itemize}
-  \item Database communication
+  \item Database \textbf{communication}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item DBMS provides call level interfaces, ODBC-JDBC and JPA persistence provider
-          \item The state of an object and the state of the persistent data that corresponds to it is synchronized by the DBMS via JPA manage entities
+          \item \DBMS provides call level interfaces, ODBC-JDBC and JPA persistence provider
+          \item The state of an object and the state of the persistent data that corresponds to it is synchronized by the \DBMS via JPA manage entities
         \end{itemize}
-  \item Data ranking
+  \item Data \textbf{ranking}
         \begin{itemize}[label=\(\rightarrow\)]
           \item Questions regarding all kind of data preference and ranking are solved by the simultaneous optimization of several criteria
         \end{itemize}
@@ -99,23 +101,23 @@ Capabilities of the DBMS:
 \section{Transactions}
 
 A \textbf{transaction} is an elementary, atomic unit of work performed by an application.
-The need of a transaction arises when multiple operations must be performed in a single step or when the data in the application can be manipulated between multiple users at the same time (properties of reliability and isolation).
+The need of a transaction arises when multiple operations must be performed in a single step or when the data in the application can be manipulated between multiple users at the same time \textit{(properties of reliability and isolation)}.
 
 Each transaction is encapsulated in a \textbf{transaction boundary}, defined by the commands:
 
 \begin{enumerate}
-  \item \texttt{begin transaction} - or \texttt{bot}
-  \item \texttt{end transaction} -  or \texttt{eot}
+  \item \texttt{begin transaction} or \texttt{bot}
+  \item \texttt{end transaction} or \texttt{eot}
 \end{enumerate}
 
-Within a transaction, one two commands is executed exactly once to signal the end of the transaction:
+Within a transaction, one two commands \textbf{is executed exactly once} to signal the end of the transaction:
 
 \begin{enumerate}
-  \item \texttt{commit-work} - the transaction is committed
-  \item \texttt{rollback-work} - the transaction is aborted and rolled back
+  \item \texttt{commit-work} the transaction is committed
+  \item \texttt{rollback-work} the transaction is aborted and rolled back
 \end{enumerate}
 
-A transaction is defined as well formed if it fulfils the following conditions:
+A transaction is defined as \textbf{well formed} if it fulfils the following conditions:
 
 \begin{enumerate}
   \item It begins its execution with a \texttt{begin transaction} command
@@ -132,17 +134,20 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
 \begin{itemize}
   \item \textbf{Atomicity}
         \begin{itemize}
-          \item a transaction is an indivisible unit of execution: it either succeeds completely or fails completely
+          \item a transaction is an indivisible unit of execution: it either \textit{succeeds completely} or \textit{fails completely}
                 \begin{itemize}
-                  \item if it fails, the data is rolled back to the state it was before the transaction started
+                  \item if it fails, the data is \textbf{rolled back} to the state it was before the transaction started
                   \item an error after the end does not alter the effect of the transaction
                 \end{itemize}
-          \item if a transaction fails, the DBMS must restore the database to its state before the transaction started
+          \item if a transaction fails, the \DBMS must restore the database to its state before the transaction started
         \end{itemize}
   \item \textbf{Consistency}
         \begin{itemize}
-          \item the carrying out of the transaction does not violate any integrity constraint defined on the database; if that happens, the transaction itself is aborted by the DBMS
-          \item immediate constraints can be checked by the DBMS before the transaction is committed, while deferred constraints can be checked only after
+          \item the carrying out of the transaction \textbf{does not violate any integrity constraint} defined on the database
+                \begin{itemize}
+                  \item if that happens, the transaction itself is aborted by the \DBMS
+                \end{itemize}
+          \item immediate constraints can be checked by the \DBMS before the transaction is committed, while deferred constraints can be checked only after
           \item if the initial state \(S_0\) is consistent, then the final state \(S_f\) is also consistent; intermediate state \(S_i\) may not be consistent
         \end{itemize}
   \item \textbf{Isolation}
@@ -158,7 +163,7 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
         \end{itemize}
 \end{itemize}
 
-The mechanisms provided by the DBMS are shown in Table~\ref{tab:ACID-properties-DBMS}.
+The mechanisms provided by the \DBMS are shown in Table~\ref{tab:ACID-properties-DBMS}.
 
 \begin{table}[htbp]
   \bigskip
@@ -167,11 +172,11 @@ The mechanisms provided by the DBMS are shown in Table~\ref{tab:ACID-properties-
     \begin{tabular}{c|c|c|c}
       \textit{Atomicity} & \textit{Consistency} & \textit{Isolation} & \textit{Durability} \\
       \hline
-      \shortstack{\smallskip                                                               \\ \texttt{abort}-\texttt{rollback}-\texttt{restart} \\ reliability manager} & \shortstack{\smallskip \\ integrity checking of the DBMS \\ integrity control system at query execution time} & \shortstack{\smallskip \\ concurrency control \\ Concurreny Control System} & \shortstack{\smallskip \\ recovery management \\ reliability manager}
+      \shortstack{\smallskip                                                               \\ \texttt{abort}-\texttt{rollback}-\texttt{restart} \\ reliability manager} & \shortstack{\smallskip \\ integrity checking of the \DBMS \\ integrity control system at query execution time} & \shortstack{\smallskip \\ concurrency control \\ Concurreny Control System} & \shortstack{\smallskip \\ recovery management \\ reliability manager}
     \end{tabular}
   }
   \bigskip
-  \caption{ACID properties and the DBMS mechanisms}
+  \caption{ACID properties and the \DBMS mechanisms}
   \label{tab:ACID-properties-DBMS}
 \end{table}
 
@@ -179,28 +184,28 @@ The mechanisms provided by the DBMS are shown in Table~\ref{tab:ACID-properties-
 
 \section{Concurrency}
 
-Since multiple applications can access the same data at the same time, the DBMS must provide a mechanism to control the concurrent access to the data.
-The application load of a DBMS can be measured using the number of transaction per second \textit{(TPS)} managed by the DBMS.
-By exploiting the parallelism, the \textit{TPS} can be increased.
+Since multiple applications can access the same data at the same time, the \DBMS must provide a mechanism to control the concurrent access to the data.
+The application load of a \DBMS can be measured using the number of transaction per second \textit{(TPS)};
+by exploiting the parallelism, the \textit{TPS} can be increased.
 
-The \textbf{Concurrency Control System} manages the execution of transactions, avoiding the insurgence of anomalies while ensuring performances.
+The \textbf{Concurrency Control System} \textit{(or \CC system)} manages the execution of transactions, avoiding the insurgence of anomalies while ensuring performances.
 The anomalies can be:
 
 \begin{itemize}
-  \item Update loss
+  \item \textbf{Update loss}
         \begin{itemize}
           \item two transactions try to modify the same data, resulting in the loss of one of the updates
         \end{itemize}
-  \item Dirty read
+  \item \textbf{Dirty read}
         \begin{itemize}
           \item a transaction reads data that has been modified by another transaction that aborts
           \item this is a problem with a difficult solution
         \end{itemize}
-  \item Inconsistent read - \textit{(phantom read)}
+  \item \textbf{Inconsistent read} - \textit{(phantom read)}
         \begin{itemize}
           \item a transaction reads data that has been modified by another transaction that commits
         \end{itemize}
-  \item Phantom insert
+  \item \textbf{Phantom insert}
         \begin{itemize}
           \item a transaction writes data that has been read by another transaction that commits
         \end{itemize}
@@ -210,67 +215,66 @@ The anomalies can be:
 
 \textbf{Model}: an abstraction of a system, object of process, which purposely ignores some details in order to focus on the relevant aspects.
 
-The concurrency theory builds upon a model of transaction and concurrency control principles that helps understanding real systems.
-Real systems exploit implementation level mechanisms \textit{(like locks and snapshots)} that help achieve some of the desirable properties postulated by the theory.
+The concurrency theory builds upon a model of transaction and concurrency control principles that helps understanding real world systems;
+they exploit implementation level mechanisms \textit{(like locks and snapshots)} that help achieve some of the desirable properties postulated by the theory.
 
 For the sake of simplicity, the concurrency theory is based on the following assumptions:
 
 \begin{itemize}
-  \item A transaction is a syntactical object, of which only the input and output actions are known
-  \item All transactions are initiated by the \texttt{begin transaction} command
-  \item All transactions are terminated by the \texttt{end-transaction} command
-  \item The concurrency control system accepts or refuses concurrent executions during the evolution of the transactions, without knowing their final outcome (either \texttt{commit} or \texttt{abort}).
-  \item An operation is a read or write of a specific datum by a specific transaction
-  \item A schedule is a sequence of operations performed by concurrent transactions that respects the order of operations of each transaction
+  \item A \textbf{transaction} is a \textbf{syntactical object}, of which only the \textit{input} and \textit{output} actions are known
+  \item All transactions are \textbf{initiated} by the \texttt{begin-transaction} command
+  \item All transactions are \textbf{terminated} by the \texttt{end-transaction} command
+  \item The concurrency control system \textbf{accepts} or \textbf{refuses} concurrent executions during the evolution of the transactions, without knowing their final outcome \textit{(either with a \texttt{commit} or \texttt{abort} command)}
+  \item An \textbf{operation} is a \textbf{read} or \textbf{write} of a specific datum by a specific transaction
+  \item A \textbf{schedule} is a \textbf{sequence of operations} performed by concurrent transactions that respects the order of operations of each transaction
 \end{itemize}
 
 \subsubsection{Transactions notation}
 
 \begin{itemize}
-  \item A transaction is denoted by \(T_i\), where \(i\) is a number
-  \item A read operation is denoted by \(r_i(x)\)
-  \item A write operation is denoted by \(w_i(x)\)
-  \item A schedule is denoted by the letter \(S\)
+  \item A \textbf{transaction} is denoted by \(T_i\), where \(i\) is a number
+  \item A \texttt{read} operation on data \(x\) is denoted by \(r_i(x)\)
+  \item A \texttt{write} operation on data \(x\) is denoted by \(w_i(x)\)
+  \item A \textbf{schedule} is denoted by the letter \(S\)
 \end{itemize}
 
 \subsubsection{Schedules}
 
-Let \(N_S\) and \(N_D\) be respectively the number of serial schedules and distinct schedules for \(n\) transactions \(\langle T_1, \dots, T_n \rangle\) each with \(k_i\) operations.
-
+Let \(N_S\) and \(N_D\) be respectively the number of \textbf{serial schedules} and \textbf{distinct schedules} for \(n\) transactions \(\langle T_1, \dots, T_n \rangle\) each with \(k_i\) operations.
 Then:
 
 \begin{align*}
-  N_S & = n!                                                                                       & \quad \text{number of permutations of } n \text{ transactions} \\
-  N_D & = \dfrac{\displaystyle \left(\sum_{i=1}^{n}\right)!}{\displaystyle \prod_{i=1}^{n} (k_i!)} & \quad \text{number of permutations of all operations}
+  N_S & = n!                                                                                        \quad & \text{number of permutations of } n \text{ transactions} \\
+  N_D & = \dfrac{\displaystyle \left(\sum_{i=1}^{n}\right)!}{\displaystyle \prod_{i=1}^{n} (k_i!)}        & \text{number of permutations of all operations}
 \end{align*}
 
 \subsubsection{Principles of Concurrency Control}
 
-The goal of the Concurrency Control is to reject schedules that cause anomalies.
+The goal of the \textbf{Concurrency Control} is to \textbf{reject schedules that cause anomalies}.
 In order to enable the Concurrency Control, two components are needed:
 
 \begin{enumerate}
-  \item Scheduler, a component that accepts or rejects the operations requested by the transactions
-  \item Serial schedule, a schedule in which the actions of each transaction occur in a contiguous sequence
+  \item \textbf{Scheduler}, a component that accepts or rejects the operations requested by the transactions
+  \item \textbf{Serial schedule}, a schedule in which the actions of each transaction occur in a contiguous sequence
 \end{enumerate}
 
 \bigskip
-A serializable schedule is a schedule that leaves the database in the same state as some serial schedule of the same transactions.
-This property is commonly accepted as a notion of schedule correctness.
+A \textbf{serializable schedule} is a schedule that leaves the database in the same state as some serial schedule of the same transactions;
+this property is commonly accepted as a notion of \textbf{schedule correctness}.
 
-In order to identify classes of schedules that ensure the serializability, it's required to establish a notion of schedule equivalence.
-Let's make a two assumptions first:
+In order to identify classes of schedules that ensure the serializability, it's required to establish a notion of \textbf{schedule equivalence}.
+However, there's a difference between real life and theory:
 
-\begin{enumerate}
-  \item In theory, all transactions are observed a posteriori and limited to those that have committed
+\begin{itemize}
+  \item \textbf{in theory}, all transactions are observed \textit{a posteriori} and limited to those that have committed
         \begin{itemize}
-          \item this technique is called commit projection
+          \item this technique is called \textbf{commit projection}
           \item the observed schedule is admissible if the transactions lead to a valid state
         \end{itemize}
-  \item In practice, all schedulers must make decisions while the transactions are still running
-\end{enumerate}
+  \item \textbf{in practice}, all schedulers must make decisions while the transactions are still running
+\end{itemize}
 
-\begin{figure}
+\begin{figure}[htbp]
   \bigskip
   \centering
   \tikzfig[0.8]{figure-2.tikz}
@@ -282,52 +286,52 @@ Let's make a two assumptions first:
 Finally, it's possible to define:
 
 \begin{itemize}
-  \item Reads-from relation: \(r_i(x)\) reads from \(w_j(x)\) in a schedule \(S\) when \(w_j(x)\) precedes \(r_i(x)\) in \(S\) and there's no write operation between them
+  \item \textbf{Reads-from} relation: \(r_i(x)\) reads from \(w_j(x)\) in a schedule \(S\) when \(w_j(x)\) precedes \(r_i(x)\) in \(S\) and there's no \texttt{write} operation between them
         \begin{itemize}
           \item this relation is independent of the time at which the commit \(T_j\) occurs
         \end{itemize}
-  \item Final write: \(w_i(x)\) in a schedule \(S\) is a final write if it is the last write on \(x\) that occurs in \(S\)
-  \item View equivalence: two schedules \(S_i\) and \(S_j\) are view equivalent (\(S_i \approx_v S_j\) if they have the same operations, the same final writes and the same reads-from relations
-  \item View serializability: a schedule is view serializable if it is view-equivalent to a serial schedule of the same transactions
+  \item \textbf{Final write}: \(w_i(x)\) in a schedule \(S\) is a final write if it is the last write on \(x\) that occurs in \(S\)
+  \item \textbf{View equivalence}: two schedules \(S_i\) and \(S_j\) are view equivalent \textit{(\(S_i \approx_v S_j\))} if they have the same operations, the same final writes and the same reads-from relations
+  \item \textbf{View serializability}: a schedule is view serializable if it is view-equivalent to a serial schedule of the same transactions
         \begin{itemize}
-          \item the class of view-serializable schedules is called VSR
+          \item the class of view-serializable schedules is called \VSR
         \end{itemize}
 \end{itemize}
 
 \paragraph{Complexity of view serializability}
 
 Deciding whether two given schedules are view equivalent is done in polynomial time and space;
-deciding whether a generic schedule is in VSR is NP-complete problem, as it requires considering the reads-from and final writes of all possible serial schedule with the same operations (a combinatorial problem).
+deciding whether a generic schedule is in \VSR is a \NPC problem, as it requires considering the \textit{reads-from} and \textit{final writes} of all possible serial schedule with the same operations \textit{(a combinatorial problem)}.
 
 However, by giving up some accuracy, it's possible to increase the performance: a stricter definition of view equivalence is introduced.
 This simplification may lead to the rejection of the schedules that are actually view-serializable under the broader definition.
 
 \subsubsection{Conflict serializability}
 
-First, let's define the notion of conflict:
+First, let's define the notion of \textbf{conflict}:
 
 \begin{itemize}
-  \item Two operations \(o_i\) and \(o_j\), with \(i \neq j\) are in conflict if they address the same resource and at least one of them is a write
+  \item Two operations \(o_i\) and \(o_j\), with \(i \neq j\) are \textbf{in conflict} if they address the same resource and at least one of them is a \texttt{write}
         \begin{itemize}
-          \item read-write conflicts \textit{R-W} or \textit{W-R}
-          \item write-write conflicts \textit{W-W}
+          \item \textit{read-write} conflicts \textit{R-W} or \textit{W-R}
+          \item \textit{write-write} conflicts \textit{W-W}
         \end{itemize}
 \end{itemize}
 
-Then, the notion of conflict serializability is defined:
+Then, the notion of \textbf{conflict serializability} is defined:
 
 \begin{itemize}
-  \item Two schedules \(S_i\) and \(S_j\)  are conflict-equivalent (\(S_i \approx_C S_k\)) if they contain the same operations and in all the conflicting pairs the transactions occur in the same order
-  \item A schedule is conflict-serializable if it is conflict-equivalent to a serial schedule of the same transactions
-  \item The class of conflict-serializable schedules is called CSR
+  \item Two schedules \(S_i\) and \(S_j\) are \textbf{conflict-equivalent} \textit{(\(S_i \approx_C S_k\))} if they contain the same operations and in all the conflicting pairs the transactions occur in the same order
+  \item A schedule is conflict-serializable if it is \textbf{conflict-equivalent to a serial schedule} of the same transactions
+  \item The class of conflict-serializable schedules is called \CSR
 \end{itemize}
 
 \paragraph{Relation between VSR and CSR}
 
-First of all, it's immediate to establish that \(\textit{VSR} \subseteq \textit{CSR}\)
+First of all, it's immediate to establish that \(\VSR \subseteq \CSR\)
 
 \begin{itemize}
-  \item \textbf{Proof}: there are \textit{VSR} schedules that are not \textit{CSR} because they contain operations that are not in conflict.
+  \item \textbf{Proof}: there are \VSR schedules that are not \CSR because they contain operations that are not in conflict.
   \item \textbf{Counter example}: consider the schedule \(r_1(x) w_2(x) w_1(x) w_3(x)\)
         \begin{itemize}
           \item it's view-serializable, as it's view-equivalent to the schedule \(T_1 T_2 T_3 = r_1(x) w_1(x) w_2(x) w_3(x)\)
@@ -337,71 +341,71 @@ First of all, it's immediate to establish that \(\textit{VSR} \subseteq \textit{
 \end{itemize}
 
 \bigskip
-Therefore it can be deducted that \(\textit{CSR} \Rightarrow \textit{VSR}\): conflict-equivalence \(\approx_C\) implies view-equivalence \(\approx_v\), by assuming that \(S_1 \approx_C S_2\) and \(S_2 \approx_v S_3\).
+Therefore it can be deducted that \(\CSR \Rightarrow \VSR\): conflict-equivalence \(\approx_C\) implies view-equivalence \(\approx_v\), by assuming that \(S_1 \approx_C S_2\) and \(S_2 \approx_v S_3\).
 
 To achieve this assumption, \(S_1\) and \(S_2\) must have:
 
 \begin{itemize}
-  \item The same final writes
+  \item The \textbf{same final writes}
         \begin{itemize}
           \item if they didn't, there would be at least two writes in a different order, and therefore they would not be conflict-equivalent
         \end{itemize}
-  \item The same reads-from relations
+  \item The \textbf{same reads-from} relations
         \begin{itemize}
           \item if they didn't, there would be at least two reads in a different order, and therefore they would not be conflict-equivalent
         \end{itemize}
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[htbp]
   \bigskip
   \centering
   \tikzfig[0.8]{figure-3.tikz}
-  \caption{Relation between VSR and CSR}
+  \caption{Relation between \VSR and \CSR}
   \label{fig:relation-between-vsr-and-csr}
   \bigskip
 \end{figure}
 
-\paragraph{Testing CSR}
+\paragraph{Testing \CSR}
 
-As already said, determining the conflict serializability of two generic schedules is a NP-complete problem.
-In order to test the conflict-serializability of a schedule, it's necessary to build a conflict graph (CG) that has:
+As already said, determining the conflict serializability of two generic schedules is a \NPC problem.
+In order to test the conflict-serializability of a schedule, it's necessary to build a \textbf{conflict graph} \textit{(or \CG)} that has:
 
 \begin{itemize}
-  \item One node for each transaction \(T_i\)
-  \item One arc from \(T_i\) to \(T_j\) if exists at least one conflict between an operation \(o_i\ of T_i\) and an operation \(o_j\) of \(T_j\) such that \(o_i\) precedes \(o_j\)
+  \item One \textbf{node} for each transaction \(T_i\)
+  \item One \textbf{arc} from \(T_i\) to \(T_j\) if exists at least one conflict between an operation \(o_i\ of T_i\) and an operation \(o_j\) of \(T_j\) such that \(o_i\) precedes \(o_j\)
 \end{itemize}
 
-The schedule is conflict-serializable (in CSR) if and only if the conflict graph is acyclic.
+The schedule is conflict-serializable \textit{(in \CSR)} if and only if the conflict graph is acyclic.
 
-\paragraph{CSR implies acyclicity of the CG}
+\paragraph{\CSR implies acyclicity of the \CG}
 
 This Paragraph is going to provide a simple explanation of the previous statement.
 
-Consider a schedule \(S\) in CSR.
+Consider a schedule \(S\) in \CSR.
 As such, it is \(\approx_c\) to a serial schedule \(S'\).
 Without loss of generality, the transaction of \(S\) can be renamed such that their order is \(T_1, T_2, \dots, T_n\).
 
-Since the serial schedule has all conflicting pairs in the same order as schedule \(S\), the CG will have arcs only connecting the pairs \((i, j)\) with \(i < j\).
-As a direct consequence, the CG will be acyclic (a cycle requires at least an arc \((i, j\) with \(i > j\)).
+Since the serial schedule has all conflicting pairs in the same order as schedule \(S\), the \CG will have arcs only connecting the pairs \((i, j)\) with \(i < j\).
+As a direct consequence, the \CG will be acyclic \textit{(a cycle requires at least an arc \((i, j\) with \(i > j\))}.
 
-\paragraph{Acyclicity of the CG implies CSR}
+\paragraph{Acyclicity of the \CG implies \CSR}
 
-Consider once again the schedule \(S\) already explored in the previous paragraph.
+Consider once again the schedule \(S\) already explored in the previous Paragraph.
 
-If the CG is acyclic, then it induces a topological ordering on its nodes (an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\)).
+If the \CG is acyclic, then it induces a topological ordering on its nodes \textit{(an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\))}.
 The same partial order exists on the transactions of \(S\).
 
 Generally speaking, any serial schedule whose transactions are ordered according to the partial order is conflict-equivalent to \(S\), because for all conflicting pairs \(i, j\) the transaction \(T_i\) precedes \(T_j\) in both schedules.
 
 \subsection{Concurrency control in practice}
 
-In the real word, the concurrency control (CC) methods explained so fare are not used directly: CSR checking would be efficient if it was possible to know the graph in the beginning, but it's not the case.
-Additionally, as stated, the problem is NP-complete, so it's not possible to solve it in reasonable time.
+In the real word, the concurrency control methods explained so fare are not used directly: \CSR checking would be efficient if it was possible to know the graph in the beginning, but it's not the case.
+Additionally, as stated, the problem is \NPC, so it's not possible to solve it in reasonable time.
 
-A scheduler must work "online" (or "on the fly"): it must be able to decide for each operation if it can be executed or not, without knowing the whole schedule in advance.
+A scheduler must work \inlinequote{online} \textit{(or \inlinequote{on the fly})}: it must be able to decide for each operation if it can be executed or not, without knowing the whole schedule in advance.
 If it's not possible to maintain the conflict graph, then it has to be updated and its acyclicity checked after each operation.
 
-The assumption that concurrency control can work only with the commit-projection of the schedule is not realistic ads transactions can be aborted at any time.
+The assumption that concurrency control can work only with the commit-projection of the schedule is not realistic as transactions can be aborted at any time.
 In order to solve this issue, a simple decision criterion is required for the scheduler.
 It must:
 
@@ -410,10 +414,7 @@ It must:
   \item Have negligible overhead
 \end{itemize}
 
-%\subsubsection{Arrival sequences vs a posteriori schedules}
-\bigskip
-
-So far, the notation \(r_1(x) w_2(x) w_1(x) w_3(x)\) has been used to represent a schedule, or a posteriori view of the execution of concurrent transactions in the DBMS (also sometimes called history).
+So far, the notation \(r_1(x) w_2(x) w_1(x) w_3(x)\) has been used to represent a schedule, or a posteriori view of the execution of concurrent transactions in the \DBMS \textit{(also sometimes called history)}.
 A schedule represents \inlinequote{what has happened} or, with more detail, \inlinequote{which operations have been executed by which transactions in which order}.
 They can be further restricted by the commit-projection hypothesis so operations executed by committed transactions.
 
@@ -421,22 +422,24 @@ When dealing with concurrency control, it's important to consider \textbf{arriva
 With an abuse of notation, the arrival schedule will be denoted in the same way as the a posteriori schedule.
 The distinction will be clear from the context.
 
-The CC system maps an arrival sequence to an a posteriori schedule, and it must guarantee that the a posteriori schedule is conflict-serializable.
+The \CC system maps an arrival sequence to an a posteriori schedule, and it must guarantee that the a posteriori schedule is conflict-serializable.
 
 \bigskip
 
-In order to implement a real CC system, two main approaches are used in the real world:
+In order to implement a real \CC system, two main approaches are used in the real world:
 
 \begin{itemize}
-  \item Pessimistic
+  \item \textbf{Pessimistic}
         \begin{itemize}
           \item based on locks or resource access control
           \item if a resource is being used, no other transaction can access it
+          \item \textbf{prevents the errors from happening}
         \end{itemize}
-  \item Optimistic
+  \item \textbf{Optimistic}
         \begin{itemize}
           \item based on timestamping and versioning
           \item serve as many requests as possible, possibly using out of date data
+          \item \textbf{solves the error after it has happened}
         \end{itemize}
 \end{itemize}
 
@@ -445,40 +448,40 @@ Both families of approaches will be compared later.
 
 \subsubsection{Locking}
 
-The concurrency control mechanisms implemented by most DBMSs is called \textbf{locking}.
-It works on a simple principle: a transaction can access a data item (either to write or read it) only if it has acquired a lock on it.
+The concurrency control mechanisms implemented by most \DBMS is called \textbf{locking}.
+It works on a simple principle: a transaction can access a data item \textit{(either through a \texttt{write} or a \texttt{read} operation)} only if it has acquired a lock on it.
 
 Three primitive operations are defined:
 
 \begin{itemize}
-  \item \texttt{r\_lock(\(x\))}: acquire a read lock on \(x\)
-  \item \texttt{w\_lock(\(x\))}: acquire a write lock on \(x\)
-  \item \texttt{unlock(\(x\))}: release the lock on \(x\)
+  \item \texttt{r\_lock(\(x\))}, to acquire a read lock on \(x\)
+  \item \texttt{w\_lock(\(x\))}, to acquire a write lock on \(x\)
+  \item \texttt{unlock(\(x\))}, to release the lock on \(x\)
 \end{itemize}
 
-The scheduler (or lock manager) receives those requests and decides if they can be executed or not by checking an adequate data structure with minimal computational cost and overhead.
+The \textbf{scheduler} \textit{(also called lock manager in this context)} receives those requests and decides if they can be executed or not by checking an adequate data structure with minimal computational cost and overhead.
 
-During the execution of read and write operations, the following rules must be respected:
+During the execution of \texttt{read} and \texttt{write} operations, the following rules must be respected:
 
 \begin{itemize}
-  \item Each read operation should be preceded by an \texttt{r\_lock} and followed by an \texttt{unlock}
+  \item Each \texttt{read} operation should be preceded by an \texttt{r\_lock} and followed by an \texttt{unlock}
         \begin{itemize}
-          \item this type of lock is shared, as many transactions can acquire it at the same time
+          \item this type of lock is \textbf{shared}, as many transactions can acquire it at the same time
           \item this lock can be upgraded into a \texttt{w\_lock} via lock escalation
         \end{itemize}
-  \item Each write operation should be preceded by a \texttt{w\_lock} and followed by an \texttt{unlock}
+  \item Each \texttt{write} operation should be preceded by a \texttt{w\_lock} and followed by an \texttt{unlock}
         \begin{itemize}
-          \item this type of lock is exclusive, as only one transaction can acquire it at the same time
+          \item this type of lock is \textbf{exclusive}, as only one transaction can acquire it at the same time
         \end{itemize}
 \end{itemize}
 
-When a transaction follows these rules, it's called well formed with regard to locking.
+When a transaction follows these rules, it's called \textbf{well formed with regard to locking}.
 The object can then be in one of \(3\) possible states:
 
 \begin{enumerate}
   \item \texttt{free} or \texttt{unlocked}: no transaction has acquired a lock on it
-  \item \texttt{r-locked}: at least one transaction has acquired a read lock on it
-  \item \texttt{w-locked}: exactly one transaction has acquired a write lock on it
+  \item \texttt{r-locked}: at least one transaction has acquired a \texttt{read} lock on it
+  \item \texttt{w-locked}: exactly one transaction has acquired a \texttt{write} lock on it
 \end{enumerate}
 
 The lock manager receives the primitives from the transaction and grants resources according to the conflict table (shown in Table~\ref{tab:conflict-table}).
@@ -487,26 +490,39 @@ The lock manager receives the primitives from the transaction and grants resourc
   \bigskip
   \centering
   \begin{tabular}{c|c|c|c}
-    \shortstack {\small \smallskip \textit{status} \(\rightarrow\) \\
-    \textit{request} \(\downarrow\)} & \texttt{free} & \texttt{r-locked} & \texttt{w-locked} \\
+    \diagbox{\texttt{request}}{\texttt{status}} & \texttt{free}                 & \texttt{r-locked}                                      & \texttt{w-locked}             \\
     \hline
-    \texttt{r\_lock} & \colorcmark \texttt{r-locked} & \colorcmark \texttt{r-locked(n++)}                     & \colorxmark \texttt{w-locked} \\
-    \texttt{w\_lock} & \colorcmark \texttt{w-locked} & \colorxmark \texttt{r-locked}                          & \colorxmark \texttt{w-locked} \\
-    \texttt{unlock}  & \colorxmark                   & \colorcmark/\colorxmark \textit{depends on \texttt{n}} & \colorcmark \texttt{free}
+    \texttt{r\_lock}                            & \colorcmark \texttt{r-locked} & \colorcmark \texttt{r-locked(n++)}                     & \colorxmark \texttt{w-locked} \\
+    \texttt{w\_lock}                            & \colorcmark \texttt{w-locked} & \colorxmark \texttt{r-locked}                          & \colorxmark \texttt{w-locked} \\
+    \texttt{unlock}                             & \colorxmark                   & \colorcmark/\colorxmark \textit{depends on \texttt{n}} & \colorcmark \texttt{free}
   \end{tabular}
   \bigskip
-  \caption{Conflict table for locking. \texttt{n} is the number of concurrent readers on the object, incremented by \texttt{r\_lock} and decremented by \texttt{unlock}.}
+  \caption{Conflict table for locking: \texttt{n} is the number of concurrent readers on the object, incremented by \texttt{r\_lock} and decremented by \texttt{unlock}.}
   \label{tab:conflict-table}
 \end{table}
+
+\paragraph{Predicate locks}
+
+To prevent phantom reads and inserts, a lock should also be placed on \inlinequote{future} data \textit{(inserted data that would satisfy previously issued queries)};
+in order to achieve this goal, a new type of lock is introduced: the \textbf{predicate lock}, written \(\phi\).
+
+Predicate locks extend the notion of data locks to future data:
+\begin{itemize}
+  \item The lock manager is able to acquire a predicate lock on a predicate \(\phi\)
+  \item Other transaction cannot insert, delete or upgrade any tuple satisfying \(\phi\)
+  \item If the predicate lock is not supported, the transaction must acquire a lock on all the tuples satisfying \(\phi\)
+        \begin{itemize}
+          \item otherwise, the lock is managed via the help of indexes
+        \end{itemize}
+\end{itemize}
 
 \paragraph{Locks implementation}
 
 Typically, locks are implemented via lock tables: hash tables indexing the lockable items via hashing.
 Each locked items has a linked list of transactions that have required a lock on it.
+Every new lock request for the data item is appended as new node to the list;
+locks can be applied on both data and index items.
 An illustration of the lock table is shown in Figure~\ref{fig:lock-table}.
-
-Every new lock request for the data item is appended as new node to the list.
-Locks can be applied on both data and index items.
 
 \begin{figure}[htbp]
   \centering
@@ -517,33 +533,54 @@ Locks can be applied on both data and index items.
   \bigskip
 \end{figure}
 
-\subsection{Two-Phase Locking - 2PL}
+Resources can be \textit{free}, \textit{read-locked} or \textit{write-locked}.
+To keep track of the number of readers, a counter is used.
+Transactions requesting locks are either granted the lock or suspended and queued \textit{(handled via a \texttt{FIFO} policy)}.
+This technique may cause:
+
+\begin{itemize}
+  \item \textbf{Deadlocks}
+        \begin{itemize}
+          \item two or more transactions are stack in endless mutual wait
+          \item typically occurs due to transactions waiting for each other to release a lock
+          \item explored in Section~\ref{sec:deadlocks}
+        \end{itemize}
+  \item \textbf{Starvation}
+        \begin{itemize}
+          \item a transaction is waiting for a lock for a long time
+          \item typically occurs due to write transactions waiting for resources that are continuously \textit{read-locked} by other transactions
+                % \item explored in Section~\ref{sec:starvation} % TODO uncomment this when a section about starvation is added
+        \end{itemize}
+\end{itemize}
+
+\subsection{Two-Phase Locking - \TPL}
 
 The locking method ensures that the writing actions are exclusive, while reading actions can occur concurrently;
 however, it doesn't guarantee that the reading actions are consistent with the writing actions.
 
-In fact, the schedule mapped by the CC system can be \textbf{inconsistent} if the following conditions are met:
+In fact, the schedule mapped by the \CC system can be \textbf{inconsistent} if the following conditions are met:
 
 \begin{itemize}
   \item a transaction \(T_1\) reads a data item \(x\) and then writes it
   \item a transaction \(T_2\) reads \(x\) before \(T_1\) writes it
 \end{itemize}
 
-In order to avoid this situation, the locking method can be extended with a \textbf{two-phase locking} mechanism (2PL).
+In order to avoid this situation, the locking method can be extended with a \textbf{two-phase locking} mechanism \textit{(also called
+  \TPL for brevity)}.
 This method introduces a new restriction: a transaction, after having released a lock, cannot acquire another lock.
 
 As a consequence of this principle, two phases can be distinguished:
 
 \begin{enumerate}
   \item \textbf{Growing phase}
-  \begin{itemize}
-    \item the transaction acquires all the locks it needs to execute its operations
-    \item the transfer of an \texttt{r\_lock} into a \texttt{w\_lock} can only appear in this phase
-  \end{itemize}
+        \begin{itemize}
+          \item the transaction acquires all the locks it needs to execute its operations
+          \item the transfer of an \texttt{r\_lock} into a \texttt{w\_lock} can only appear in this phase
+        \end{itemize}
   \item \textbf{Shrinking phase}
-  \begin{itemize}
-    \item the transaction releases all the locks it has acquired
-  \end{itemize}
+        \begin{itemize}
+          \item the transaction releases all the locks it has acquired
+        \end{itemize}
 \end{enumerate}
 
 An illustration of the resources use in the two phases is shown in Figure~\ref{fig:resources-use-phases-two-phases-locking}.
@@ -552,7 +589,7 @@ An illustration of the resources use in the two phases is shown in Figure~\ref{f
   \centering
   \bigskip
   \tikzfig[]{figure-5.tikz}
-  \caption{Illustration of the resources use in the two phases of the 2PL}
+  \caption{Illustration of the resources use in the two phases of the \TPL}
   \label{fig:resources-use-phases-two-phases-locking}
   \bigskip
 \end{figure}
@@ -564,20 +601,733 @@ however it does ensure the serializability.
 Finally, a scheduler that:
 
 \begin{itemize}
-  \item Only processes well formed transactions
-  \item Grants locks according to the conflict table
-  \item Checks that all transactions apply the two-phase locking
+  \item only processes well formed transactions
+  \item grants locks according to the conflict table
+  \item checks that all transactions apply the two-phase locking
 \end{itemize}
 
-Generates schedules in the \textit{2PL} class.
+generates schedules in the \TPL class.
 Those schedules are both view-serializable and conflict-serializable.
 
 It can be noted that:
 
-\[ \textit{VSR} \subset \textit{CSR} \subset \textit{2PL} \]
+\[ \VSR \subset \CSR \subset \TPL \]
 
-\subsubsection{\textit{2PL} implies \textit{CSR}}
+\subsubsection{\TPL implies \CSR}
 
-% slide
+If \(\TPL \subseteq \CSR\), then every \TPL schedule is also conflict serializable.
+
+\bigskip
+First, let's suppose that a \TPL schedule is not \CSR.
+Then, there exists a transaction \(T_i\) that has acquired a lock on a data item \(x\) and then released it (a cycle \(T_i \rightarrow T_j \rightarrow T_i\)).
+
+Therefore there must be a pair of conflicting operations in reverse order, such that:
+
+\begin{enumerate}
+  \item \(\text{OP}_{i}^{h}(x), \text{OP}_{j}^{k}(x) \ldots \text{OP}_{j}^{u}, \ldots \text{OP}_{i}^{w}(x)\) where:
+        \begin{itemize}
+          \item at least one of \(\text{OP}_{i}^{h}, \text{OP}_{j}^{k}\) is a \texttt{write} operation
+          \item at least one of \(\text{OP}_{j}^{u}, \text{OP}_{i}^{v}\) is a \texttt{read} operation
+        \end{itemize}
+  \item when the instructions \(\text{OP}_{i}^{h}, \text{OP}_{j}^{k}\) are executed, the transaction \(T_i\) has acquired a lock on \(x\)
+  \item later in the schedule, when the instructions \(\text{OP}_{j}^{u}, \text{OP}_{i}^{v}\) are executed,
+        \begin{itemize}
+          \item inn order for a conflict to occur, the transaction must have acquired a lock on \(x\)
+          \item this is a contradiction on the \TPL
+        \end{itemize}
+\end{enumerate}
+
+The inclusion of \TPL in \CSR is therefore proved;
+this proves also that all \TPL schedules are view-serializable too.
+
+In the same way, the inclusion of \TPL in \VSR can be proved \textit{(showing that \(\CSR \subset \VSR\))}.
+
+\paragraph{Alternate proof}
+
+An alternate proof of the same relation can be found in the following steps.
+
+\begin{itemize}
+  \item Consider a generic conflict \(o_i \rightarrow o_j\) in \(S^\prime\) with \(o_i \in T_i, o_j \in T_J, i < j\)
+        \begin{itemize}
+          \item by definition, \(o_i\) and \(o_j\) address the same resource \(r\) and at least one of them is a \texttt{write}
+        \end{itemize}
+  \item Is it possible that \(o_i\) and \(o_j\) execute in the reverse order?
+        \begin{itemize}
+          \item no, because then \(T_j\) would have released the lock on \(r\) before \(T_i\) acquired it
+          \item this would be a contradiction of the ordering criterion in the \TPL
+        \end{itemize}
+\end{itemize}
+
+\bigskip
+This also proves that all \TPL schedules are view-serializable too and that they can be also checked with negligible overhead.
+
+\paragraph{\TPL is smaller than \CSR}
+
+It can be proven that \(\TPL \subset \CSR\): every \TPL schedule is also conflict serializable, while the opposite is not always true.
+
+\bigskip
+Figure~\ref{fig:relation-between-tpl-csr-vsr-schedules} shows the relation between the three classes of schedules.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig[0.8]{figure-6.tikz}
+  \caption{Relation between \TPL, \CSR and \VSR schedules}
+  \label{fig:relation-between-tpl-csr-vsr-schedules}
+  \bigskip
+\end{figure}
+
+\subsection{Strict \TPL}
+
+In the previous Sections, the hypothesis of commit-projection \textit{(no transactions in the schedule are aborted)} was used;
+however, the \TPL does not protect against dirty reads \textit{(caused by uncommitted transactions)}, as releasing locks before rollbacks exposes dirty data.
+In the same way, neither \VSR or \CSR protect against dirty reads.
+
+In order to remove this hypothesis, an additional constraint to \TPL is added, therefore obtaining the \textbf{\STPL}:
+
+\textit{Locks held by a transaction can be released only after commit or rollback.}
+
+This version of \TPL is used in most of the modern \DBMS whenever a level of higher isolation is required.
+
+\bigskip
+In practice:
+\begin{itemize}
+  \item \STPL locks are also called \textbf{long duration locks}, while \TPL locks are called \textbf{short duration locks}
+  \item Real systems may apply \TPL policies differently, depending on the type of the lock:
+        \begin{itemize}
+          \item \textbf{write locks} are usually released after commit or rollback \textit{(long duration)}
+          \item \textbf{read locks} are usually implemented with mixed policies
+        \end{itemize}
+  \item Long duration read locks are costly in terms of performance and real systems replace them with more complex mechanisms
+\end{itemize}
+
+\subsubsection{Use of long duration write locks}
+
+Consider the following schedule \textit{(admissible if write locks are of short duration)} of two transactions \(T_1, T_2\) without the hypothesis that aborts are not possible:
+
+\begin{enumerate}
+  \item \(w_1(x), \ldots, w_2(x), \ldots, \left( \left( c_1 \lor a_1 \right) \land \left( c_2 \lor a_2 \right) \text{ in any order }\right)\)
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item \(T_2\) is allowed to write over the same object updated by \(T_1\) which has not yet completed
+        \end{itemize}
+  \item Transaction \(T_1\) aborts
+        \begin{itemize}
+          \item the schedule looks like \(w_1(x), \ldots, w_2(x), \ldots, a_1, \left( c_2 \lor a_2 \right)\)
+          \item there are \(2\) ways to process \(a_1\):
+                \begin{enumerate}[label=\arabic*.]
+                  \item if \(x\) is restored to the state before \(T_1\), then \(T_2\)'s update is lost; if it commits, \(x\) has a stale value
+                  \item if \(x\) is not restored and \(T_2\) aborts, then its previous state cannot be reinstalled
+                \end{enumerate}
+        \end{itemize}
+\end{enumerate}
+
+In order to solve this problem, write locks are held until the completion of the transaction in order to enable a proper processing of aborts.
+The anomalies of the above non commit-projection schedule is called \textbf{dirty write} \textit{(or dirty write anomaly)}.
+
+\subsubsection{Isolation levels in \texttt{SQL}}
+
+The \texttt{SQL} standard defines transaction isolation levels which specify the anomalies that should be prevented by the \DBMS;
+however, the level does not affect write locks.
+A transaction is always able to get (and hold) an exclusive lock on any data it modifies until its commit point, regardless of the isolation level.
+For read operations, levels define the degree of protection against modifications made by other transactions.
+Furthermore, different systems offer different guarantees about lost updates.
+
+The different isolation levels are defined in Table~\ref{table:sql-isolation-levels}.
+
+\bigskip
+\texttt{SQL} isolation levels may be implemented with the appropriate use of locks: Table~\ref{table:sql-isolation-locks} shows the locks that are held by the \DBMS for each level.
+Normally, commercial systems user locks and timestamp based concurrency control mechanisms.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tabular}{l|c|c|c}
+    \textit{isolation level}  & \textit{dirty read} & \textit{non repeatable read} & \textit{phantoms} \\
+    \hline
+    \textit{read uncommitted} & \colorcmark         & \colorcmark                  & \colorcmark       \\
+    \textit{read committed}   & \colorxmark         & \colorcmark                  & \colorcmark       \\
+    \textit{repeatable read}  & \colorxmark         & \colorxmark                  & \colorcmark       \\
+    \textit{snapshot}         & \colorxmark         & \colorxmark                  & \colorxmark       \\
+    \textit{serializable}     & \colorxmark         & \colorxmark                  & \colorxmark       \\
+  \end{tabular}
+  \caption{\texttt{SQL} isolation levels}
+  \label{table:sql-isolation-levels}
+  \bigskip
+\end{table}
+
+\begin{sidewaystable}[htbp]
+  \centering
+  \bigskip
+  \scalebox{0.7}{
+    \begin{tabular}{c|c|c|c|c|c}
+      \diagbox{\textit{Operation}}{\textit{Isolation level}} & \textit{no isolation}           & \textit{read uncommitted} & \textit{read committed} & \textit{repeatable read} & \textit{serializable}                           \\
+      \hline
+      \texttt{read}                                          & none                            & none                      & shared record lock (RL) & shared record lock (RL)  & shared file lock (FS)                           \\
+      \texttt{write} or \texttt{update}                      & none or update record lock (RU) & update record lock (RU)   & update record lock (RU) & update record lock (RU)  & update file lock (FU) and intent file lock (IX) \\
+      \texttt{select}                                        & -                               & -                         & -                       & -                        & intent file lock (IX)                           \\
+    \end{tabular}
+  }
+  \caption{\texttt{SQL} isolation levels and locks}
+  \label{table:sql-isolation-locks}
+\end{sidewaystable}
+
+\bigskip
+It's important to notice that serializable transactions don't necessarily execute serially:
+the requirement is that transactions can only commit if the result would be as if they had executed serially in any order.
+
+The locking requirements to achieve this level of isolation can frequently lead to deadlocks where one of the transactions need to be rolled back.
+Because of this problem, the \textit{serializable} level is used sparingly and it's not the default in most \DBMS.
+
+\bigskip
+The \texttt{SQL} code to set the isolation level is shown in Code~\ref{lst:sql-set-isolation-level}.
+
+\begin{lstlisting}[style=customsql, caption={\texttt{SQL} statement to set the isolation level of a transaction}, label={lst:sql-set-isolation-level}]
+SET TRANSACTION ISOLATION LEVEL <isolation level>;
+<set transaction statement> ::= SET [LOCAL] TRANSACTION <transaction characteristics>
+<transaction characteristics> ::= [ <transaction mode> [{, <transaction mode>}...]]
+<transaction mode> ::= <isolation level> | <transaction access mode> | <diagnostics size>
+<transaction access mode> ::= READ WRITE | READ ONLY
+<isolation level> ::= ISOLATION LEVEL <isolation level name>
+<isolation level name> ::= READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE
+\end{lstlisting}
+
+\subsection{Deadlocks}
+\label{sec:deadlocks}
+
+A deadlock is a situation where two or more transactions are waiting for each other to complete.
+The presence of a deadlock in a set of transaction can be shown via:
+
+\begin{itemize}
+  \item Lock graphs: a bipartite graph in which nodes are resources or transactions and arcs represent lock assignments or requests
+  \item Wait-for graphs: a directed graph in which nodes are transactions and arcs represent requests for locks
+\end{itemize}
+
+In both cases, a cycle in the graph represents a deadlock.
+Representation of a deadlock via a lock graph and a wait-for graph is shown respectively in Figure~\ref{subfig:lock-graph} and Figure~\ref{subfig:wait-for-graph}.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \begin{subfigure}[b]{0.495\textwidth}
+    \centering
+    \tikzfig{figure-8.tikz}
+    \caption{Lock graph}
+    \label{subfig:lock-graph}
+  \end{subfigure}
+  \bigskip
+  \begin{subfigure}[b]{0.495\textwidth}
+    \centering
+    \tikzfig{figure-9.tikz}
+    \caption{Wait for graph}
+    \label{subfig:wait-for-graph}
+  \end{subfigure}
+  \bigskip
+  \caption{Representations of a deadlock}
+  \label{fig:deadlock-representations}
+\end{figure}
+
+\bigskip
+A deadlock can be created is the following way:
+
+\begin{minipage}{0.496\textwidth}
+  \bigskip
+  \begin{itemize}
+    \item \(T_1: \ r_1(x), w_1(x), c_1\)
+    \item \(T_2: \ r_2(y) w_2(x), c_2\)
+    \item[\(\Rightarrow\)] \(T_1\) is waiting for \(T_2\) to release the lock on \(x\)
+    \item[\(\Rightarrow\)] a deadlock occurs
+  \end{itemize}
+\end{minipage}
+\begin{minipage}{0.496\textwidth}
+  \centering
+  \tikzfig{figure-8.tikz}
+\end{minipage}
+
+\subsection{Deadlock Resolution}
+
+Many different techniques exist to solve deadlocks, such as:
+
+\begin{itemize}
+  \item Timeout
+  \item Deadlock prevention
+  \item Deadlock detection
+\end{itemize}
+
+The deadlock resolution techniques will be discussed in more detail in the next Sections.
+
+\subsubsection{Timeout}
+
+A transaction is killed and restarted if it has been waiting for a lock for a certain amount of time, as it's assumed that the wait it's caused by a deadlock.
+Determining the maximum time interval is a difficult task, as it can vary greatly;
+as such, it must be determined for each system and sometimes can be altered by the database administrator.
+
+The timeout value must be chosen carefully, keeping in mind the following tradeoff:
+
+\begin{itemize}
+  \item An high value can lead to long delays whenever a deadlock actually occurs
+  \item A low value can lead to frequent and unneeded restarts of transactions
+\end{itemize}
+
+This is the most used technique to solve deadlocks, as it's the simplest to implement and it's the one that requires the least amount of resources.
+
+\subsubsection{Deadlock Prevention}
+
+The deadlock prevention techniques works by killing transaction that are likely to cause a deadlock.
+This solution is implemented mainly in \(2\) ways:
+
+\begin{itemize}
+  \item \textbf{Resource-based} prevention
+        \begin{itemize}
+          \item introduces restrictions on lock requests
+          \item resources are globally sorted and must be locked in a specific order
+          \item since not all transactions know beforehand which resources they will need, this technique is not very effective
+        \end{itemize}
+  \item \textbf{Transaction-based} prevention
+        \begin{itemize}
+          \item introduces restrictions based on the transactions themselves
+          \item to each transaction an ID is assigned incrementally, giving the transaction a priority
+                \begin{itemize}
+                  \item the ID assignment can be implemented via timestamps
+                \end{itemize}
+          \item \inlinequote{older} transaction don't have to wait for \inlinequote{younger} transactions
+          \item there are two ways of determining which transaction to kill:
+                \begin{itemize}
+                  \item \textit{preemptive} - the holding transaction is killed \textit{(wound-wait)}
+                  \item \textit{non-preemptive} - the requesting transaction is killed \textit{(wait-die)}
+                \end{itemize}
+          \item the problem with this technique is that too many transactions get killed
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Deadlock Detection}
+
+This technique requires controlling the contents of the lock tables in order to reveal possible concurrency issues.
+The discovery of a deadlock requires the analysis of the \textit{wait-for graph}, determining if it contains a cycle;
+in order to do so, the Obermarck algorithm is used.
+
+Assumptions of the algorithm:
+
+\begin{itemize}
+  \item Transactions execute on a single main node \textit{(one locus of control)}
+  \item Transactions may be decomposed in sub transactions running on other nodes
+  \item When a transaction spawns a sub transaction, it waits for the latter to complete
+  \item Two kinds of wait-for relationships exist:
+        \begin{itemize}
+          \item \(T_i\) waits for \(T_j\) to release a resource on the same node
+          \item A sub transaction of \(T_i\) waits for another sub transaction of \(T_i\) running on a different node
+        \end{itemize}
+\end{itemize}
+
+\bigskip
+This is proven to be a feasible solution and it's implemented by most \DBMS.
+
+\paragraph{Obermarck Algorithm}
+
+\textbf{Goal}:
+detection of a potential deadlock looking only at the local view of a node.
+
+\textbf{Method}:
+establishment of a communication protocol whereby each node has a local projection of the global dependencies.
+Nodes exchange information and update their local graph based on the received information;
+communication has to be further optimized to avoid situations in which multiple nodes detect the same \textit{(potential)} deadlock.
+
+\bigskip
+Node \texttt{A} sends its local info to a node \texttt{B} if:
+
+\begin{itemize}
+  \item \texttt{A} contains a transaction \(T_i\) that is waited from another remote transaction and waits for a transaction \(T_j\) active on \texttt{B}
+  \item \(i > j\) \textit{(the transaction with the highest ID is the oldest)}, ensuring a message forwarding along a node path where node \texttt{A} precedes node \texttt{B}
+\end{itemize}
+
+\bigskip
+The algorithm runs periodically at each node and consists of \(4\) steps:
+
+\begin{enumerate}
+  \item Get graph info (wait for dependencies among transactions and external calls) from the previous nodes
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item sequences contain only node and top level transaction identifiers
+        \end{itemize}
+  \item Update the local graph by adding the received info
+  \item Check the existence of cycles among transactions; if found, select one transaction in the cycle and kill it
+  \item Send updated graph info to the next nodes
+\end{enumerate}
+
+\bigskip
+The algorithm contains the arbitrary choice of:
+\begin{itemize}
+  \item send the message to the following node (\(i > j\))
+  \item send the message to the previous node (\(i < j\))
+\end{itemize}
+Therefore \(4\) variants of the algorithm exist, each one with a different behaviour;
+each of them sends messages in different orders, while every of them is able to detect the same deadlocks.
+
+\paragraph{Distributed Deadlock Detection}
+
+In order to implement the aforementioned algorithm in the context of a distributed system, a distributed dependency graph is created:
+external call nodes represent a sub transaction activating another sub transaction at a different node.
+An illustration of such graph is shown in Figure~\ref{fig:distributed-dep-graph}.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig{figure-10.tikz}
+  \caption{Distributed dependency graph}
+  \label{fig:distributed-dep-graph}
+  \bigskip
+\end{figure}
+
+Description of the graph:
+\begin{itemize}
+  \item Representation of the status:
+        \begin{itemize}
+          \item at node \texttt{A}: \(E_b \rightarrow T_{2a} \rightarrow T_{1a} \rightarrow E_b\)
+          \item at node \texttt{B}: \(E_a \rightarrow T_{1b} \rightarrow T_{2b} \rightarrow E_a\)
+        \end{itemize}
+  \item \(E_a\) and \(E_b\) are external call nodes
+  \item The symbol \(\rightarrow\) represents the wait for relation between local transactions
+  \item If one term is an external call, either the source:
+        \begin{itemize}
+          \item is being waited for by a remote transaction
+          \item the sink waits for a remote transaction
+        \end{itemize}
+  \item Potential deadlock: \(T_{2a}\) waits for \(T_{1a}\) (data lock) that waits for \(T_{1b}\) (call) that waits for \(T_{2b}\) (data lock) that waits for \(T_{2a}\)
+\end{itemize}
+
+Application of the Obermarck algorithm to this graph:
+\begin{itemize}
+  \item Node \texttt{A}
+        \begin{itemize}
+          \item activation/wait sequence: \(E_b \rightarrow T_{2} \rightarrow T_{1} \rightarrow E_b\)
+          \item \(i = 2, j = 1\)
+          \item \texttt{A} can dispatch its local info to \texttt{B}
+        \end{itemize}
+  \item Node \texttt{B}
+        \begin{itemize}
+          \item activation/wait sequence: \(E_a \rightarrow T_{1} \rightarrow T_{2} \rightarrow E_a\)
+          \item \(i = 1, j = 2\)
+          \item \texttt{B} can't dispatch its local info to \texttt{A}
+        \end{itemize}
+\end{itemize}
+
+\subsection{Deadlocks in practice}
+
+In real world applications, deadlocks are not a common problem, as their probability is much lower than the conflict probability.
+
+Consider a file with \(n\) records and \(2\) transactions doing each \(2\) accesses to their records (assuming uniform distribution of accesses).
+Then, the probability of:
+\begin{itemize}
+  \item a conflict is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \sfrac{1}{n} \right) = n * \sfrac{1}{n} * \sfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
+  \item a deadlock is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\) as it requires mutual conflicts between transactions
+\end{itemize}
+
+While deadlocks are a rare occurrence, the probability of them happening increases in a linear fashion with the number of concurrent transactions in the system, while it increases quadratically with the number of data accesses each transaction performs.
+There are more advanced techniques to avoid deadlocks, such as update locks and hierarchical locks.
+Those techniques are covered in the following Sections.
+
+\subsubsection{Update lock}
+
+The most frequent deadlock occurs when \(2\) concurrent transactions tart by reading the same resource \textit{(\texttt{SL})} and then try to write via updating their lock to \texttt{XL} \textit{(exclusive)}.
+To avoid to situation, systems offer the update lock (\texttt{UL}) that allows a transaction to update \textit{(read followed by a write)} a resource without having to acquire an exclusive lock.
+
+\bigskip
+Table~\ref{tab:update-lock-compatibility} shows the escalation of the update lock.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tabular}{c|c|c|c|c}
+    \diagbox{\textit{request}}{\textit{status}} & \textit{free} & \texttt{SL} & \texttt{UL} & \texttt{XL} \\
+    \hline
+    \texttt{SL}                                 & \colorcmark   & \colorcmark & \colorcmark & \colorxmark \\
+    \texttt{UL}                                 & \colorcmark   & \colorcmark & \colorxmark & \colorxmark \\
+    \texttt{XL}                                 & \colorcmark   & \colorxmark & \colorxmark & \colorxmark
+  \end{tabular}
+  \bigskip
+  \caption{Update lock compatibility}
+  \label{tab:update-lock-compatibility}
+\end{table}
+
+\subsubsection{Hierarchical locks}
+
+In order to increase the granularity of the locks, traditional lock protocol il extended via the use of hierarchical locks.
+This technique allows the transactions to lock items at a given level of the hierarchy;
+the objective is locking the minimum amount of data possible, while recognizing conflicts as soon as possible.
+
+\begin{minipage}{0.8\textwidth}
+  \bigskip
+  Locks can be specified with different granularities: database, table, fragment, tuple, field.
+
+  This introduces a tradeoff:
+  \begin{itemize}
+    \item A coarser granularity guarantees the probability of deadlocks is lower but the concurrency is reduced
+    \item A finer granularity increases the concurrency but increases the probability of deadlocks
+  \end{itemize}
+  \bigskip
+\end{minipage}
+\begin{minipage}{0.195\textwidth}
+  \bigskip
+  \centering
+  \tikzfig[0.75]{figure-11.tikz}
+  \bigskip
+\end{minipage}
+
+\bigskip
+The technique works by:
+
+\begin{itemize}
+  \item Requesting resources top down until the right level is obtained
+        \begin{itemize}[label=\(\downarrow\)]
+          \item locks are requested starting from the root and going down to the leaf
+        \end{itemize}
+  \item Releasing the locks bottom up
+        \begin{itemize}[label=\(\uparrow\)]
+          \item locks are released starting from the leaf and going up to the root
+        \end{itemize}
+\end{itemize}
+
+\bigskip
+The technique provides a richer set of primitives for lock requests; they are:
+
+\begin{itemize}
+  \item \texttt{XL} \textit{(exclusive lock)}: the transaction is the only one that can access the resource
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item corresponds to the write lock of the \TPL
+        \end{itemize}
+  \item \texttt{SL} \textit{(shared lock)}: the transaction can read the resource
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item corresponds to the read lock of the \TPL
+        \end{itemize}
+  \item \texttt{ISL} \textit{(intent shared lock)}: expresses the intention of locking in a shared manner one of the nodes that descend from the current node
+  \item \texttt{IXL} \textit{(intent exclusive lock)}: expresses the intention of locking in an exclusive manner one of the nodes that descend from the current node
+  \item \texttt{SIXL} \textit{(shared intent exclusive lock)}: expresses the intention of locking in a shared manner one of the nodes that descend from the current node and in an exclusive manner one of the nodes that descend from the current node
+\end{itemize}
+
+In order to:
+
+\begin{itemize}
+  \item request a \texttt{SL} or a \texttt{ISL} on a node, a transaction must already hold an \texttt{ISL} or \texttt{IXL} lock on the parent node
+  \item request a \texttt{IXL}, \texttt{XL} or \texttt{SIXL} on a node, a transaction must already hold a \texttt{SIXL} or \texttt{IXL} lock on the parent node
+\end{itemize}
+
+\bigskip
+The rules of compatibility used by the lock manager to decide whether to accept the lock are shown in Table~\ref{tab:hierarchical-lock-compatibility}
+
+\begin{table}[htbp]
+  \bigskip
+  \centering
+  \begin{tabular}{c|c|c|c|c|c|c}
+    \diagbox{\textit{request}}{\textit{resource state}} & \textit{free} & \texttt{ISL} & \texttt{IXL} & \texttt{SL} & \texttt{SIXL} & \texttt{XL} \\
+    \hline
+    \texttt{ISL}                                        & \colorcmark   & \colorcmark  & \colorcmark  & \colorcmark & \colorcmark   & \colorxmark \\
+    \texttt{IXL}                                        & \colorcmark   & \colorcmark  & \colorcmark  & \colorxmark & \colorxmark   & \colorxmark \\
+    \texttt{SL}                                         & \colorcmark   & \colorcmark  & \colorxmark  & \colorcmark & \colorxmark   & \colorxmark \\
+    \texttt{SIXL}                                       & \colorcmark   & \colorcmark  & \colorxmark  & \colorxmark & \colorxmark   & \colorxmark \\
+    \texttt{XL}                                         & \colorcmark   & \colorxmark  & \colorxmark  & \colorxmark & \colorxmark   & \colorxmark
+  \end{tabular}
+  \caption{Hierarchical lock compatibility}
+  \label{tab:hierarchical-lock-compatibility}
+  \bigskip
+\end{table}
+
+\subsection{Concurrency control based on timestamps}
+
+The \textbf{timestamp based} concurrency control \textit{(or \TS)} makes use of timestamps, or identifiers that define a total ordering of temporal events within a system.
+In centralized systems the timestamp is generated by reading the value of the system clock at the time at which the even occurs.
+
+The concurrency control with timestamps works as follow:
+
+\begin{itemize}
+  \item every transaction is assigned a timestamp at the beginning of its execution
+  \item a schedule is accepted if and only if it reflects the serial ordering of the transaction based on the value of the timestamp of each transaction
+\end{itemize}
+
+\bigskip
+This method is the easiest to implement, but it's less efficient than then \TPL;
+compared to the former \textit{(which is described as pessimistic)}, this method is optimistic as it does not assume that collisions will arise.
+
+\subsubsection{Timestamps in distributed systems}
+
+Concurrency control in a distributed environment causes theoretical difficulties due to the fact that the system clock is not synchronized among the different nodes;
+ss such, the timestamp is not an indicator of global time any more.
+To solve this issue, a system function must give out timestamps on requests
+
+This technique is called \textit{Lamport Method}.
+Using this method, a timestamp is a number characterized by two groups of digits:
+
+\begin{itemize}
+  \item the \textbf{least significant digits} represent the \textbf{node} at which the event occurs
+  \item the \textbf{most significant digits} represent the \textbf{time} at which the event occurs
+\end{itemize}
+
+The syntax of a timestamp is then \texttt{timestamp = event-id.node-id}
+
+\bigskip
+The most significant digits can be obtained through a local counter, incremented at each event; in this way, each event is assigned a unique timestamp.
+Each time two nodes communicate \textit{(via a message exchange)} the timestamp become synchronized: given that the sending event precedes the receiving event, the timestamp of the latter must be greater than the timestamp of the former.
+Otherwise, the timestamp of the receiving event is \inlinequote{bumped} to the value of the timestamp of the sending event plus one.
+
+\bigskip
+Each object \texttt{x} has two indicators, \texttt{RTM(x)} and \texttt{WTM(x)}, which represent the timestamp of the last transaction that has respectively read or written the resource \texttt{x}.
+
+The scheduler receives requests from access to objects of the type \texttt{read(x, ts)} or \texttt{write(x, ts)}, where \texttt{ts} is the timestamp of the transaction that requests the access; the scheduler accepts or rejects the requests according to the following policies:
+
+\begin{itemize}
+  \item \texttt{read(x, ts)}
+        \begin{itemize}
+          \item the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)}; the transaction is killed
+          \item the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)}; the transaction is allowed to read the object and the value of \texttt{RTM(x)} is set equal to the greater between \texttt{ts} and \texttt{RTM(x)}
+        \end{itemize}
+  \item \texttt{write(x, ts)}
+        \begin{itemize}
+          \item the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)} or \texttt{ts \(<\) RTM(x)}; the transaction is killed
+          \item the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)} and \texttt{ts \(\geq\) RTM(x)}; the transaction is allowed to write the object and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
+        \end{itemize}
+\end{itemize}
+
+\bigskip
+Basic \TS based control considers only committed transactions in the schedule, while aborted transactions are not considered \textit{(commit-projection hypothesis)};
+however if aborts occur, dirty reads may happen.
+
+To cope with dirty reads, a variant of basic \TS has been introduced: a transaction \(T_i\) that issues a \(r_{\texttt{ts}}(x)\) or a \(w_{\texttt{ts}}(x)\) such that \texttt{ts \(>\) WTM(X)} is delayed until the transaction \(T_j\) that has written the object \(x\) commits or aborts.
+
+This method works similarly to long duration write locks, but buffering operations might introduce big delays.
+
+\subsubsection{Thomas Rule}
+
+In order to reduce the kill rate, the \textit{Thomas Rule} has been introduced.
+It makes a slight change to the \texttt{write(x, ts)} request:
+
+\begin{itemize}
+  \item if \texttt{ts \(<\) RTM(x)} the request is rejected and the transaction is killed
+  \item else, if \texttt{ts \(<\) WTM(x)} the write request is obsolete and the transaction is skipped
+  \item else, access is granted and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
+\end{itemize}
+
+This rule then allows the scheduler to skip a \texttt{write} on a object that has already been written by a younger transaction, without killing it.
+It works only if the transaction issues a write without requiring a previous read on the object;
+instructions like \texttt{SET X = X + 1} would fail.
+
+\subsection{Comparison between \VSR, \CSR, \TPL and \TS}
+
+Figure~\ref{fig:concurrency-control-comparison} illustrates the taxonomy of the methods \VSR, \CSR, \TPL and \TS:
+
+\begin{itemize}
+  \item \VSR is the most general class, strictly including \CSR
+  \item \CSR strictly includes both \TPL and \TS
+  \item \TPL and \TS are neither mutually exclusive or mutually inclusive, as they share some schedules that are accepted by both methods but other schedules that are accepted by one method but not by the other exists
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig{figure-12.tikz}
+  \caption{Taxonomy of concurrency control methods}
+  \label{fig:concurrency-control-comparison}
+  \bigskip
+\end{figure}
+
+\bigskip
+The relation between \TS and \TPL can be summarized by \(3\) schedules:
+
+\begin{itemize}
+  \item \(r_1(x) w_1(x) r_2(x) w_2(x) r_0(y) w_1(y)\) is accepted by \TS but not by \TPL
+  \item \(r_2(x) w_2(x) r_1(x) w_1(x)\) is accepted by \TPL but not by \TS
+  \item \(r_1(x) w_1(x) r_2(x) w_2(x)\) is accepted by both \TS and \TPL
+\end{itemize}
+
+\subsubsection{\TS implies \CSR}
+
+The objective of this Section is to illustrate the relation between \TS and \CSR.
+In order to do so, consider the following:
+
+\begin{itemize}
+  \item Let \(S\) be a \textbf{schedule} accepted by \TS and containing two \textbf{transactions} \(T_1\) and \(T_2\)
+  \item Suppose that \(S\) is not accepted by \CSR, which implies that there is a cycle between \(T_1\) and \(T_2\)
+        \begin{itemize}
+          \item \(S\) contains \(\text{OP}_1(x)\) and \(\text{OP}_2(x)\) where at least one of the two is a \texttt{write}
+          \item \(S\) also contains \(\text{OP}_2(y)\) and \(\text{OP}_1(y)\) where at least one of the two is a \texttt{write}
+        \end{itemize}
+  \item When \(\text{OP}_1(y)\) arrives, the following statements are true:
+        \begin{itemize}
+          \item if \(\text{OP}_1(y)\) is a \texttt{read}, then \(T_1\) is killed by \TS because it tries to read a value written by a younger transaction. This is a contradiction.
+          \item If \(\text{OP}_1(y)\) is a \texttt{write}, then \(T_1\) is killed by \TS because it tries to write a value written by a younger transaction. This is a contradiction.
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{\TPL and \TS}
+
+The main differences between \TPL and \TS are shown in Table~\ref{table:tpl-vs-ts}.
+
+\begin{table}
+  \centering
+  \bigskip
+  \scalebox{0.9}{
+    \begin{tabular}{l|l|l}
+                             & \TPL                                 & \TS                                               \\
+      \hline
+      \textit{transactions}  & can be actively waiting              & killed and restarted                              \\
+      \textit{serialization} & imposed by conflicts                 & imposed by timestamps                             \\
+      \textit{delays}        & caused by commit wait in strict \TPL & none                                              \\
+      \textit{deadlocks}     & can be caused                        & prevented via the wound-wait and wait-die methods \\
+    \end{tabular}
+  }
+  \caption{Differences between \TPL and \TS}
+  \label{table:tpl-vs-ts}
+  \bigskip
+\end{table}
+
+However, normally restarting a transaction costs more than waiting; for this reason \TPL is normally preferred.
+Commercial systems implement a mix of optimistic and pessimistic concurrency control.
+
+\subsection{Multi version Concurrency Control}
+
+\textbf{Idea}: while write operations generate new version, read operations access the latest \textit{(right)} version.
+
+In this technique, write operations generate new copies, each one with a new \texttt{WTM}.
+Each object \texttt{x} always has \(n \geq 1\) active versions, each of them having a timestamp \(\texttt{WTM}_{\texttt{i}}\) associated with it, while there is only one global timestamp \(\texttt{RTM}\).
+
+Old versions of the object are kept in the database until there are no transactions that need their values.
+
+\bigskip
+Mechanism of \texttt{read} and \texttt{write} operations:
+
+\begin{itemize}
+  \item \(r_{\texttt{ts}}(x)\) is always accepted. A copy \(x_k\) is selected for reading such that:
+        \begin{itemize}
+          \item if \(\texttt{ts} > \texttt{WTM}_N(x)\), then \(k = N\)
+          \item otherwise, \(k\) is taken such that \(\texttt{WTM}_k(x) \leq \texttt{ts} < \texttt{WTM}_{k+1}(x)\)
+        \end{itemize}
+  \item \(w_{\texttt{ts}}(x)\):
+        \begin{itemize}
+          \item if \(ts < \texttt{RTM}(x)\) then the request is \textbf{rejected}
+          \item otherwise, a new version is created \textit{(\(N\) is incremented)} with \(\texttt{WTM}_N(x) = \texttt{ts}\)
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Snaposhot Isolation - \SI}
+
+The realization of multi-\TS gives the opportunity to introduce into \DBMS another level of isolation, called \textbf{snapshot isolation} \textit{(or \SI)}.
+
+In this level:
+
+\begin{itemize}
+  \item no \texttt{RTM} is used on the objects \textit{(the \texttt{WTM} is the only timestamp)}
+  \item every transaction reads the version consistent with its timestamp and defers \texttt{write} operations to the end
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item the read version is the one that existed when the transaction started \textit{(the snapshot)}
+        \end{itemize}
+  \item If the scheduler detects that the writes of a transaction conflict with writes of other current transactions after the snapshot timestamps, it aborts
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item this is a form of optimistic concurrency control
+        \end{itemize}
+\end{itemize}
+
+\bigskip
+However, this method introduces a \textbf{write skew anomaly}, since:
+
+\begin{itemize}
+  \item \SI does not guarantee serializability
+  \item an execution under \SI in which the two transactions \(T_1\) and \(T_2\) are executed in parallel is not equivalent to an execution in which \(T_1\) is executed before \(T_2\)
+\end{itemize}
 
 \end{document}

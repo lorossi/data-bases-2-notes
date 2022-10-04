@@ -1,0 +1,65 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (34) at (6.25, -1.5) {};
+		\node [style=none] (35) at (3.25, -1.5) {};
+		\node [style=none] (36) at (8.75, -1.5) {};
+		\node [style=none] (37) at (11.75, -1.5) {};
+		\node [style=rectangle] (0) at (2, -1.5) {\(T_{2a}\)};
+		\node [style=rectangle] (1) at (2, -5.5) {\(T_{1a}\)};
+		\node [style=none] (2) at (2, -2.5) {};
+		\node [style=none] (3) at (2, -4.5) {};
+		\node [style=none] (4) at (0, 0) {};
+		\node [style=none] (5) at (4, 0) {};
+		\node [style=none] (6) at (4, -7) {};
+		\node [style=none] (8) at (0, -7) {};
+		\node [style=top align] (9) at (2, 0) {node \texttt{A}};
+		\node [style=rectangle] (10) at (13, -1.5) {\(T_{2b}\)};
+		\node [style=rectangle] (11) at (13, -5.5) {\(T_{1b}\)};
+		\node [style=none] (12) at (13, -2.5) {};
+		\node [style=none] (13) at (13, -4.5) {};
+		\node [style=none] (14) at (11, 0) {};
+		\node [style=none] (15) at (19.5, 0) {};
+		\node [style=none] (16) at (19.5, -7) {};
+		\node [style=none] (17) at (11, -7) {};
+		\node [style=top align] (18) at (15.25, 0) {node \texttt{B}};
+		\node [style=rectangle] (19) at (17.5, -1.5) {\(T_3\)};
+		\node [style=none] (20) at (16.5, -1.5) {};
+		\node [style=none] (21) at (14.25, -1.5) {};
+		\node [style=rectangle] (22) at (17.5, -5.5) {\(T_4\)};
+		\node [style=none] (23) at (16.5, -5.5) {};
+		\node [style=none] (24) at (14.25, -5.5) {};
+		\node [style=none] (25) at (14.25, -2.5) {};
+		\node [style=none] (26) at (16.5, -4.5) {};
+		\node [style=red] (27) at (7.5, -1.5) {call};
+		\node [style=red] (28) at (7.5, -5.5) {call};
+		\node [style=none] (29) at (6.25, -5.5) {};
+		\node [style=none] (30) at (3.25, -5.5) {};
+		\node [style=none] (31) at (8.75, -5.5) {};
+		\node [style=none] (32) at (11.75, -5.5) {};
+		\node [style=top align] (38) at (9.5, -1.5) {\(E_A\)};
+		\node [style=top align] (39) at (5.5, -1.5) {\(E_B\)};
+		\node [style=top align] (40) at (9.5, -5.5) {\(E_A\)};
+		\node [style=top align] (41) at (5.5, -5.5) {\(E_B\)};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=light fill] (8.center)
+			 to (4.center)
+			 to (5.center)
+			 to (6.center)
+			 to cycle;
+		\draw [style=solid arrow] (2.center) to (3.center);
+		\draw [style=light fill] (17.center)
+			 to (14.center)
+			 to (15.center)
+			 to (16.center)
+			 to cycle;
+		\draw [style=solid arrow] (12.center) to (13.center);
+		\draw [style=solid arrow] (20.center) to (21.center);
+		\draw [style=solid arrow] (24.center) to (23.center);
+		\draw [style=solid arrow] (26.center) to (25.center);
+		\draw [style=solid arrow] (30.center) to (29.center);
+		\draw [style=solid arrow] (31.center) to (32.center);
+		\draw [style=solid arrow, in=0, out=180, looseness=1.25] (34.center) to (35.center);
+		\draw [style=solid arrow] (37.center) to (36.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
