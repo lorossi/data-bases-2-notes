@@ -58,15 +58,20 @@
     "editor.formatOnSave": false
   },
   "cSpell.words": [
+    "acyclicity",
     "auxlock",
     "cleanstyle",
     "deletetemp",
     "JDBC",
+    "Obermarck",
     "ODBC",
+    "preemptive",
     "serializability",
+    "SIXL",
     "tikzit",
     "tikzstyle",
     "tikzstyles",
-    "tikztemp"
+    "tikztemp",
+    "tradeoff"
   ]
 }
