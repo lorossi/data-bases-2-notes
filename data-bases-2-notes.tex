@@ -10,7 +10,7 @@
 
 \subsection{Architecture of the \DBMS}
 
-A \textbf{\DBMS} is a system (or software product) capable of managing data collections that can be:
+A \textbf{\DBMS} \textit{(short for Data Base Management System)} is a system \textit{(or software product)} capable of managing data collections that can be:
 
 \begin{itemize}
   \item \textbf{Large}
@@ -148,7 +148,7 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
                   \item if that happens, the transaction itself is aborted by the \DBMS
                 \end{itemize}
           \item immediate constraints can be checked by the \DBMS before the transaction is committed, while deferred constraints can be checked only after
-          \item if the initial state \(S_0\) is consistent, then the final state \(S_f\) is also consistent; intermediate state \(S_i\) may not be consistent
+          \item if the initial state \(S_0\) is consistent then the final state \(S_f\) is also consistent, while intermediate state \(S_i\) may not be consistent
         \end{itemize}
   \item \textbf{Isolation}
         \begin{itemize}
@@ -205,7 +205,7 @@ The anomalies can be:
         \begin{itemize}
           \item a transaction reads data that has been modified by another transaction that commits
         \end{itemize}
-  \item \textbf{Phantom insert}
+  \item \textbf{Phantom insert} - \textit{(phantom update)}
         \begin{itemize}
           \item a transaction writes data that has been read by another transaction that commits
         \end{itemize}
@@ -283,7 +283,7 @@ However, there's a difference between real life and theory:
   \bigskip
 \end{figure}
 
-Finally, it's possible to define:
+And finally:
 
 \begin{itemize}
   \item \textbf{Reads-from} relation: \(r_i(x)\) reads from \(w_j(x)\) in a schedule \(S\) when \(w_j(x)\) precedes \(r_i(x)\) in \(S\) and there's no \texttt{write} operation between them
@@ -291,7 +291,8 @@ Finally, it's possible to define:
           \item this relation is independent of the time at which the commit \(T_j\) occurs
         \end{itemize}
   \item \textbf{Final write}: \(w_i(x)\) in a schedule \(S\) is a final write if it is the last write on \(x\) that occurs in \(S\)
-  \item \textbf{View equivalence}: two schedules \(S_i\) and \(S_j\) are view equivalent \textit{(\(S_i \approx_v S_j\))} if they have the same operations, the same final writes and the same reads-from relations
+  \item \textbf{Blind write}: \(w_i(x)\) in a schedule \(S\) is not a final on \(x\) and the following operation on \(x\) is also a write
+  \item \textbf{View equivalence}: two schedules \(S_i\) and \(S_j\) are view equivalent \textit{(\(S_i \approx_v S_j\))} if they have the same operations, the same final writes and the same final reads
   \item \textbf{View serializability}: a schedule is view serializable if it is view-equivalent to a serial schedule of the same transactions
         \begin{itemize}
           \item the class of view-serializable schedules is called \VSR
@@ -372,10 +373,15 @@ In order to test the conflict-serializability of a schedule, it's necessary to b
 
 \begin{itemize}
   \item One \textbf{node} for each transaction \(T_i\)
-  \item One \textbf{arc} from \(T_i\) to \(T_j\) if exists at least one conflict between an operation \(o_i\ of T_i\) and an operation \(o_j\) of \(T_j\) such that \(o_i\) precedes \(o_j\)
+  \item One \textbf{arc} from \(T_i\) to \(T_j\) if exists at least one conflict between an operation \(o_i\) of \(T_i\) and an operation \(o_j\) of \(T_j\) such that \(o_i\) precedes \(o_j\)
 \end{itemize}
 
 The schedule is conflict-serializable \textit{(in \CSR)} if and only if the conflict graph is acyclic.
+
+\bigskip
+Finally, each schedule \(S \in \VSR\) and \(S \notin \CSR\) has cycles in its \CG due to the presence of blind writes.
+Such pairs can be swapped without affecting the reads-from and final-write relationships creating a new schedule \(S^\text{mod}\) that is view equivalent to \(S\);
+its \CG is acyclic and can be used to fined serial schedules that are transitively view equivalent to \(S\).
 
 \paragraph{\CSR implies acyclicity of the \CG}
 
@@ -684,8 +690,7 @@ however, the \TPL does not protect against dirty reads \textit{(caused by uncomm
 In the same way, neither \VSR or \CSR protect against dirty reads.
 
 In order to remove this hypothesis, an additional constraint to \TPL is added, therefore obtaining the \textbf{\STPL}:
-
-\textit{Locks held by a transaction can be released only after commit or rollback.}
+\textbf{locks held by a transaction can be released only after commit or rollback.}
 
 This version of \TPL is used in most of the modern \DBMS whenever a level of higher isolation is required.
 
@@ -696,7 +701,7 @@ In practice:
   \item Real systems may apply \TPL policies differently, depending on the type of the lock:
         \begin{itemize}
           \item \textbf{write locks} are usually released after commit or rollback \textit{(long duration)}
-          \item \textbf{read locks} are usually implemented with mixed policies
+          \item \textbf{read locks} are usually implemented with mixed policies \textit{(both short and long duration)}
         \end{itemize}
   \item Long duration read locks are costly in terms of performance and real systems replace them with more complex mechanisms
 \end{itemize}
@@ -1013,20 +1018,20 @@ Application of the Obermarck algorithm to this graph:
 
 In real world applications, deadlocks are not a common problem, as their probability is much lower than the conflict probability.
 
-Consider a file with \(n\) records and \(2\) transactions doing each \(2\) accesses to their records (assuming uniform distribution of accesses).
+Consider a file with \(n\) records and \(2\) transactions doing each \(2\) accesses to their records \textit{(assuming uniform distribution of accesses)}.
 Then, the probability of:
 \begin{itemize}
-  \item a conflict is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \sfrac{1}{n} \right) = n * \sfrac{1}{n} * \sfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
+  \item a conflict is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \dfrac{1}{n} \right) = n \cdot \dfrac{1}{n} \cdot \dfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
   \item a deadlock is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\) as it requires mutual conflicts between transactions
 \end{itemize}
 
-While deadlocks are a rare occurrence, the probability of them happening increases in a linear fashion with the number of concurrent transactions in the system, while it increases quadratically with the number of data accesses each transaction performs.
+While deadlocks are a rare occurrence, the probability of them happening increases in a linear fashion with the number of concurrent transactions in the system but it increases quadratically with the number of data accesses each transaction performs.
 There are more advanced techniques to avoid deadlocks, such as update locks and hierarchical locks.
 Those techniques are covered in the following Sections.
 
 \subsubsection{Update lock}
 
-The most frequent deadlock occurs when \(2\) concurrent transactions tart by reading the same resource \textit{(\texttt{SL})} and then try to write via updating their lock to \texttt{XL} \textit{(exclusive)}.
+The most frequent deadlock occurs when \(2\) concurrent transactions start by reading the same resource \textit{(\texttt{SL})} and then try to write via updating their lock to \texttt{XL} \textit{(exclusive)}.
 To avoid to situation, systems offer the update lock (\texttt{UL}) that allows a transaction to update \textit{(read followed by a write)} a resource without having to acquire an exclusive lock.
 
 \bigskip
@@ -1047,9 +1052,15 @@ Table~\ref{tab:update-lock-compatibility} shows the escalation of the update loc
   \label{tab:update-lock-compatibility}
 \end{table}
 
+\bigskip
+It must be noted that deadlocks are still possible in the presence of \texttt{UL}:
+while this technique makes them less likely, deadlock due to \textbf{update patterns} \textit{(two transactions updating the same resource)} are still possible.
+
+An example of this situation would be the schedule \(r_1(x) r_2(x) w_1(x) w_2(x)\).
+
 \subsubsection{Hierarchical locks}
 
-In order to increase the granularity of the locks, traditional lock protocol il extended via the use of hierarchical locks.
+In order to increase the granularity of the locks, the traditional lock protocol is extended via the use of hierarchical locks.
 This technique allows the transactions to lock items at a given level of the hierarchy;
 the objective is locking the minimum amount of data possible, while recognizing conflicts as soon as possible.
 
@@ -1057,10 +1068,10 @@ the objective is locking the minimum amount of data possible, while recognizing 
   \bigskip
   Locks can be specified with different granularities: database, table, fragment, tuple, field.
 
-  This introduces a tradeoff:
+  This introduces a tradeoff, as:
   \begin{itemize}
-    \item A coarser granularity guarantees the probability of deadlocks is lower but the concurrency is reduced
-    \item A finer granularity increases the concurrency but increases the probability of deadlocks
+    \item a \textbf{coarser} granularity guarantees the probability of deadlocks is lower but the concurrency is reduced
+    \item a \textbf{finer} granularity increases the concurrency but increases the probability of deadlocks
   \end{itemize}
   \bigskip
 \end{minipage}
@@ -1329,5 +1340,42 @@ However, this method introduces a \textbf{write skew anomaly}, since:
   \item \SI does not guarantee serializability
   \item an execution under \SI in which the two transactions \(T_1\) and \(T_2\) are executed in parallel is not equivalent to an execution in which \(T_1\) is executed before \(T_2\)
 \end{itemize}
+
+\clearpage
+
+\section{Tricky Exercises and how to slay them}
+
+\subsection{Concurrency Control}
+
+\subsubsection{Schedule classification}
+
+Due to the presence of blind writes, the \CG of a schedule is cyclic;
+as such, it's not in \CSR.
+By swapping two of the nodes in the \CG, it may be possible to obtain a schedule that is in \VSR;
+if it's not possible, then the schedule is not in \VSR either.
+
+In some schedules, the blind writes may appear multiple times involving the same transactions with different objects in different orders;
+in such cases the schedule in not in \CSR \textit{(and thus not in \VSR)}.
+
+\paragraph{\TPL}
+
+It's necessary to impose temporal constraints on the lock and unlock requests, based on two principles:
+
+\begin{itemize}
+  \item \textbf{same resource} \(R\) - each lock can be acquired if \(R\) is free
+  \[ {U^r_i}^R < {L^w_j}^R \quad {U^w_i}^R < {L^r_j}^R \quad {U^w_i}^R < {L^w_j}^R \qquad i \neq j \]
+  \item \textbf{same transaction} \(i\) - all releases must follow all acquisitions
+  \[{L^{r/w}_i}^{R_n} < {L^{r/w}_i}^{R_m} \qquad n \neq m \]
+\end{itemize}
+
+The instants in which the actions take place, in to write inequalities.
+This approach is needed because the non-strict \TPL does not allow to show when a transaction has released a lock.
+
+\subsubsection{Update lock}
+
+A common notation in order to avoid ambiguity between Unlock and Update is to use the notation \(\texttt{SL}_i(x)\) for a \texttt{SL} request on resource \(x\) by transaction \(T_i\) and \(\texttt{rel}(\texttt{SL}_i(x))\) for the corresponding release.
+
+In order to avoid deadlocks due to interleaved lock upgrades, any upgrade \(\texttt{SL} \rightarrow \texttt{XL}\) is not allowed;
+transaction need to acquire a \texttt{UL} lock first and then upgrade it to a \texttt{XL} lock.
 
 \end{document}
