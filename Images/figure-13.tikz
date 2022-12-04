@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=textbox, minimum width=125px] (0) at (0, 0) {query manager};
+		\node [style=textbox] (1) at (14, 0) {transaction manager};
+		\node [style=textbox] (2) at (14, -3) {concurrency control system};
+		\node [style=textbox, minimum width=125px] (3) at (0, -8) {access method manager};
+		\node [style=textbox, minimum width=125px] (4) at (0, -11) {buffer manager};
+		\node [style=textbox, minimum width=125px] (5) at (0, -14) {secondary store manager};
+		\node [style=textbox, minimum width=125px] (6) at (0, -17) {secondary memory};
+		\node [style=none] (7) at (0, -3) {};
+		\node [style=none] (8) at (0, -3) {};
+		\node [style=textbox] (9) at (14, -8) {reliability manager};
+		\node [style=none] (10) at (20, 0) {};
+		\node [style=none] (11) at (20, -8) {};
+		\node [style=none] (13) at (14, -14) {};
+		\node [style=textbox] (14) at (14, -6) {lock tables};
+		\node [style=none] (15) at (-9, 0) {\shortstack[r]{\texttt{select}, \texttt{insert}, \texttt{delete}\\\texttt{delete}, \texttt{update}}};
+		\node [style=none] (16) at (14, 1) {\texttt{begin}, \texttt{commit}, \texttt{abort}};
+		\node [style=none] (17) at (-9, -8) {\shortstack[r]{transforms query requests \\ into \texttt{read}/\texttt{write} requests}};
+		\node [style=none] (18) at (-9, -11) {\shortstack[r]{manages the main memory \\ guaranteeing reliability}};
+		\node [style=none] (19) at (-9, -14) {\shortstack[r]{receives the \texttt{read}/\texttt{write} \\ requests}};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=big arrow] (1) to (2);
+		\draw [style=big] (8.center) to (7.center);
+		\draw [style=big, in=180, out=360] (7.center) to (2);
+		\draw [style=big arrow, in=90, out=-90] (3) to (4);
+		\draw [style=big arrow] (4) to (5);
+		\draw [style=big arrow] (5) to (6);
+		\draw [style=big arrow] (10.center) to (1);
+		\draw [style=big arrow] (11.center) to (9);
+		\draw [style=big arrow] (9) to (3);
+		\draw [style=big] (11.center) to (10.center);
+		\draw [style=big arrow] (13.center) to (5);
+		\draw [style=big] (9) to (13.center);
+		\draw [style=double arrow] (14) to (2);
+		\draw [style=big arrow] (0) to (3);
+	\end{pgfonlayer}
+\end{tikzpicture}

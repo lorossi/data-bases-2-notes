@@ -59,19 +59,20 @@
   },
   "cSpell.words": [
     "acyclicity",
-    "auxlock",
-    "cleanstyle",
-    "deletetemp",
     "JDBC",
     "Obermarck",
     "ODBC",
     "preemptive",
     "serializability",
     "SIXL",
-    "tikzit",
-    "tikzstyle",
-    "tikzstyles",
-    "tikztemp",
+    "Techinques",
     "tradeoff"
+  ],
+  "grammarly.selectors": [
+    {
+      "language": "latex",
+      "scheme": "file",
+      "pattern": "data-bases-2-notes.tex"
+    }
   ]
 }
