@@ -381,7 +381,7 @@ The schedule is conflict-serializable \textit{(in \CSR)} if and only if the conf
 \bigskip
 Finally, each schedule \(S \in \VSR\) and \(S \notin \CSR\) has cycles in its \CG due to the presence of blind writes.
 Such pairs can be swapped without affecting the reads-from and final-write relationships creating a new schedule \(S^\text{mod}\) that is view equivalent to \(S\);
-its \CG is acyclic and can be used to fined serial schedules that are transitively view equivalent to \(S\).
+its \CG is acyclic and can be used to find serial schedules that are transitively view equivalent to \(S\).
 
 \paragraph{\CSR implies acyclicity of the \CG}
 
@@ -1488,7 +1488,7 @@ Furthermore:
 
 \subsection{Materialized Views}
 
-A \textbf{view} is a virtual table defined with a query stored in the database catalogue and then used in queries as if it were a notal table.
+A \textbf{view} is a virtual table defined with a query stored in the database catalogue and then used in queries as if it were a total table.
 When a view is mentioned in a \texttt{SELECT} query, the query processor of the \dbms rewrites the query via the view definition:
 the executed query only uses the base tables to the view.
 
@@ -1677,12 +1677,12 @@ Operations are:
 
 \subsection{Indexes}
 
-Indexes are data structures that help efficiently retrieve tuples according to a certain criteria, called \textbf{search key} (or \textit{SK}).
-They contain records in the form \(\langle \text{search key}, \text{pointer to block} \rangle\); index entries are sorted with regards to the search key.
+Indexes are data structures that help efficiently retrieve tuples according to certain criteria, called \textbf{search key} (or \textit{SK}).
+They contain records in the form \(\langle \text{search key}, \text{pointer to block} \rangle\); index entries are sorted with regard to the search key.
 
 It's important to highlight the difference between \textbf{primary key} and \textbf{search key}:
-the former is the key used to uniquely identify a tuple, while the latter is the key used to retrieve tuples according to a certain criteria.
-Furthermore the search key defines a \textbf{search domain}: each tuple is associated with one or more pointers; each of them may not be unique.
+the former is the key used to uniquely identify a tuple, while the latter is the key used to retrieve tuples according to certain criteria.
+Furthermore, the search key defines a \textbf{search domain}: each tuple is associated with one or more pointers; each of them may not be unique.
 
 A comparison of the two entities is shown in Table~\ref{tab:primary-key-search-key}.
 
@@ -1703,7 +1703,7 @@ A comparison of the two entities is shown in Table~\ref{tab:primary-key-search-k
 \end{table}
 
 Indexes are smaller than primary data structures, and they can be loaded in a file in the main memory;
-they support point queries, range queries, and sorted scan efficiently.
+they support point queries, range queries, and sorted scans efficiently.
 However, adding indexes to tables means that the \dbms has to update each index after an insert, update, or delete operation:
 this operation may be costly and may slow down the \dbms.
 
@@ -1714,7 +1714,7 @@ while the former associate a search key to a single tuple, the latter associate 
 \subparagraph*{Sparse indexes}
 \begin{itemize}
   \item an entry index is associated with \textbf{every} search-key value in the file
-  \item high performances: in order to access to a tuple, the index is accessed first, then the block is accessed
+  \item high performances: in order to access a tuple, the index is accessed first, then the block is accessed
   \item can be used on entry-sequenced primary structures
 \end{itemize}
 
@@ -1727,7 +1727,7 @@ while the former associate a search key to a single tuple, the latter associate 
           \item the search key corresponds to the ordering key of the tuple
         \end{itemize}
   \item low performances: in order to access a tuple, it's necessary to scan each block until the search key is found; then the block must be scanned to locate the tuple itself
-  \item Good tradeoff between memory and performance, as only one index entry is necessary for each block in the file
+  \item Good tradeoff between memory and performance as only one index entry is necessary for each block in the file
 \end{itemize}
 
 \subsubsection{Indexing techniques}
@@ -1759,7 +1759,7 @@ A secondary index specifies an order different from the sequential order of the 
 
 \begin{itemize}
   \item Multiple secondary indexes can be defined for the same table on multiple search keys
-  \item It is always \textbf{dense}, because tuples with contiguous values of the key can be distributed in different blocks
+  \item It is always \textbf{dense} because tuples with contiguous values of the key can be distributed in different blocks
 \end{itemize}
 
 \subparagraph*{Clustering index}
@@ -1965,7 +1965,7 @@ Hash-based structures can be used for secondary indexes:
 they are shaped and managed exactly like a hash-based primary structure, but instead of the tuples, the buckets contain key values and pointers.
 
 In a huge database it would be very inefficient to search all the index values to reach the desired data:
-a good performance for equality query predicates on the key field.
+a good performance equality query predicates on the key field.
 
 This technique is then inefficient for access based on interval predicates or on the value of non search-key attributes.
 % TODO write something more
@@ -1996,17 +1996,17 @@ The \textbf{B+ tree} represents an evolution from the B-tree.
 Each node is stored in a block, and the key values are stored in the leaf nodes only;
 since the majority of the nodes are leaf nodes, the B+ tree is more efficient than the B-tree.
 
-The fan out depends on the size of the block, the size of the key and the size of the pointer.
+The fan-out depends on the size of the block, the size of the key and the size of the pointer.
 
 \subparagraph*{Structure of an internal node}
 The structure of an internal node is shown in Figure~\ref{subfig:b-tree-internal-node}.
-Each node contains \(F\) keys, sorted lexicographically, an d\(F + 1\) pointers to the child nodes.
+Each node contains \(F\) keys, sorted lexicographically, and \(F + 1\) pointers to the child nodes.
 Each key \(K_j, \ 1 \leq j \leq F\) is followed by a pointer \(P_j\), while \(K_1\) is preceded by a pointer \(P_0\).
-Each pointer addresses a sub tree:
+Each pointer addresses a sub-tree:
 
 \begin{itemize}
-  \item \(P_0\) points to the sub tree containing all the keys less than \(K_1\)
-  \item \(P_F\) points to the sub tree containing all the keys greater or equal than \(K_F\)
+  \item \(P_0\) points to the subtree containing all the keys less than \(K_1\)
+  \item \(P_F\) points to the subtree containing all the keys greater or equal to \(K_F\)
   \item each intermediate pointer addresses a sub-tree that contains all the information about the keys \(K\) included in the interval \(K_j \leq K < K_{j + 1}\)
 \end{itemize}
 
@@ -2026,7 +2026,7 @@ the nodes can be structured in two ways:
   \item the leaf node contains pointers to the blocks of the database that contain tuples with the same key value
         \begin{itemize}
           \item the data structure is called \textbf{indirect}
-          \item the tuples can be anywhere in the file, allowing the access of a tuple allocated via a any other primary mechanism
+          \item the tuples can be anywhere in the file, allowing the access of a tuple allocated via any other primary mechanism
           \item the structure of such a leaf node is shown in Figure~\ref{subfig:b-tree-leaf-node}
         \end{itemize}
 \end{enumerate}
@@ -2057,7 +2057,7 @@ the nodes can be structured in two ways:
 
 \paragraph{Search Mechanism}
 
-The search mechanism consists of following pointers starting from the root.
+The search mechanism consists of the following pointers starting from the root.
 At each intermediate node:
 
 \begin{itemize}
@@ -2070,12 +2070,12 @@ The search continues until a leaf node is found:
 
 \begin{itemize}
   \item in case of a key-sequenced leaf node, the search is completed as the tuple is found
-  \item in case of a indirect leaf node, it's necessary to access the memory block pointed by the pointer \(P_j, \ 0 \leq j \leq F\)
+  \item in case of an indirect leaf node, it's necessary to access the memory block pointed by the pointer \(P_j, \ 0 \leq j \leq F\)
 \end{itemize}
 
 \subsection{Structures and Indexes}
 
-A comparison indexing methods related to the data structures is shown in Table~\ref{tab:indexing-techniques}.
+A comparison of indexing methods related to the data structures is shown in Table~\ref{tab:indexing-techniques}.
 
 \begin{table}[htbp]
   \centering
