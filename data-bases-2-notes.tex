@@ -408,16 +408,16 @@ Generally speaking, any serial schedule whose transactions are ordered according
 In the real world, the concurrency control methods explained so far are not used directly: \CSR checking would be efficient if it was possible to know the graph in the beginning, but it's not the case.
 Additionally, as stated, the problem is \NPC, so it's not possible to solve it in a reasonable time.
 
-A scheduler must work \inlinequote{online} \textit{(or \inlinequote{on the fly})}: it must be able to decide for each operation if it can be executed or not, without knowing the whole schedule in advance.
-If it's not possible to maintain the conflict graph, then it has to be updated and its acyclicity checked after each operation.
+A scheduler must work \inlinequote{online} \textit{(or \inlinequote{on the fly})}: it must be able to decide for each operation if it can be executed or not, without knowing the whole schedule in advance;
+if it's not possible to maintain the conflict graph, then it has to be updated and its acyclicity checked after each operation.
 
 The assumption that concurrency control can work only with the commit-projection of the schedule is not realistic as transactions can be aborted at any time.
 To solve this issue, a simple decision criterion is required for the scheduler.
 It must:
 
 \begin{itemize}
-  \item Avoid as many anomalies as possible
-  \item Have negligible overhead
+  \item \textbf{Avoid} as many \textbf{anomalies} as possible
+  \item Have \textbf{negligible overhead}
 \end{itemize}
 
 So far, the notation \(r_1(x) w_2(x) w_1(x) w_3(x)\) has been used to represent a schedule, or a posteriori view of the execution of concurrent transactions in the \dbms \textit{(also sometimes called history)}.
@@ -1356,35 +1356,34 @@ However, this method introduces a \textbf{write skew anomaly}, since:
 
 \section{Triggers}
 
-Triggers are a set of actions that are executed automatically by the \dbms when an \texttt{insert}, \texttt{update}, or \texttt{delete} operation is performed on a specific table.
-They are performed in addition to integrity constraints, allowing the \dbms to perform additional, more complex, checks;
+Triggers are a set of actions that are executed automatically by the \dbms when an \texttt{INSERT}, \texttt{UPDATE}, or \texttt{DELETE} operation is performed on a specific table.
+They are performed in addition to integrity constraints, allowing the \dbms to perform supplementary, more complex, checks;
 they are stored in the \dbms similarly to stored procedures.
 
-Triggers define the Event-Condition-Action (ECA) paradigm:
+Triggers define the \textbf{Event-Condition-Action} \textit{(ECA)} paradigm:
 
 \begin{itemize}
-  \item whenever event E occurs
+  \item whenever \textbf{event} \(E\) occurs
         \begin{itemize}[label=\(\rightarrow\)]
-          \item normally a modification of the database status: \texttt{insert}, \texttt{update} or \texttt{delete}
+          \item normally a modification of the database status: \texttt{INSERT}, \texttt{UPDATE} or \texttt{DELETE}
         \end{itemize}
-  \item if a condition C is true
+  \item if a \textbf{condition} \(C\) is true
         \begin{itemize}
           \item a predicate that identifies those situations in which the execution of the trigger's action is required
         \end{itemize}
-  \item then action A is executed
+  \item then \textbf{action} \(A\) is executed
         \begin{itemize}[label=\(\rightarrow\)]
-          \item a generic update statement in or a stored procedure
-          \item usually composed of database updates (\texttt{insert}, \texttt{update}, \texttt{delete})
+          \item a generic update statement in or a stored PROCEDURE
+          \item usually composed of database updates \textit{(\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE})}
           \item can include also error notifications
         \end{itemize}
 \end{itemize}
 
-It's important to note that all triggers interact with referential integrity constraints.
+It's important to note that all triggers \textbf{interact with referential integrity constraints}.
 
 \bigskip
 Triggers add powerful data management capabilities in a transparent and reusable manner:
 databases can be enriched with \inlinequote{business and management rules} that would otherwise be distributed over all applications.
-
 Understanding the interactions between triggers and transactions is however rather complex.
 
 \subsection{Cascading and recursive cascading}
@@ -1394,8 +1393,8 @@ Let \texttt{T1} and \texttt{T2} be two triggers on the same table \texttt{t} and
 Then:
 
 \begin{itemize}
-  \item \textbf{Cascading} is the condition in which the action of \texttt{T1} triggers \texttt{T2} (also called nesting)
-  \item \textbf{Recursive cascading} is the condition in which the action of \texttt{T1} triggers \texttt{T1} again (also called looping)
+  \item \textbf{cascading} is the condition in which the action of \texttt{T1} triggers \texttt{T2} \textit{(also called nesting)}
+  \item \textbf{recursive cascading} is the condition in which the action of \texttt{T1} triggers \texttt{T1} again \textit{(also called looping)}
 \end{itemize}
 
 The termination condition ensures that, for any initial state and any sequence of modifications, a final state is always produced and infinite activation cycles are not possible.
@@ -1405,33 +1404,33 @@ When multiple triggers are activated by the same event the \dbms establishes a p
 typically the delayed triggers will be executed at a later moment.
 
 \subparagraph*{Termination analysis}
-The termination analysis is the process of verifying that a trigger does not cause undesired effects;
-the simplest way to do this is by analysing the triggering graph:
+The termination analysis is the process of verifying that a trigger does not cause undesired effects.
+The simplest way to achieve this goal is by analysing the triggering graph:
 
 \begin{itemize}
-  \item A node \(i\) is associated with each trigger \(\texttt{T}_i\)
-  \item An arc from a node \(i\) to a node \(j\) exists if the execution of trigger \(\texttt{T}_i\) causes the execution of trigger \(\texttt{T}_j\)
+  \item A \textbf{node} \(i\) is associated with each \textbf{trigger} \(\texttt{T}_i\)
+  \item An \textbf{arc} from a node \(i\) to a node \(j\) exists if the \textbf{execution} of trigger \(\texttt{T}_i\) causes the execution of trigger \(\texttt{T}_j\)
 \end{itemize}
 
 Such a graph is built via a simple syntactical analysis of the trigger's action.
 If the graph is acyclic, then the system is guaranteed to terminate;
 otherwise, triggers may terminate or not.
 
-As such, the acyclicity condition is sufficient for termination, but not necessary.
+As such, the \textbf{acyclicity condition is sufficient for termination}, but not necessary.
 
-\subsection{\sql syntax}
+\subsection{Triggers in \sql}
 
 \begin{lstlisting}[language=SQL, caption={Trigger Syntax}, label={lst:trigger-syntax}]
-create trigger <trigger_name>
-  { before | after } -- execution mode
-  { insert | update | delete [ of <column> ] } on <table_name> -- event
-  referencing {
-    [ old table [as] <old_table_alias> ] [ new table [as] <new_table_alias> ] |
-    [ old row [as] <old_row_alias> ] [ new row [as] <new_row_alias> ]
+CREATE TRIGGER <trigger_name>
+  [BEFORE | AFTER] -- EXECUTION MODE
+  [INSERT | UPDATE | DELETE [ OF <column> ]] ON <table_name> -- EVENT
+  REFERENCING {
+    [OLD TABLE [AS] <old_table_alias>] [NEW TABLE [AS] <new_table_alias>] |
+    [OLD ROW [AS] <old_row_alias>] [NEW ROW [AS] <new_row_alias>]
   }
-  [ for each { row | statement } ]
-  [ when <condition> ] -- condition
-  <trigger_action> -- action
+  [FOR EACH [ROW | STATEMENT] ]
+  [WHEN <condition>] -- CONDITION
+  <trigger_action> -- ACTION
 \end{lstlisting}
 
 \subparagraph*{Multiple triggers on the same event}
@@ -1450,24 +1449,25 @@ The execution sequence is:
 \subsubsection{Execution mode}
 
 \subparagraph*{Before}
-The action of the trigger is executed before the database status changes (if the condition holds);
+The action of the trigger is executed \textbf{before the database status changes} \textit{(if the conditions hold)};
 the trigger is used to check the validity of the operation before it takes place, possibly conditioning its effects.
-Safeness constraint: before triggers cannot update the database directly but can affect the transition variables in row-level granularity.
+
+\textbf{Safeness constraint}: before triggers cannot update the database directly but can affect the transition variables in row-level granularity.
 
 \subparagraph*{After}
 
-The action of the trigger is executed after the database status changes (if the condition holds);
+The action of the trigger is executed \textbf{after the database status change}s \textit{(if the conditions hold)};
 it is used to update the database in response to the operation, and it's the most common execution mode.
 
 \subsubsection{Granularity of Events}
 
 \subparagraph*{Row level}
-The trigger is considered and possibly executed once for each tuple affected by the activating statement.
-Writing row-level triggers is simpler, but potentially less efficient.
+The trigger is considered and possibly executed \textbf{once for each tuple affected} by the activating statement.
+Writing row-level triggers is simpler, but the triggers are potentially less efficient.
 
 \subparagraph*{Statement level}
-The trigger is considered and possibly executed only once for each activating statement, independently of the number of affected tuples in the target table \textit{(even if the statement does not affect any tuple)}.
-This is close to the traditional approach of \sql statements, which are normally set oriented
+The trigger is considered and possibly executed only \textbf{once for each activating statement}, independently of the number of affected tuples in the target table \textit{(even if the statement does not affect any tuple)}.
+This is close to the traditional approach of \sql statements, which are normally set oriented.
 
 \subsubsection{Transition Variables}
 
@@ -1475,15 +1475,15 @@ Special variables denoting the before and after the state of the database are av
 their syntax depends on the granularity of the event.
 
 \begin{itemize}
-  \item row level: tuple variables \texttt{old} and \texttt{new} represent the value of the tuple before and after the update
-  \item statement level: table variables \texttt{old} and \texttt{new} represent the set of tuples before and after the update
+  \item row level: tuple variables \texttt{old} and \texttt{new} represent the value of the tuple before and \textbf{after the update}
+  \item \textbf{statement level}: \textbf{table variables} \texttt{old} and \texttt{new} represent the set of tuples \textbf{before} and \textbf{after the update}
 \end{itemize}
 
 Furthermore:
 
 \begin{itemize}
-  \item variables \texttt{old} and \texttt{old table} are undefined in triggers whose event is \texttt{insert}
-  \item variables \texttt{new} and \texttt{new table} are undefined in triggers whose event is \texttt{delete}
+  \item variables \texttt{old} and \texttt{old table} are \textbf{undefined} in triggers whose event is \textbf{\texttt{insert}}
+  \item variables \texttt{new} and \texttt{new table} are \textbf{undefined} in triggers whose event is \textbf{\texttt{delete}}
 \end{itemize}
 
 \subsection{Materialized Views}
@@ -1502,39 +1502,39 @@ an alternative is to implement the materialization via triggers.
 Incremental View Maintenance is the process of updating a materialized view when the base tables are updated.
 
 Suppose that view \texttt{V} is defined by a query \texttt{Q} over a set of base relations \texttt{D}.
-When \texttt{D} changes to \texttt{D' := D + dD}, the new view state is \texttt{V' := Q(D')}:
+When \texttt{D} changes to \texttt{D' := D + dD}, the new view state is \texttt{V' := Q(D') = Q(D) + dQ}:
 the \dbms computes the new view state over the increment of the base relations.
 
 \subsection{Design Principles}
 
 \begin{itemize}
-  \item Use triggers to guarantee that when a specific operation is performed, all the related actions are performed
-  \item Do not define triggers that duplicate features already built into the \dbms
+  \item Use triggers to \textbf{guarantee} that when a specific operation is performed, all the related actions are performed
+  \item Do not define triggers that \textbf{duplicate features} already built into the \dbms
         \begin{itemize}[label=\(\rightarrow\)]
           \item do not define triggers that reject bad data if the same can be done with \sql \texttt{CHECK} constraints
         \end{itemize}
-  \item Limit the size of the trigger action
+  \item Limit the \textbf{size} of the trigger action
         \begin{itemize}[label=\(\rightarrow\)]
           \item if the logic of a trigger requires more than \(60\) lines of code, then it is probably better to implement it as a stored procedure and call it from the trigger
         \end{itemize}
-  \item Use triggers only for centralized, global operations that should be fired for the triggering statement, regardless of which user or database application issues the statement
+  \item Use triggers only for \textbf{centralized, global operations} that should be fired for the triggering statement, regardless of which user or database application issues the statement
   \item Avoid recursive triggers if not strictly necessary
         \begin{itemize}[label=\(\rightarrow\)]
           \item recursive triggers may cause infinite loops, thus preventing the \dbms from terminating
         \end{itemize}
-  \item Use triggers judiciously, as they are executed for every user every time the event occurs on which they are defined
+  \item Use triggers \textbf{judiciously}, as they are executed for every user every time the event occurs on which they are defined
 \end{itemize}
 
 \clearpage
 
 \section{Physical Databases}
 
-A simple illustration of the physical database is shown in Figure~\ref{fig:physical-database}.
+A simple illustration of the \textbf{Physical Database} is shown in Figure~\ref{fig:physical-database}.
 
 \begin{figure}[htbp]
   \centering
   \bigskip
-  \tikzfig[0.95]{figure-13.tikz}
+  \tikzfig[0.7]{figure-13.tikz}
   \caption{Physical database structure}
   \label{fig:physical-database}
   \bigskip
@@ -1547,7 +1547,7 @@ The units of storage are called:
 \begin{itemize}
   \item \textbf{Block}, if in the secondary memory
         \begin{itemize}
-          \item normally, blocks have a fixed size \textit{(~4KB)}
+          \item normally, blocks have a fixed size \textit{(\(\approx 4\,\) KB)}
         \end{itemize}
   \item \textbf{Page}, if in the main memory
         \begin{itemize}
@@ -1561,11 +1561,14 @@ The duration of an I/O operation varies greatly, depending on the technology use
 for such reasons, large datasets are usually stored on \textit{HDD} and small datasets on \textit{SSD}.
 
 \subparagraph*{Mechanical Hard Drive}
+A mechanical hard drive is a device that stores data on a rotating platter, which is divided into tracks and sectors;
+an illustration of an HDD is shown in Figure~\ref{figure:hdd-structure}.
+
 \begin{itemize}
-  \item several disks are piled and rotating at a constant angular speed around a central axis \textit{(the spindle)}
-  \item a head stack mounted onto an arm moves radially to reach the tracks at various distances from the centre
-  \item A particular sector is reached by waiting for it to pass under one of the heads
-  \item Several blocks can be reached at the same time \textit{(one per head)}
+  \item Several \textbf{disks} are \textbf{piled} and \textbf{rotating} at a constant angular speed around a central axis \textit{(the spindle)}
+  \item A \textbf{head stack} mounted onto an arm moves radially to reach the tracks at various distances from the centre
+  \item A particular \textbf{sector} is reached by waiting for it to pass under one of the heads
+  \item Several \textbf{blocks} can be reached at the same time \textit{(one per head)}
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -1583,9 +1586,9 @@ for such reasons, large datasets are usually stored on \textit{HDD} and small da
 \subparagraph*{Access Time}
 The access time of the secondary memory can be measured as the sum of:
 \begin{itemize}
-  \item seek time \(8-12 \, ms\), head positioning time on the correct track
-  \item latency time \(2-8 \, ms\), disc rotation on the correct sector
-  \item transfer time \(0.1-1 \, ms\), data transfer from the disk to the buffer
+  \item \textbf{seek} time \(8-12 \, ms\), head positioning time on the correct track
+  \item \textbf{latency} time \(2-8 \, ms\), disc rotation on the correct sector
+  \item \textbf{transfer} time \(0.1-1 \, ms\), data transfer from the disk to the buffer
 \end{itemize}
 
 The cost of access to secondary memory is about \(4\) orders of magnitude (\(10^4\)) higher than the one of access to main memory.
@@ -1594,9 +1597,14 @@ In I/O bound applications, the cost exclusively depends on the number of accesse
 The cost of a query is closely related to the number of numbers that are read (moved) from secondary memory.
 
 \subparagraph*{\dbms and file systems}
-The File System (FS) is the layer of the operating system that manages the secondary memory:
-\dbms make limited use of FS functionalities (such as creating or deleting files, reading or writing blocks, etc.), since they manage directly the file organization, both in terms of the distribution of data within the blocks and with respect to the internal structures of the blocks.
+The File System \textit{(FS)} is the layer of the operating system that manages the secondary memory:
+\dbms make limited use of FS functionalities \textit{(such as creating or deleting files, reading or writing blocks, etc.)}, since they manage directly the file organization, both in terms of the distribution of data within the blocks and with respect to the internal structures of the blocks.
 Furthermore, a \dbms may also control the physical allocation of blocks onto the disk, to optimize the access time or increase the reliability.
+
+\subparagraph*{Data dictionary}
+
+Each relational \dbms maintains a \textbf{data dictionary} that contains information about the database structure and the database itself.
+The data dictionary is a centralized repository of information about data such as meaning, relationships to other data, origin, usage and format.
 
 \subsection{Blocks and tuples}
 
@@ -1614,14 +1622,14 @@ While the size of a block is typically fixed, depending on the file system and o
 A block for sequential and hash-based methods is divided in:
 
 \begin{itemize}
-  \item block header and trailer with control information used by the File System
-  \item page header and trailer with control information about the access method
-  \item a page dictionary containing pointers to each elementary item of useful data contained in the page
-  \item a useful part containing the data
+  \item \textbf{block header} and \textbf{trailer} with control information used by the File System
+  \item \textbf{page header} and \textbf{trailer} with control information about the access method
+  \item a p\textbf{age dictionary} containing pointers to each elementary item of useful data contained in the page
+  \item a \textbf{useful part} containing the data
         \begin{itemize}
           \item normally, page dictionaries and useful data grow as a stack in opposite directions
         \end{itemize}
-  \item a checksum to verify the integrity of the block
+  \item a \textbf{checksum} to verify the integrity of the block
 \end{itemize}
 
 An illustration of a block is shown in Figure~\ref{fig:block-structure}.
@@ -1640,17 +1648,17 @@ The block factor B represents the number of tuples within a block.
 It's fundamental to estimate the cost of queries:
 
 \begin{itemize}
-  \item The average size of a record \textit{(or tuple)} is called \textbf{SR}
-  \item The average size of a block is called \textbf{SB}
+  \item the average \textbf{size} of a \textbf{record} \textit{(or tuple)} is called \textbf{SR}
+  \item the average \textbf{size} of a \textbf{block} is called \textbf{SB}
 \end{itemize}
 
-Then the block factor is:
-\[ B = \lfloor \frac{\text{SB}}{\text{SR}} \rfloor \]
+The block factor is defined as:
+\[ B = \left\lfloor \frac{\text{SB}}{\text{SR}} \right\rfloor \]
 The rest of the space can be:
 
 \begin{itemize}
-  \item used if the records are spanned between block
-  \item not used, if the records are unspanned
+  \item \textbf{used} if the records are \textbf{spanned} between block
+  \item \textbf{not used}, if the records are \textbf{unspanned}
 \end{itemize}
 
 \subparagraph*{Buffer Operations}
@@ -1660,16 +1668,16 @@ Operations are performed in the main memory and affect the pages: in the cost mo
 Operations are:
 
 \begin{itemize}
-  \item insertion an update of a tuple
+  \item \textbf{insertion} an update of a tuple
         \begin{itemize}
           \item may require a reorganization of the page or the usage of a new page
           \item an update to a file may require a reorganization of the page
         \end{itemize}
-  \item deletion of a tuple
+  \item \textbf{deletion} of a tuple
         \begin{itemize}
           \item often carried out by marking the tuple as invalid and triggering later a reorganization of the page
         \end{itemize}
-  \item access to a field of a tuple
+  \item \textbf{access} to a field of a tuple
         \begin{itemize}
           \item identified by a pointer to the beginning of the tuple and the length of the field itself
         \end{itemize}
@@ -1677,8 +1685,9 @@ Operations are:
 
 \subsection{Indexes}
 
-Indexes are data structures that help efficiently retrieve tuples according to certain criteria, called \textbf{search key} (or \textit{SK}).
-They contain records in the form \(\langle \text{search key}, \text{pointer to block} \rangle\); index entries are sorted with regard to the search key.
+Indexes are data structures that help efficiently retrieve tuples according to certain criteria, called \textbf{search key} (or \textit{SK}); index entries are sorted with regard to the search key.
+
+They contain records in the form \texttt{<search key pointer to block>}.
 
 It's important to highlight the difference between \textbf{primary key} and \textbf{search key}:
 the former is the key used to uniquely identify a tuple, while the latter is the key used to retrieve tuples according to certain criteria.
@@ -1695,7 +1704,7 @@ A comparison of the two entities is shown in Table~\ref{tab:primary-key-search-k
     does not imply access path & defines a common access path \\
     defines a constraint       & defines a common access path \\
     unique                     & not necessarily unique       \\
-    implemented by an index    &                              \\
+    implemented by an index    & -                            \\
   \end{tblr}
   \caption{Comparison between primary key and search key}
   \label{tab:primary-key-search-key}
@@ -1705,7 +1714,7 @@ A comparison of the two entities is shown in Table~\ref{tab:primary-key-search-k
 Indexes are smaller than primary data structures, and they can be loaded in a file in the main memory;
 they support point queries, range queries, and sorted scans efficiently.
 However, adding indexes to tables means that the \dbms has to update each index after an insert, update, or delete operation:
-this operation may be costly and may slow down the \dbms.
+this operation may be costly and may slow it down.
 
 \bigskip
 Indexes can be categorized into \textbf{sparse} and \textbf{dense}:
@@ -1714,20 +1723,20 @@ while the former associate a search key to a single tuple, the latter associate 
 \subparagraph*{Sparse indexes}
 \begin{itemize}
   \item an entry index is associated with \textbf{every} search-key value in the file
-  \item high performances: in order to access a tuple, the index is accessed first, then the block is accessed
-  \item can be used on entry-sequenced primary structures
+  \item \textbf{high performances}: in order to access a tuple, the index is accessed first, then the block is accessed
+  \item can be used on \textbf{entry-sequenced} primary structures
 \end{itemize}
 
 \subparagraph*{Dense indexes}
 \begin{itemize}
   \item an entry index is associated only with \textbf{some} search-key values in the file
-  \item requires less space, but it's generally slower in locating the tuple
-  \item requires sequentially ordered primary structures
+  \item requires \textbf{less space}, but it's generally slower in locating the tuple
+  \item requires\textbf{ sequentially ordered} primary structures
         \begin{itemize}[label=\(\rightarrow\)]
           \item the search key corresponds to the ordering key of the tuple
         \end{itemize}
-  \item low performances: in order to access a tuple, it's necessary to scan each block until the search key is found; then the block must be scanned to locate the tuple itself
-  \item Good tradeoff between memory and performance as only one index entry is necessary for each block in the file
+  \item \textbf{low performances}: in order to access a tuple, it's necessary to scan each block until the search key is found; then the block must be scanned to locate the tuple itself
+  \item good \textbf{tradeoff} between memory and performance as only one index entry is necessary for each block in the file
 \end{itemize}
 
 \subsubsection{Indexing techniques}
@@ -1736,7 +1745,7 @@ The index can be further classified according to the indexing used, creating the
 
 \subparagraph*{Primary index}
 A primary index is defined on sequentially ordered structures.
-The search key (SK) is unique and coincides with the attribute according to which the structure is ordered:
+The search key \textit{(SK)} is unique and coincides with the attribute according to which the structure is ordered:
 \begin{align*}
   \text{search key} \  & = \ \text{ordering key} \\
   \text{SK} \          & = \ \text{OK}
@@ -1758,17 +1767,50 @@ A secondary index specifies an order different from the sequential order of the 
 \end{align*}
 
 \begin{itemize}
-  \item Multiple secondary indexes can be defined for the same table on multiple search keys
+  \item Multiple secondary index structures can be defined for the same table on multiple search keys
   \item It is always \textbf{dense} because tuples with contiguous values of the key can be distributed in different blocks
 \end{itemize}
 
 \subparagraph*{Clustering index}
-A clustering index is a generalization of the primary index in which the ordering key (equal to the search key) can not be unique.
+A clustering index is a generalization of the primary index in which the ordering key \textit{(equal to the search key)} can not be unique.
 
 \begin{itemize}
   \item The pointer of key \texttt{x} refers to the block containing the first tuple with key \texttt{x}
   \item The index can be either \textbf{sparse} or \textbf{dense}, but it is usually \textbf{sparse}
 \end{itemize}
+
+\subsubsection{Indexes in \sql}
+
+To create an \sql index, every table should have:
+
+\begin{itemize}
+  \item a suitable \textbf{primary storage}, possibly sequentially ordered \textit{(normally on unique values)}
+  \item several \textbf{secondary indexes}, both unique and non, on the attributes most used for selections and joins
+        \begin{itemize}
+          \item secondary structures are progressively added, checking that they are used by the system
+        \end{itemize}
+\end{itemize}
+
+Guidelines for choosing indexes:
+
+\begin{enumerate}
+  \item do not index \textbf{small tables}
+  \item index \textbf{primary key }of a table only if it is not a key of the primary file organization
+  \item add a \textbf{secondary index} to any column that is heavily used as a \textbf{secondary key}
+  \item add secondary index structures on columns that are involved in \texttt{SELECT} or \texttt{JOIN} criteria, \texttt{ORDER BY}, \texttt{GROUP BY}, and other operation involving sorting
+  \item \textbf{avoid} indexing a column or table that is \textbf{frequently updated}
+  \item \textbf{avoid} indexing a column if the query will retrieve a \textbf{significant number of rows}
+  \item \textbf{avoid} indexing columns that consists of \textbf{long strings}
+\end{enumerate}
+
+The \sql syntax for creating and deleting an index is shown in Code~\ref{code:sql-syntax-index}.
+
+\begin{lstlisting}[language=SQL, caption={\sql syntax for creating and deleting an index}, label={code:sql-syntax-index}]
+-- creation
+CREATE [UNIQUE] INDEX <index_name> on <table_name>[(<column_name>, ...)]
+-- deletion
+DROP INDEX <index_name>
+\end{lstlisting}
 
 \subsection{Physical Access Structures}
 
@@ -1777,8 +1819,8 @@ Each \dbms has a distinctive and limited set of access methods and software modu
 Access methods have their own data structures to organize data:
 
 \begin{itemize}
-  \item Each table is stored in exactly one primal physical data structure
-  \item Each table may have one or more optional secondary access structures
+  \item Each table is stored in exactly \textbf{one primal} physical data structure
+  \item Each table may have \textbf{zero or more secondary} access structures
 \end{itemize}
 
 \bigskip
@@ -1821,21 +1863,21 @@ blocks can be contiguous on disk or sparse.
 Two types of sequential structures are:
 
 \begin{itemize}
-  \item entry-sequenced organization: the sequence of tuples is dictated by their entry order
-  \item sequentially-ordered organization: the sequence of tuples is dictated by the value of one or more keys
+  \item \textbf{entry-sequenced} organization: the sequence of tuples is dictated by their e\textbf{ntry orde}r
+  \item \textbf{sequentially-ordered} organization: the sequence of tuples is dictated by the \textbf{value of one or more keys}
 \end{itemize}
 
 \subparagraph*{Entry-sequenced organization} Entry-sequenced organization \textit{(also called heap)} is the simplest and most common type of sequential organization.
 
 \begin{itemize}
-  \item Efficient for:
+  \item \textbf{Efficient} for:
         \begin{itemize}[label=\cmarkthin]
           \item insertion, which does not require shifting
           \item space occupancy, as it uses all the blocks available for data and all the space within a block
           \item sequential reading and writing, especially if the blocks are contiguous
           \item query like \texttt{SELECT * FROM table}
         \end{itemize}
-  \item Inefficient for:
+  \item \textbf{Inefficient} for:
         \begin{itemize}[label=\xmarkthin]
           \item searching specific data units, as it may require scanning the whole structure
                 \begin{itemize}[label=\(\rightarrow\)]
@@ -1867,9 +1909,9 @@ Tuples are sorted according to the value of a key field.
 In order to avoid the global reordering problem, the following techniques can be used:
 
 \begin{itemize}
-  \item Differential files and periodic merging
-  \item Local reordering operation within a block
-  \item Creation of an overflow file that contains tuples that do not fit in the current block
+  \item \textbf{Differential files} and periodic \textbf{merging}
+  \item \textbf{Local reordering} operation within a block
+  \item \textbf{Creation of an overflow file} that contains tuples that do not fit in the current block
 \end{itemize}
 
 \paragraph{Comparison of sequential structures}
@@ -1881,14 +1923,13 @@ In real-world applications, the entry-sequenced organization is the most common 
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tblr}{colspec={r|c|c}, row{1}={font=\itshape}, column{1}={font=\ttfamily}}
-               & entry-sequenced   & sequentially-ordered \\
+  \begin{tblr}{colspec={r|c|c}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}, cells={valign=m}}
+                                                                    & entry-sequenced & sequentially-ordered \\
     \hline
-    tuple size & fixed or variable & fixed or variable    \\
-    INSERT     & \colorcmark       & \colorxmark          \\
-    UPDATE     & \colorcmark       & \colorxmark          \\
-    DELETE     & \colorxmark       & \colorxmark          \\
-    {SELECT * FROM T                                      \\ WHERE ...} & \colorxmark & \colorcmark \\
+    INSERT                                                          & \colorcmark     & \colorxmark          \\
+    UPDATE                                                          & \colorcmark     & \colorxmark          \\
+    DELETE                                                          & \colorxmark     & \colorxmark          \\
+    SELECT * FROM T WHERE [...] & \colorxmark     & \colorcmark          \\
   \end{tblr}
   \caption{Comparison of sequential structures}
   \label{tab:sequential-structures}
@@ -1897,40 +1938,40 @@ In real-world applications, the entry-sequenced organization is the most common 
 
 \subsubsection{Hash-based structures}
 
-Hash-based structures provide efficient associative access to data, based on the value of a key field.
+\textbf{Hash-based} structures provide efficient associative access to data, based on the value of a key field.
 
-A hash-based structure has \(N_B\) buckets, with \(N_B \ll \# \text{of data items}\):
+A hash-based structure has \(N_B\) buckets, with \(N_B \ll \# \ \text{of data items}\):
 a bucket is a unit of storage, typically of the size of \(1\) block;
 often they are stored adjacently in the file.
 A hash function maps the key field to a value between \(0\) and \(N_B -1\);
 this value is interpreted as the index of a bucket in the hash structure (via a hash table).
 
 \begin{itemize}
-  \item Efficient for:
+  \item \textbf{Efficient} for:
         \begin{itemize}[label=\cmarkthin]
           \item tables with small size and almost static content
-          \item queries with equality predicates on the key field (point queries)
+          \item queries with equality predicates on the key field \textit{(point queries)}
         \end{itemize}
-  \item Inefficient for:
+  \item \textbf{Inefficient} for:
         \begin{itemize}[label=\xmarkthin]
           \item tables with large size and dynamic content
-          \item queries with inequality predicates on the key field (range queries)
+          \item queries with inequality predicates on the key field \textit{(range queries)}
         \end{itemize}
 \end{itemize}
 
 \subparagraph*{Implementation}
-The implementation consists of two parts.
+The implementation consists of two steps.
 
-\begin{enumerate}
+\begin{enumerate}[label=step \arabic*., leftmargin=*, widest*=7, labelindent=1em]
   \item \textbf{folding}: transforms the key values to positive integers, uniformly distributed in a big range
   \item \textbf{hashing}: transforms the positive number into an index in range \(\left[ 0, N_B - 1 \right]\), to be used as the index of a bucket
 \end{enumerate}
 
 \subparagraph*{Collision}
 When two or more keys are mapped to the same bucket, a \textbf{collision} occurs;
-when the number of tuples in a block is greater than the number of buckets, collisions are inevitable;
+when the number of tuples in a block is greater than the number of buckets, collisions are inevitable.
 
-Techinques to solve collisions:
+Techniques to solve collisions:
 
 \begin{itemize}
   \item \textbf{Closed hashing} \textit{(open addressing)}, where the collision is resolved by probing the next bucket
@@ -1946,29 +1987,27 @@ Techinques to solve collisions:
 \subparagraph*{Overflow chains}
 The average length of the overflow chain is a function of:
 
-\begin{itemize}
-  \item the load factor \(\alpha = \dfrac{T}{B \times N_B}\), representing the average occupancy of a block
-  \item the block factor \(\beta = \frac{B}{\# \ \text{of items}} = \dfrac{1}{\alpha}\), representing the average number of items per block
+\begin{itemize}[itemsep=0.5ex]
+  \item the \textbf{load factor} \(\alpha = \dfrac{T}{B \times N_B}\), representing the average occupancy of a block
+  \item the \textbf{block factor} \(\beta = \dfrac{B}{\# \ \text{of items}} = \dfrac{1}{\alpha}\), representing the average number of items per block
 \end{itemize}
 
-Remember that:
+Where:
 
 \begin{itemize}
-  \item \(T\) is the number of tuples
-  \item \(N_B\) is the number of buckets
-  \item \(B\) is the number of tuples within a block
+  \item \(T\) is the \textbf{number} of \textbf{tuples}
+  \item \(N_B\) is the \textbf{number} of \textbf{buckets}
+  \item \(B\) is the \textbf{number} of \textbf{tuples within a block}
 \end{itemize}
 
 \paragraph{Hash-based indexes}
 
-Hash-based structures can be used for secondary indexes:
+Hash-based structures can be used for \textbf{secondary index structures}:
 they are shaped and managed exactly like a hash-based primary structure, but instead of the tuples, the buckets contain key values and pointers.
 
 In a huge database it would be very inefficient to search all the index values to reach the desired data:
 a good performance equality query predicates on the key field.
-
-This technique is then inefficient for access based on interval predicates or on the value of non search-key attributes.
-% TODO write something more
+This technique is as such inefficient for access based on interval predicates or on the value of non search-key attributes.
 
 \subsubsection{Tree-based structures}
 
@@ -1979,11 +2018,11 @@ They support associative access based on the value of a key search field.
 A commonly used tree-based structure is the \textbf{B-tree}.
 
 \subparagraph*{B-trees}
-Balanced trees (or B-trees) are a generalization of binary search trees;
-the length of all the possible paths from the root node to the leaves is the same.
+Balanced trees \textit{(or B-trees)} are a generalization binary search trees;
+the length of all the possible paths from the root node to the leaves is the same, while a node can have any number of children in a predefined range.
 This constraint improves the performance of the database.
 
-There are two types of b trees:
+There are two types of B-trees:
 
 \begin{enumerate}
   \item \textbf{B trees}: the key values are stored in \textbf{leaf nodes and internal nodes}
@@ -2073,22 +2112,865 @@ The search continues until a leaf node is found:
   \item in case of an indirect leaf node, it's necessary to access the memory block pointed by the pointer \(P_j, \ 0 \leq j \leq F\)
 \end{itemize}
 
-\subsection{Structures and Indexes}
+\paragraph{Difference between B and B+ trees}
 
-A comparison of indexing methods related to the data structures is shown in Table~\ref{tab:indexing-techniques}.
+In B+ trees, leaf nodes are linked by a chain of pointers, connecting them in the order imposed by the key values.
+This chain allows efficient execution of range queries, as it's possible to access the lower bound of the interval via a normal search and then scan sequentially the leaves until a value greater than the upper bound is found.
+This data structure makes possible an ordered scan of the entire database, which is not possible in B trees.
+
+In B trees, there is no such chain of pointers, and the only way to access the tuples in a given range is to perform a search for each tuple.
+In this case, intermediate nodes use two pointers for each value \(K_i\):
+one of the two is used to point directly to the block containing the tuple corresponding to \(K_i\), thus interrupting the search;
+the other one is used to continue the search in the subtree that includes the key values great than \(K_i\) and less than \(K_i + 1\).
+The first pointer \(P_0\) highlights the subtree corresponding to key values less than \(K_1\), while the last pointer \(P_F\) highlights the subtree corresponding to key values greater than \(K_F\).
+This technique saves space in the pages of the index and at the same time allows the termination of the search when a given key value is found on intermediate nodes, without having to continue the search in the subtrees.
+
+\subsection{Query Optimization}
+
+The \textbf{optimizer} is an important part of the architecture of a \dbms:
+it receives a query expressed in \sql, analyses the query to find mistakes, and finally generates a program in an internal format that uses the data access methods.
+There may be different ways to execute the same query, and the optimizer has to choose the best one.
+
+Steps of this operation:
+
+\begin{enumerate}
+  \item \textbf{lexical}, \textbf{syntactic} and \textbf{semantic} \textbf{analysis} of the query
+  \item translation into an \textbf{internal representation} \textit{(similar to algebraic expressions)}
+  \item \textbf{algebraic} optimization
+  \item c\textbf{ost-based} optimization
+  \item \textbf{code} generation
+\end{enumerate}
+
+\subsubsection{Relation profiles}
+
+Each commercial \dbms possesses quantitative information about the relations in the database, called \textbf{relation profiles}.
+
+The profile of a relationship contains the following information:
+
+\begin{itemize}
+  \item the \textbf{cardinality} \textit{(number of tuples)} CARD\((T)\) of each \textbf{table} \(T\)
+  \item the \textbf{dimension} in bytes SIZE\((T)\) of each \textbf{tuple} in table \(T\)
+  \item the \textbf{dimension} in bytes SIZE\((A_j, T)\) of each \textbf{attribute} \(A_j\) in \textbf{table} \(T\)
+  \item the \textbf{number} of \textbf{distinct values }VAL\((A_j, T)\) of each \textbf{attribute} \(A_j\) in \textbf{table} \(T\)
+  \item the \textbf{minimum} and \textbf{maximum values} MIN\((A_j, T)\) and MAX\((A_j, T)\) of each \textbf{attribute} \(A_j\) in \textbf{table} \(T\)
+\end{itemize}
+
+The relation profiles are calculated from the data stored in the tables and updated periodically via appropriate system primitives \textit{(such as the command \texttt{UPDATE STATISTICS} in Oracle \dbms)}.
+
+Cost-based optimization requires the knowledge of an approximate value of each of the quantities contained in the relation profiles.
+
+\bigskip
+The probability that any row will satisfy a given predicate is called the \textbf{selectivity} of the predicate.
+
+If VAL\((A) = N\) and the values are uniformly distributed, the selectivity of the predicate \(A = v\) is \(\sfrac{1}{N}\).
+If no data on distribution is available, then the distribution is always assumed uniform.
+
+\subsubsection{Internal representation of queries}
+
+The representation that the optimizer creates for a query must account for the physical structure used to implement the tables, as well as the indexes that may be present;
+the internal representation of a query uses a tree structure, where leaves correspond to the physical data structures and whose intermediate nodes represent data access operations.
+
+Typically, the operations that can be performed on the intermediate nodes include sequential scans, orderings, indexed accesses and joins.
+
+\subparagraph*{Scan operation}
+A scan operation performs sequential access to all the tuples of a table while executing operations of algebraic or extra algebraic nature, such as:
+
+\begin{itemize}
+  \item \textbf{projection} of a subset of the attributes
+  \item \textbf{selection} of a simple predicate of type \(A_i = v\)
+  \item \textbf{ordering}, insertions, deletions, and modification of the tuples when they are accessed by the scan
+\end{itemize}
+
+\subparagraph*{Indexed access operation}
+As already seen, indexes are structures of the database that allow to access the tuples of a table in a more efficient way than a sequential scan;
+as a consequence, if the query presents only one supported predicate, it's convenient to use the corresponding index.
+
+When a query presents a conjunction of predicates, the \dbms chooses the most selective one for the primary access via index, while the other one is evaluated later in main memory via a sequential scan;
+on the other hand, if the query presents a disjunction of predicates, the \dbms is forced to do a sequential scan if any of the predicates are not supported by an index.
+
+\subparagraph*{Join operation}
+The \texttt{JOIN} operation is considered to be the most expensive for a \dbms, as there is a risk of explosion of the number of tuples in the result;
+to solve this problem, the optimizer uses one of three techniques:
+
+\begin{enumerate}
+  \item \textbf{nested-loop}, based on scanning
+        \begin{itemize}
+          \item a scan is performed on a table \textit{(termed external)} and for each tuple, a scan is performed on the other table \textit{(termed internal)}
+          \item the matching is efficient if there is an index on the join attribute of the internal table
+        \end{itemize}
+  \item \textbf{merge-scan}, based on ordering
+        \begin{itemize}
+          \item this technique requires that both the tables are sorted on the join attribute
+          \item two coordinated scans run through the tuples of each table, in parallel, and the matching is performed
+        \end{itemize}
+  \item \textbf{hash-join}, based on hashing
+        \begin{itemize}
+          \item this technique requires that both tables are hashed on the join attribute
+          \item the tuples of the internal table are hashed and stored in a hash table, while the tuples of the external table are scanned and the matching is performed
+        \end{itemize}
+\end{enumerate}
+
+\subparagraph*{Equality}
+The cost of an equality lookup \textit{(such as \(A = v\))} depends on the type of structure representing the table.
+
+\begin{itemize}
+  \item \textbf{Sequential structures} with no index:
+        \begin{itemize}[label=\xmarkthin]
+          \item equality lookups are \textbf{not supported}, so the cost is the one of a full scan
+          \item sequentially ordered structures may have reduced cost
+        \end{itemize}
+  \item \textbf{Hash or Tree structures}
+        \begin{itemize}[label=\cmarkthin]
+          \item equality lookups are \textbf{supported} if \(A\) is the \textbf{search key attribute} of the structure
+          \item the cost depends on the storage type \textit{(primary or secondary)} and the search key type \textit{(unique or not)}
+        \end{itemize}
+\end{itemize}
+
+\subparagraph*{Range}
+The cost of a range lookup \textit{(such as \(v_1 \leq A \leq v_2\))} depends on the type of structure representing the table.
+
+\begin{itemize}
+  \item \textbf{Sequential structure}s \textit{(primary)}:
+        \begin{itemize}[label=\xmarkthin]
+          \item range lookups are \textbf{not supported}, so the cost is the one of a full scan
+          \item sequentially ordered structures may have reduced cost
+        \end{itemize}
+  \item \textbf{Hash structures} \textit{(primary and secondary)}:
+        \begin{itemize}[label=\xmarkthin]
+          \item range lookups are \textbf{not supported}, so the cost is the one of a full scan
+        \end{itemize}
+  \item \textbf{Tree structure}s \textit{(primary and secondary)}:
+        \begin{itemize}[label=\cmarkthin]
+          \item range lookups are \textbf{supported} if \(A\) is the \textbf{search key attribute} of the structure
+          \item the cost depends on the storage type \textit{(primary or secondary)} and the search key type \textit{(unique or not)}
+        \end{itemize}
+  \item B\textbf{+ tree} structures \textit{(primary and secondary)}:
+        \begin{itemize}[label=\cmarkthin]
+          \item range lookups are \textbf{supported} if \(A\) is the \textbf{search key attribute} of the structure
+        \end{itemize}
+\end{itemize}
+
+\subparagraph*{Conjunction}
+If supported by indexes, the \dbms chooses the most selective supported predicate for the data access, and the other predicates are evaluated later in the main memory via a sequential scan.
+
+\subparagraph*{Disjunction}
+If any of the predicates are not supported by indexes, then a sequential scan is performed;
+otherwise, indexes can be used to evaluate all predicates and then the results are merged and duplicates are removed.
+
+\subparagraph*{Sort}
+Various methods allow to sort the tuples of a table optimally;
+however, the problem lies in the fact that the \dbms must load the entire loaded data in the buffer, which may be too large for the available memory.
+
+Data can be sorted in the main memory \textit{(in which case it's performed via ad-hoc algorithms such as quicksort or merge sort)} or in the disk \textit{(in which case it's performed via external sorting algorithms)}.
+The latter case is picked when the data is too big to fit on the main memory; the procedure is as follows:
+
+\begin{enumerate}
+  \item split the data in chunks of size equal to the main memory
+        \item\label{enum:merge-sort-2} load a chunk in the main memory
+  \item sort the data in the main memory
+  \item store the sorted data back on disk
+  \item Merged sorted chunks parts using at least three pages:
+        \begin{itemize}
+          \item two for progressively loading data from two sorted chunks
+          \item one as output buffer to store the sorted data
+        \end{itemize}
+  \item save the result on disk
+  \item go to step \ref{enum:merge-sort-2} until all chunks are merged
+\end{enumerate}
+
+\subsubsection{Cost-based Optimization}
+
+Cost-based optimization is an optimization problem whose decisions are:
+
+\begin{itemize}
+  \item \textbf{which data} access operations to perform
+  \item \textbf{in which order} to perform the operations
+  \item if there are multiple options for a given operation, \textbf{which one }to choose
+  \item if the query requires sorting, \textbf{how to sort} the data
+\end{itemize}
+
+In order to solve the problem, the \dbms makes use of data profiles and approximate cost formulas.
+A decision tree is built, in which:
+
+\begin{itemize}
+  \item each \textbf{internal node} represents a \textbf{decision point} \textit{(a choice between two or more options)}
+  \item each \textbf{leaf node} represents a \textbf{specific plan} \textit{(a sequence of operations)}
+\end{itemize}
+
+By assigning a cost to each plan, it's possible to find the optimal one via techniques of operations research such as branch and bound.
+Optimizers should be able to handle these kinds of problems in a short enough time.
+
+\subsubsection{Approaches to Query Evaluation}
+
+The query is evaluated by the \dbms according to two techniques:
+
+\begin{enumerate}
+  \item \textbf{compile and store}
+        \begin{itemize}
+          \item the query is compiled and stored in the \dbms to be executed later
+          \item the internal code is stored in the \dbms together with an indication of the dependencies of the code on the particular versions of the catalogue used at compile time
+          \item On relevant changes in the catalogue, the compilation of the query is invalidated and the query is recompiled
+        \end{itemize}
+  \item \textbf{compile and go}
+        \begin{itemize}
+          \item the query is compiled and executed immediately, without storing the compiled code
+          \item although not stored, the code may live for a while in the \dbms to be reused by other executions
+        \end{itemize}
+\end{enumerate}
+
+\clearpage
+
+\section{Ranking}
+
+The objective of \textbf{ranking} is to find the best possible result for a given query.
+It is formulated as a multi-objective optimization problem, in which the objective is the simultaneous optimization of multiple criteria \textit{(such as different attributes of objects in a dataset)}.
+A general formulation is:
+
+\begin{center}
+  Given \(N\) objects described by \(d\) attributes and a notion of goodness \(g_i\) for each object \(i\), find the \(k\) objects that maximize the goodness.
+\end{center}
+
+The two main approaches are:
+
+\begin{enumerate}
+  \item \textbf{Ranking} \textit{(or top-k)} Queries, in which the objective is to find the \(k\) objects that maximize \(g_i\)
+  \item \textbf{Skyline} Queries, in which the objective is to find the objects that maximize \(g_i\) and are not dominated by any other object
+\end{enumerate}
+
+\subsection{Rank Aggregation}
+
+The rank Aggregation problem regards finding the best possible entity among a set of \(n\) candidates based on the ranking of \(m\) voters.
+Once more, two different approaches are possible:
+
+\begin{enumerate}
+  \item \textbf{Borda's} proposal: the entity with the lowest sum of ranks is the best one
+  \item \textbf{Cordocet's} proposal: a candidate who defeats every other candidate in a pairwise comparison is the best one
+        \begin{itemize}[label=\xmarkthin]
+          \item if preferences graph contains a cycle, the winner may not exist
+        \end{itemize}
+\end{enumerate}
+
+\bigskip
+Since a unique solution does not exist nor does a unique way to find it, the problem is formulated as a multi-objective optimization problem;
+different approaches have been defined to solve it.
+
+\subparagraph*{Axiomatic Approach}
+Arrow stated a list of \(5\) axioms that a solution to the problem must satisfy:
+
+\begin{enumerate}[label=axiom \arabic*., leftmargin=*, labelindent=1em, widest*=8]
+  \item \textbf{Non-dictatorship}: the winner cannot be chosen by a single voter
+  \item \textbf{Universality}: the winner should represent the opinion of all voters
+  \item \textbf{Transitivity}: if candidate \(x\) is preferred over candidate \(y\) and candidate \(y\) is preferred over candidate \(z\), then candidate \(x\) should be preferred over candidate \(z\)
+  \item \textbf{Pareto-efficiency}: for every pair \(\left( x, y \right)\) of alternatives, if \(x\) is preferred over \(y\) by every voter, then \(x\) should be preferred over \(y\) by the winner
+  \item \textbf{Independence of irrelevant alternatives}: if candidate \(x\) is preferred over candidate \(y\) by every voter, then the winner should be indifferent between \(x\) and \(y\)
+\end{enumerate}
+
+He then promptly proved the \textbf{Arrow's Impossibility Theorem}: when more than \(2\) or alternatives are present, there's no solution that satisfies all the axioms;
+the axioms are then inconsistent with each other and as such, they stop being axioms.
+
+\subparagraph*{Metric Approach}
+The metric approach is based on the idea of defining a finding a new ranking \(R\) whose total distance from the original rankings \(R_1, \, \ldots \, R_n\) is minimized.
+Multiple distances have been defined, such as:
+\begin{itemize}
+  \item \textbf{Kendall Tau distance} \(K\left( R_1, R_2 \right)\), defined as the number of exchanges needed in a bubble sort algorithm to convert \(R_1\) into \(R_2\)
+        \begin{itemize}[label=\xmarkthin]
+          \item finding a solution is computationally hard \textit{(NP-complete)}
+        \end{itemize}
+  \item \textbf{Spearman's Footrule distance} \(F\left( R_1, R_2 \right)\) which adds up the distance between the ranks of the same items in the two rankings
+        \begin{itemize}[label=\cmarkthin]
+          \item finding a solution is computationally easy \textit{(polynomial)}
+        \end{itemize}
+\end{itemize}
+
+These two distances are however related, since:
+\[ K(R_1, R_2) \leq F(R_1, R_2) \leq 2 K(R_1, R_2) \]
+Furthermore, Spearman's Footrule distance admits efficient approximations, such as the median ranking.
+
+\subsection{Combining opaque rankings - MedRank}
+
+Opaque rankings are defined as rankings that have no visible score;
+as such, they cannot be compared directly.
+To handle this problem, techniques using only the position of a candidate in the ranking have been created: one of the most famous is the MedRank method.
+As an output, it provides an approximation of the Footrule distance, which is then used to find the best candidate.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k\), ranked lists \(R_1 \,\ldots \, R_N\) of \(N\) elements
+  \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) elements
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item used sorted accesses in each list, one element at a time, until there are \(k\) elements that occur in more than \(\sfrac{m}{2}\) lists
+          \item for each element that occurs in more than \(\sfrac{m}{2}\) lists, compute the median of the positions in which it occurs
+          \item return the top \(k\) elements with the lowest median
+        \end{enumerate}
+\end{itemize}
+
+The maximum number of sorted accesses made on each list is also called the \textbf{depth} reached by the algorithm.
+When the median ranks are all distinct, the algorithm provides the best possible approximation of the Footrule distance.
+
+\subsubsection{Instance Optimality}
+
+Instance Optimality is a form of optimality applied when standard optimality is unachievable.
+
+Let \(A\) be a family of algorithms, \(I\) a family of instances, and \(c\) a cost function that maps an algorithm and an instance to a cost.
+Then algorithm \(A^\ast\) is instance optimal with regards to \(A\) and \(I\) for the cost metric \(c\) if there exists constants \(k_1, \ k_2\) such that, for all \(A_i \in A\) and \(I_j \in I\):
+\[ c\left( A_i, I_j \right) \leq k_1 \cdot c\left( A^\ast, I_j \right) \leq k_2 \cdot c\left( A_i, I_j \right) \]
+If \(A^\ast\) is instance-optimal, then any algorithm can improve with respect to \(A^\ast\) by only a constant factor, called the \textbf{optimality ratio} of \(A^\ast\).
+
+Instance optimality is a much stronger notion than standard optimality in the average or worst case since it guarantees that the algorithm is optimal on every input instance.
+
+\paragraph{Optimality of MedRank}
+
+An algorithm is defined \textbf{optimal} if its execution cost is never worse than any other algorithm on any input.
+
+MedRank is \textbf{not optima}l;
+however, it's \textbf{instance optimal}:
+among the algorithms that access the lists in sorted order, this is the best possible one \textit{(up to a constant factor)} on every input instance.
+
+\subsection{Ranking Queries - Top-k}
+
+The Ranking Queries technique, also called Top-k, aims to retrieve the best \(k\) answers from a (potentially large) set of \(n\) answers;
+the notion of best depends on the context and application.
+
+The method requires being able to order objects according to their relevance.
+
+\subparagraph*{Naive approach}
+Assume that \(S\) is a scoring function that assigns to each tuple \(t\) a numerical score \(S(t)\).
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: cardinality \(k\), dataset \(R\) composed by a set of tuples \(t\), scoring function \(S\)
+  \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) tuples in \(R\) according to \(S\)
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item for all tuples \(t\) in \(R\), compute \(S(t)\)
+          \item sort tuples according to their score
+          \item return the first \(k\) highest-scoring tuples
+        \end{enumerate}
+\end{itemize}
+
+This approach is expensive for large datasets, as it requires sorting a large amount of data;
+furthermore, if the scoring function evaluates more than one relation, the sorting must be performed on the Cartesian product of the relations \textit{(which is even more expensive)}.
+
+\subparagraph*{Top-k in \sql}
+To perform a Top-k query in \sql, the \dbms must be capable of:
+
+\begin{enumerate}
+  \item \textbf{ordering} tuples according to a scoring function
+        \begin{itemize}
+          \item performed via the \texttt{ORDER BY} clause
+        \end{itemize}
+  \item \textbf{limiting} the output to the first \(k\) tuples
+        \begin{itemize}
+          \item limiting was not native in \sql until 2008
+          \item performed via \texttt{FETCH FIRST k ROWS ONLY}, while many non standard syntax are available
+        \end{itemize}
+\end{enumerate}
+
+Only the first \(k\) tuples become part of the result;
+if more than one set of \(k\) tuples satisfies the \texttt{ORDER BY} directive, then any of such sets is a valid answer and the \dbms is free to choose one: the semantic is \textbf{non-deterministic}.
+
+\subsubsection{Evaluation of Top-k Queries}
+
+\paragraph{Single relation}
+
+In the simplest case, the Top-k query is evaluated via a single relation:
+\begin{itemize}
+  \item if the tuples are sorted according to the scoring function, the query can be evaluated in \(O(k)\) time
+        \begin{itemize}
+          \item only the first \(k\) tuples are read and returned
+          \item there's no need to scan the entire input
+        \end{itemize}
+  \item if the tuples are not sorted and \(k\) is not too large, the query can be evaluated in \(O(n\log(n))\) time
+        \begin{itemize}
+          \item the entire input is scanned and sorted
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Multiple relations}
+
+The Top-k query can be evaluated on multiple relations: if the relations are \(2\), the attribute space can be visualized as a \(2D\) plane, where each tuple is represented by a point with coordinates \(\left( A_1, A_2 \right)\).
+A representation of the Top-k query on two relations is shown in Figure \ref{fig:topk-2d-plane}.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig[1.5]{figure-17.tikz}
+  \caption{Top-k query on two relations}
+  \label{fig:topk-2d-plane}
+  \bigskip
+\end{figure}
+
+If \(S\) has form \(S = k_1 \cdot A_1 + k_2 \cdot A_2\) and the objective is minimizing it, the target value lies in \(q = \left( 0, 0 \right)\).
+By fixing a value of \(S\), it's possible to calculate a slope; all the points that lie on the line are equally good answers.
+A representation of the weights of the Top-k query is shown in Figure \ref{subfig:topk-weights}.
+
+On the other hand, if the objective is getting the tuples that best match the target value \(q\), the \(k\) best tuples are the ones that are closest to \(q\): the distance between two tuples can be calculated in different ways.
+A representation of the weights of the Top-k query is shown in Figure \ref{subfig:topk-target}.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \begin{subfigure}[t]{0.495\textwidth}
+    \centering
+    \bigskip
+    \tikzfig[1]{figure-18.tikz}
+    \caption{Top-k query weights}
+    \label{subfig:topk-weights}
+    \bigskip
+  \end{subfigure}
+  \begin{subfigure}[t]{0.495\textwidth}
+    \centering
+    \bigskip
+    \tikzfig[1]{figure-19.tikz}
+    \caption{Top-k query target}
+    \label{subfig:topk-target}
+    \bigskip
+  \end{subfigure}
+  \bigskip
+\end{figure}
+
+For this reason, it is sometimes useful to consider distances rather than scores;
+therefore, the model is now a \(m\)-dimensional space of ranking attributes \(A = \left( A_1, A_2, \,\ldots\, A_m \right)\).
+A relation \(R = \left( A_1, A_2, \,\ldots\, A_m, B_1, B_2 \,\ldots\, B_n \right)\) is a set of attributes, where \(A_i, \ 1 leq i \leq m\) are the attributes of the first tuple and \(B_j, \ 1 leq j \leq m\) are the attributes of the second tuple.
+The target tuple is \(q = \left( q_1, q_2, \,\ldots\, q_m \right),\ q \in A\), while a function \(d: A \times A \rightarrow \mathbb{R}\) is used to calculate the distance between two tuples in \(A\).
+
+\bigskip
+Under this model, a Top-k query is transformed into a k-Nearest Neighbours \textit{(k-NN)} query.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] Input: point \(q\), relation \(R\), integer \(k \geq 1\), and a distance function \(d\)
+  \item[\(\rightarrow\)] Output: the \(k\) tuples in \(R\) that are closest to \(q\) according to \(d\)
+\end{itemize}
+
+\subsubsection{Distance Functions}
+
+The most common class of distance functions is the \textbf{LP-norm} (or Minkowski distance), defined as:
+\[ L_p(t, q) = \left( \displaystyle\sum_{i=1}^m \left| t_i - q_i \right|^p  \right)^{\sfrac{1}{p}} \]
+
+Some relevant cases:
+
+\begin{itemize}[itemsep=1ex]
+  \item \(p = 1 \rightarrow L_1(t, q) = \displaystyle\sum_{i=1}^m \left| t_i - q_i \right|\), M\textbf{anhattan} distance
+  \item \(p = 2 \rightarrow L_2(t, q) = \sqrt{\displaystyle\sum_{i=1}^m \left( t_i - q_i \right)^2}\), \textbf{Euclidean} distance
+  \item \(p = \infty \rightarrow L_\infty(t, q) =\displaystyle \max_{i=1}^m \left| t_i - q_i \right|\), \textbf{Chebyshev} distance
+\end{itemize}
+
+The different functions generate different shapes of the attribute space:
+
+\begin{itemize}
+  \item Manhattan distance: the attribute space is a \textbf{hypercube}
+  \item Euclidean distance: the attribute space is a \textbf{hypersphere}
+  \item Chebyshev distance: the attribute space is a \textbf{hyper square}
+\end{itemize}
+
+\paragraph*{Distance Functions with weights}
+
+The use of weights \(W = \left( w_1, \,\ldots\,, w_m \right)\) allows to give more importance to some attributes than others;
+as a consequence, the distance function is modified and the attribute space is modified as follows:
+
+\begin{itemize}[itemsep=1ex]
+  \item \textbf{Manhattan} distance: \(L_1(t, q, W) = \displaystyle\sum_{i=1}^m w_i \left| t_i - q_i \right|\), the relative space is a \textbf{hyper rhomboid}
+  \item \textbf{Euclidean} distance: \(L_2(t, q, W) = \sqrt{\displaystyle\sum_{i=1}^m w_i \left( t_i - q_i \right)^2}\), the relative space is a hyper ellipsoid
+  \item \textbf{Chebyshev} distance: \(L_\infty(t, q, W) = \max_{i=1}^m w_i \left| t_i - q_i \right|\), the relative space is a \textbf{hyper rectangle}
+\end{itemize}
+
+The elongation of the attribute space is proportional to the ratio of the weights.
+
+\subsubsection{Top-k Query in \sql}
+
+In a Top-k query, there are \(n > 1\) input relations and a scoring function \(S\) defined on the result of the join, as shown in Code~\ref{lst:topk-query-sql}.
+
+\begin{lstlisting}[language=sql, morekeywords={FETCH}, caption={Top-k query in \sql}, label={lst:topk-query-sql}]
+SELECT <attributes>
+FROM <relation 1> R1, <relation 2> R2, ..., <relation n> Rn
+WHERE <join and local condition>
+ORDER BY <scoring function> DESC
+FETCH FIRST k ROWS ONLY
+\end{lstlisting}
+
+where the scoring function has the form \(S(p_1, p_2, \,\ldots\,, p_n)\), and \(p_i\) is the weight relative to attribute \(A_i\).
+
+Each object \(o\) returned by the input \(L_j\) has an associated partial \textit{(or local)} score \(p_j(o) \in \left[ 0, 1 \right]\);
+for convenience, the scores are normalized in the range \([0, 1]\), as only the worst and best possible scores of the objects are relevant.
+
+\begin{itemize}
+  \item The \textbf{hypercube} \(\left[ 0, 1 \right]^m\) is called the \textbf{score space}
+  \item The \textbf{tuple} \(p(o) = \left( p_1(0), p_2(0), \,\ldots\,, p_m(0) \right) \in \left[ 0, 1 \right]^m\) is called the \textbf{map of \(o\) into the score space} \textit{(or score vector)}
+  \item The\textbf{ global score} \(S(o)\) of \(o\) is computed via a \textbf{scoring function} \(S\) that combines the local scores of \(o\):
+        \[ S: \left[ 0, 1 \right]^m \rightarrow R \ S(o) = S\left( p(o) \right) = S\left( p_1(o), p_2(o), \,\ldots\,, p_m(o) \right) \]
+\end{itemize}
+
+\paragraph{Common sorting algorithms}
+
+The following \sql functions are commonly used to compute the global score \(S(o)\):
+
+\begin{itemize}
+  \item \texttt{SUM} (or \texttt{AVG}): weights the preferences \textbf{equally}
+        \[ \texttt{SUM}(o) = \texttt{SUM}\left( p(o) \right) = \displaystyle\sum_{i=1}^m p_i(o) \]
+        \[ \texttt{AVG}(o) = \texttt{AVG}\left( p(o) \right) = \frac{1}{m} \displaystyle\sum_{i=1}^m p_i(o) \]
+  \item \texttt{WSUM}: weights the ranking attributes \textbf{differently}
+        \[ \texttt{WSUM}(o) = \texttt{WSUM}\left( p(o) \right) = \displaystyle\sum_{i=1}^m w_i p_i(o) \]
+  \item \texttt{MIN}: considers the \textbf{worst} partial score
+        \[ \texttt{MIN}(o) = \texttt{MIN}\left( p(o) \right) = \min_{i=1}^m p_i(o) \]
+  \item \texttt{MAX}: considers the \textbf{best} partial score
+        \[ \texttt{MAX}(o) = \texttt{MAX}\left( p(o) \right) = \max_{i=1}^m p_i(o) \]
+\end{itemize}
+
+The objective is still finding the \(k\) objective with the highest global score.
+
+\paragraph{Top-k 1-1 \texttt{JOIN} query}
+
+The Top-k 1-1 \texttt{JOIN} query is a special case of the Top-k query, where the \texttt{JOIN} operation is a 1-1 \texttt{JOIN}:
+all the joins are on common attributes.
+It's the simplest case of the Top-k query.
+
+Assumptions that allow the use of the \sql Top-k 1-1 \texttt{JOIN} query:
+
+\begin{itemize}
+  \item each input list supports sorted access: each access returns the id of the next best object and its partial score \(p_j\)
+  \item each input list supports random access: each access returns the partial score of an object, given its id
+  \item the id of an object is the same across all inputs
+  \item each input consists of the same set of objects
+\end{itemize}
+
+\paragraph{Scoring Functions Model}
+
+Two different scenarios are possible:
+
+\begin{enumerate}
+  \item an \textbf{index} is available on the \textbf{common attribute}
+  \item the \textbf{relation} is spread over \textbf{several sites}, each providing information only on a subset of the tuples \textit{(middleware scenario)}
+\end{enumerate}
+
+\subparagraph*{Efficient computation of \texttt{MAX} Top-k 1-1 join query}
+When the scoring function is \texttt{MAX}, the Top-k query can be calculated efficiently via the \(B_0\) algorithm.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), ranked lists \(R_1, \,\ldots\, R_m\)
+  \item[\(\rightarrow\)] \textbf{Output}: the \(k\) best objects according to the \texttt{MAX} scoring function
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item Make \(k\) sorted access on each list and store objects and partial scores in a buffer \(B\)
+          \item For each object in \(B\), compute the \texttt{MAX} of its available partial scores
+          \item Return the \(k\) objects with the highest \texttt{MAX} score
+        \end{enumerate}
+\end{itemize}
+
+The algorithm does not need to obtain missing partial scores and does not need random access to the lists.
+Furthermore, \(B_0\) is \textbf{instance-optimal}.
+
+\paragraph{Fagin's Algorithm}
+Fagin's algorithm \textit{(or FA)} is described as follows.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), function \(S\) combining ranked lists \(R_1, \,\ldots\, R_m\)
+  \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) \texttt{<object, score>} pairs
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item Extract the same number of objects via sorted accesses in each list until there are at least \(k\) objects in common
+          \item For each extracted object, compute its score by making random accesses to the lists
+          \item Among these, return the \(k\) objects with the highest score
+        \end{enumerate}
+\end{itemize}
+
+The time complexity is sub-linear in the number of objects in the lists, as it's proportional to the square root of \(N\) when combining two lists: \(\mathcal{O}\left( N^{\sfrac{m-1}{m}} k^{\sfrac{1}{m}} \right)\).
+The stopping criterion is independent of the scoring function and the algorithm is not instance-optimal.
+
+A visual representation of the algorithm is shown in Figure~\ref{fig:fagin-algorithm}:
+
+\begin{itemize}
+  \item the threshold point \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
+  \item the yellow region contains the points seen in all regions
+  \item the grey regions contain the points seen in at least one ranking
+  \item the blue region contains the points not seen in any ranking
+  \item the algorithm stops when the yellow region contains at least \(k\) points
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig[1.5]{figure-20.tikz}
+  \caption{Visualization of Fagin's algorithm}
+  \label{fig:fagin-algorithm}
+  \bigskip
+\end{figure}
+
+\subparagraph*{Limits of the Fagin's Algorithm}
+The limits of Fagin's algorithm are:
+
+\begin{itemize}
+  \item Specific scoring functions are not exploited at all: the costs of the random and sorted accesses are not taken into account in the scoring function
+  \item Memory requirements can become prohibitive: FA has to buffer all of the objects seen in the sorted access phase
+  \item Small improvements are possible only by changing the algorithm itself
+  \item Significant improvements require changing the stopping condition
+\end{itemize}
+
+\paragraph{Treshold Algorithm}
+
+The Threshold algorithm \textit{(or TA)} is a variant of Fagin's algorithm that exploits the scoring function to improve the performance.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), monotone function \(S\) combining ranked lists \(R_1, \,\ldots\, R_m\)
+  \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) \texttt{<object, score>} pairs
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item\label{enum:threshold-algorithm-1} Do a sorted access in parallel in each list \(R_i\)
+          \item For each object \(o\), do random accesses in the other lists \(R_j\), thus obtaining the score \(s_j\)
+          \item Compute the overall score \(S\left( s_1, \,\ldots\, s_m \right)\); if the value is among the \(k\) highest, store it
+          \item Let \(s_{li}\) be the minimum score (the last seen under sorted access) of ranked list \(R_i\)
+          \item Define the threshold \(T = S\left( s_{l1}, \,\ldots\, s_{lm} \right)\)
+          \item If the score of the \(k\)-th object is less than \(T\), go back to~\ref{enum:threshold-algorithm-1}
+          \item Return the current \(k\) objects with the highest score
+        \end{enumerate}
+\end{itemize}
+
+The Threshold Algorithm is instance optimal among all algorithms that use random and sorted accesses:
+the stopping criterion depends on the scoring function.
+
+A visual representation of the algorithm is shown in Figure~\ref{fig:treshold-algorithm}:
+
+\begin{itemize}
+  \item the threshold point \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
+  \item the dashed red line separates the region of points with a higher score than \(\tau\) from the rest
+  \item the yellow region contains the points seen in all regions
+  \item the blue region contains the points not seen in any ranking
+  \item the algorithm stops when the yellow region contains at least \(k\) points with a score higher than \(\tau\)
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig[1.5]{figure-21.tikz}
+  \caption{Visualization of the Threshold algorithm}
+  \label{fig:treshold-algorithm}
+  \bigskip
+\end{figure}
+
+Generally speaking, the Threshold algorithm is more efficient than Fagin's algorithm, since it can adapt to the specific scoring function.
+To characterize the performance of the Threshold Algorithm, it's necessary to first define the \textbf{middleware cost}:
+\[ \text{cost} = S_A \cdot c_{S_A} + S_R \cdot c_{S_R} \]
+where:
+\begin{itemize}
+  \item \(S_A\) is the number of sorted accesses
+  \item \(S_R\) is the number of random accesses
+  \item \(c_{S_A}\) is the cost of a sorted access
+  \item \(c_{S_R}\) is the cost of a random access
+\end{itemize}
+
+In an ideal scenario, \(c_{S_A} = c_{S_R} = 1\), thus the cost is equal to the number of accesses;
+in other cases, the base cost may differ:
+
+\begin{itemize}
+  \item for web sources, usually \(c_{R_A} \gg c_{S_R}\)
+        \begin{itemize}
+          \item limit case: \(c_{R_A} = \infty\), the random access is impossible
+        \end{itemize}
+  \item some sources might not be accessible through sorted access
+        \begin{itemize}
+          \item happens when there's no index to process an attribute \(p_j\)
+          \item \(c_{S_A} = \infty\)
+        \end{itemize}
+\end{itemize}
+
+\paragraph{No Random Access Algorithm}
+The No Random Access Algorithm \textit{(or NORA)} is a variant of the Threshold Algorithm that does not use random accesses;
+it still returns the Top-k results, but the scores might be uncertain.
+
+The main idea of the algorithm is to maintain a lower bound \(S^-(o)\) and an upper bound \(S^+(o)\) of the score for each retrieved object \(o\);
+to achieve such an objective, a buffer \(B\) with unlimited capacity is used and it's kept sorted according to decreasing lower bounds \(S^-(o)\).
+The algorithm terminates when no new object \(\overline{o}\) can do better than any of the objects in the set.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), monotone function \(S\) combining ranked lists \(R_1, \,\ldots\, R_m\)
+  \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) objects according to \(S\)
+  \item \textbf{Procedure}:
+        \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
+          \item\label{enum:nra-algorithm-1} Do a sorted access in parallel in each list \(R_i\)
+          \item Store in \(B\) each retrieved object \(o\) and maintain \(S^-(o)\) and \(S^+(o)\) for each \(o\) and a threshold \(\tau\)
+          \item Go to~\ref{enum:nra-algorithm-1} as long as there's a new object \(\overline{o}\) such that \(S^+(o) > \tau\)
+        \end{enumerate}
+\end{itemize}
+
+The \textit{NRA} Algorithm is instance optimal among all algorithms that use only sorted accesses \textit{(don't use random accesses)};
+the optimality ratio is \(m\).
+The cost of the algorithm does not grow monotonically with \(k\):
+it might be cheaper to look for the top \(k\) objects than for the top \(k - 1\) objects.
+
+\paragraph{Comparison of the Algorithms}
+
+Table~\ref{tab:comparison-algorithms} shows a comparison between the three algorithms.
 
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\itshape}, cells={valign=m}}
-    type of index & type of structure & search key & ordering & allowed number of indexes \\
+  \begin{tblr}{colspec={c|c|c|c}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}}
+    algorithm & scoring function & data access       & notes                                  \\
     \hline
-    primary       & {sequential                                                           \\ with SK \(=\) OK} & unique & dense or sparse & one per table \\
-    secondary     & {sequential                                                           \\ with SK \(\neq\) OK} & unique or not & dense & many per table \\
-    clustering    & {sequential                                                           \\ with SK \(=\) OK} & not unique & normally sparse & one per table \\
+    B0        & \texttt{MAX}     & sorted            & instance-optimal                       \\
+    FA        & monotone         & sorted and random & cost not dependent on scoring function \\
+    TA        & monotone         & sorted and random & instance-optimal                       \\
+    NRA       & monotone         & sorted            & instance-optimal, no exact scores      \\
   \end{tblr}
-  \caption{Comparison of the three indexing techniques}
-  \label{tab:indexing-techniques}
+  \caption{Comparison of the algorithms}
+  \label{tab:comparison-algorithms}
+  \bigskip
+\end{table}
+
+\subsection{Skyline Queries}
+
+The Skylines Queries technique aims to retrieve the best objects in a set according to several different criteria.
+Instead of specifying a score function \textit{(as in the Top-k Queries)}, the algorithm is based on the notion of \textbf{dominance}:
+tuple \(t\) dominates tuple \(s\) \textit{(denoted \(t \prec s\))} if and only if:
+
+\begin{enumerate}
+  \item \(\forall \, i \ 1 \leq i \leq m: t[A_i] \leq s[A_i]\) - tuple \(t\) is better than \(s\) on all attributes
+  \item \(\exists \, k \ \land t[A_j] < s[A_j]\) - tuple \(t\) is better than \(s\) on at least one attribute
+\end{enumerate}
+
+Note that these conditions assume that a lower score is better;
+the same principle applies if the objective is to maximize the score function.
+This convention is the opposite of the one used in the Top-k Queries.
+
+The \textbf{skyline} of a relation is the set of its non-dominated tuples:
+
+\begin{itemize}
+  \item Maximal vectors problem \textit{(in computational geometry)} - find the set of non-dominated points in a set of points
+  \item Pareto-optimal solutions \textit{(in multi-objective optimization)} - find the set of non-dominated solutions in a set of solutions
+\end{itemize}
+
+In \(2D\), the shape of the contour of the dataset resembles a skyline \textit{(Figure~\ref{fig:skyline-2d})}.
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig[1.5]{figure-22.tikz}
+  \caption{Skyline in 2D}
+  \label{fig:skyline-2d}
+  \bigskip
+\end{figure}
+
+\subparagraph*{Properties of the skyline}
+
+\begin{itemize}
+  \item A tuple \(t\) is in the skyline if and only if is the Top-1 tuple according to at leas one monotone scoring function
+  \item The skyline is not the Top-k query, since there's no scoring function that yields in the first \(k\) positions the skyline points on all possible instances
+\end{itemize}
+
+\subparagraph*{Main aspects of skyline queries}
+
+\begin{itemize}
+  \item Pros:
+        \begin{itemize}[label=\cmarkthin]
+          \item Effective in identifying potentially interesting objects if nothing is known about the preference of a user
+          \item Very simple to use, as no parameter is needed
+        \end{itemize}
+  \item Cons:
+        \begin{itemize}[label=\xmarkthin]
+          \item Too many objects might be returned in large, non-correlated datasets
+          \item Computation is quadratic in the size of the dataset (and thus infeasible for large datasets)
+          \item Agnostic to the user's preferences
+        \end{itemize}
+  \item Extension:
+        \begin{itemize}
+          \item k-skyband: the set of tuples dominated by less than \(k\) tuples
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Skyline Queries in \sql}
+
+There's no standard \sql syntax for skyline queries;
+a proposed syntax is shown in Code~\ref{code:skyline-query-proposed}.
+A naively implemented skyline query would be very inefficient since it would require a full scan of the table;
+an example of such an implementation is shown in Code~\ref{code:skyline-query-naive}.
+
+\begin{lstlisting}[language=sql, morekeywords={SKYLINE}, caption={Proposed syntax for skyline queries}, label=code:skyline-query-proposed]
+SELECT <attributes>
+FROM <table>
+GROUP BY <grouping attributes>
+HAVING <condition>
+SKYLINE OF [ALL | DISTINCT] <attribute> [MIN | MAX | DIFF]
+  {, <attribute> [MIN | MAX | DIFF], ...}
+ORDER BY <attribute> [ASC | DESC] {, <attribute> [ASC | DESC], ...}
+\end{lstlisting}
+
+\begin{lstlisting}[language=sql, caption={Naive implementation of skyline queries}, label=code:skyline-query-naive]
+SELECT * FROM hotels AS h
+WHERE h.city = 'Paris' AND NOT EXISTS (
+  SELECT * FROM hotels AS h2
+  WHERE h2.city = h1.city AND
+    h1.distance <= h2.distance AND
+    h1.price <= h2.price AND
+    (
+      h1.distance < h2.distance OR
+      h1.price < h2.price
+    )
+)
+\end{lstlisting}
+
+\paragraph{Block Nested Loops Algorithm}
+
+The Block Nested Loops \textit{(BNL)} Algorithm is a skyline query algorithm that uses a \textbf{block} of tuples to perform the skyline computation.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: dataset \(D\) of multi dimensional points
+  \item[\(\rightarrow\)] \textbf{Output}: skyline of \(D\)
+  \item \textbf{Procedure}: shown in Code~\ref{code:block-nested-loops-algorithm}
+\end{itemize}
+
+\begin{lstlisting}[caption={Block Nested Loops algorithm}, label=code:block-nested-loops-algorithm]
+W := $\emptyset$
+for every point p $\in$ D
+  if p is not dominated by any point $in$ W
+    W := W $\setminus$ {points dominated by p}
+    W := W $\cup$ {p}
+  end
+end
+\end{lstlisting}
+
+The computation of the skyline is \(\mathcal{O}\left( n^2 \right)\), with \(n = |D|\); as such, it's very inefficient for large datasets.
+
+\paragraph{Sort-Filter-Skyline Algorithm}
+
+The Sort-Filter-Skyline \textit{(SFS)} Algorithm is a skyline query algorithm that uses a \textbf{sort} of the tuples to perform the skyline computation.
+
+\begin{itemize}
+  \item[\(\leftarrow\)] \textbf{Input}: dataset \(D\) of multi dimensional points
+  \item[\(\rightarrow\)] \textbf{Output}: skyline of \(D\)
+  \item \textbf{Procedure}: shown in Code~\ref{code:sort-filter-skyline-algorithm}
+\end{itemize}
+
+\begin{lstlisting}[caption={Sort-Filter-Skyline algorithm}, label=code:sort-filter-skyline-algorithm]
+S := sort(D) // sort by a monotone function of attributes of D
+W := $\emptyset$
+for every point p $in$ S
+  if p is not dominated by any point $in$ W
+    W := W $\cup$ {p}
+  end
+end
+\end{lstlisting}
+
+Pre-sorting is very convenient for large datasets, so the \textit{SFS} algorithm is more efficient than the \textit{BNL} algorithm:
+if the input is sorted, a later tuple cannot dominate any previous one.
+No two non-skyline points will ever be compared and every point in \(W\) can be immediately added to the skyline.
+
+The time complexity, however, is still \(\mathcal{O}\left( n^2 \right)\).
+
+\subsection{Comparison of Top-k and Skyline Queries}
+
+A simple comparison of the two techniques is shown in Table~\ref{tab:comparison-top-k-skyline}.
+
+\begin{table}
+  \centering
+  \bigskip
+  \begin{tblr}{colspec={r|c|c}, columns={valign=m}, row{1}={font=\itshape}}
+               & ranking queries & skyline queries \\
+    \hline
+    simplicity & \colorxmark     & \colorcmark     \\
+    {overall view of                               \\interesting results} & \colorxmark & \colorcmark \\
+    {control of                                    \\cardinality} & \colorcmark & \colorxmark \\
+    {trade-off among                               \\attributes} & \colorcmark & \colorxmark \\
+  \end{tblr}
+  \caption{Comparison of Top-k and Skyline Queries}
+  \label{tab:comparison-top-k-skyline}
   \bigskip
 \end{table}
 
@@ -2128,5 +3010,24 @@ A common notation to avoid ambiguity between Unlock and Update is to use the not
 
 In order to avoid deadlocks due to interleaved lock upgrades, any upgrade \(\texttt{SL} \rightarrow \texttt{XL}\) is not allowed;
 the transaction needs to acquire a \texttt{UL} lock first and then upgrade it to a \texttt{XL} lock.
+
+\subsection{Structures and Indexes}
+
+A comparison of indexing methods related to the data structures is shown in Table~\ref{tab:indexing-techniques}.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\itshape}, cells={valign=m}}
+    type of index & type of structure & search key & ordering & allowed number of indexes \\
+    \hline
+    primary       & {sequential                                                           \\ with SK \(=\) OK} & unique & dense or sparse & one per table \\
+    secondary     & {sequential                                                           \\ with SK \(\neq\) OK} & unique or not & dense & many per table \\
+    clustering    & {sequential                                                           \\ with SK \(=\) OK} & not unique & normally sparse & one per table \\
+  \end{tblr}
+  \caption{Comparison of the three indexing techniques}
+  \label{tab:indexing-techniques}
+  \bigskip
+\end{table}
 
 \end{document}

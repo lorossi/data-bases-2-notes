@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (3) at (7.5, 0) {};
+		\node [style=none, fill={rgb,255: red,0; green,128; blue,128}] (16) at (0, 0) {};
+		\node [style=none] (17) at (0, 7.5) {};
+		\node [style=none] (37) at (4, 0) {};
+		\node [style=none] (39) at (4, 0) {};
+		\node [style=none] (43) at (6, 0) {};
+		\node [style=none] (48) at (0, 4) {};
+		\node [style=none] (54) at (0, 6) {};
+		\node [style=none] (69) at (6, 0) {};
+		\node [style=none] (70) at (4, 4) {};
+		\node [style=none] (73) at (0, 0) {};
+		\node [style=none] (74) at (6, 0) {};
+		\node [style=none] (77) at (4, 0) {};
+		\node [style=none] (50) at (0, 4) {};
+		\node [style=none] (68) at (0, 6) {};
+		\node [style=small red] (72) at (4, 4) {};
+		\node [style=none, text={rgb,255: red,191; green,0; blue,64}] (78) at (4.35, 4.35) {\(\tau\)};
+		\node [style=small black] (79) at (3.25, 4.75) {};
+		\node [style=small black] (80) at (1.25, 5.5) {};
+		\node [style=small black] (81) at (1.75, 4.5) {};
+		\node [style=small black] (82) at (0.75, 4) {};
+		\node [style=small black] (83) at (4, 0.75) {};
+		\node [style=small black] (84) at (5.5, 1) {};
+		\node [style=small black] (85) at (4.5, 3) {};
+		\node [style=small black] (86) at (5.5, 5.5) {};
+		\node [style=small black] (87) at (5, 4.75) {};
+		\node [style=none] (88) at (6, 6) {};
+		\node [style=none] (89) at (2, 6) {};
+		\node [style=none] (90) at (6, 2) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=yellow fill] (88.center)
+			 to (68.center)
+			 to (50.center)
+			 to (72.center)
+			 to (77.center)
+			 to (74.center)
+			 to cycle;
+		\draw [style=blue fill] (73.center)
+			 to (37.center)
+			 to (72.center)
+			 to (48.center)
+			 to cycle;
+		\draw [style=orange fill] (74.center) to (77.center);
+		\draw [style=big arrow] (16.center) to (17.center);
+		\draw [style=big arrow] (16.center) to (3.center);
+		\draw [style=orange fill] (72) to (50.center);
+		\draw [style=orange fill] (50.center) to (68.center);
+		\draw [style=dashed, draw={rgb,255: red,191; green,0; blue,64}, in=135, out=-45] (89.center) to (90.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

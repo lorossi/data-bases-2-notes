@@ -15,7 +15,7 @@
 		\node [style=none] (13) at (14, -14) {};
 		\node [style=textbox] (14) at (14, -6) {lock tables};
 		\node [style=none] (15) at (-9, 0) {\shortstack[r]{\texttt{select}, \texttt{insert}, \texttt{delete}\\\texttt{delete}, \texttt{update}}};
-		\node [style=none] (16) at (14, 1) {\texttt{begin}, \texttt{commit}, \texttt{abort}};
+		\node [style=none] (16) at (14, 1.25) {\texttt{begin}, \texttt{commit}, \texttt{abort}};
 		\node [style=none] (17) at (-9, -8) {\shortstack[r]{transforms query requests \\ into \texttt{read}/\texttt{write} requests}};
 		\node [style=none] (18) at (-9, -11) {\shortstack[r]{manages the main memory \\ guaranteeing reliability}};
 		\node [style=none] (19) at (-9, -14) {\shortstack[r]{receives the \texttt{read}/\texttt{write} \\ requests}};

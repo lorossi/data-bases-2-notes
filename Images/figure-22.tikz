@@ -1,0 +1,89 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (3) at (7.5, 0) {};
+		\node [style=none, fill={rgb,255: red,0; green,128; blue,128}] (16) at (0, 0) {};
+		\node [style=none] (17) at (0, 7.5) {};
+		\node [style=bottom align] (30) at (7.25, -0.25) {\(A_1\)};
+		\node [style=left align] (31) at (-0.25, 7.25) {\(A_2\)};
+		\node [style=none] (33) at (1, -0.25) {};
+		\node [style=none] (35) at (2, -0.25) {};
+		\node [style=none] (37) at (3, -0.25) {};
+		\node [style=none] (39) at (4, -0.25) {};
+		\node [style=none] (41) at (5, -0.25) {};
+		\node [style=none] (43) at (6, -0.25) {};
+		\node [style=none] (69) at (6, -0.25) {};
+		\node [style=bottom align] (72) at (1, -0.25) {\footnotesize 1};
+		\node [style=bottom align] (73) at (2, -0.25) {\footnotesize 2};
+		\node [style=bottom align] (74) at (3, -0.25) {\footnotesize 3};
+		\node [style=bottom align] (75) at (4, -0.25) {\footnotesize 4};
+		\node [style=bottom align] (76) at (5, -0.25) {\footnotesize 5};
+		\node [style=bottom align] (84) at (6, -0.25) {\footnotesize 6};
+		\node [style=small black] (85) at (1, 5) {};
+		\node [style=small black] (86) at (2, 3) {};
+		\node [style=small black] (87) at (4, 1) {};
+		\node [style=small white] (88) at (1.25, 6) {};
+		\node [style=small white] (89) at (1.5, 4) {};
+		\node [style=small white] (90) at (2, 3.75) {};
+		\node [style=small white] (91) at (2.75, 3) {};
+		\node [style=small white] (92) at (4, 1.75) {};
+		\node [style=small white] (93) at (4.5, 1.5) {};
+		\node [style=none] (94) at (0.5, 6) {};
+		\node [style=none] (95) at (0.5, 5) {};
+		\node [style=small black] (96) at (1, 3) {};
+		\node [style=small black] (97) at (2, 1) {};
+		\node [style=small black] (98) at (4, 0.5) {};
+		\node [style=none] (99) at (6, 0.5) {};
+		\node [style=none] (101) at (0.25, 6) {};
+		\node [style=none] (103) at (0.25, 5) {};
+		\node [style=small white] (104) at (4.75, 1) {};
+		\node [style=none] (106) at (0.25, 4) {};
+		\node [style=none] (108) at (0.25, 3) {};
+		\node [style=none] (110) at (0.25, 2) {};
+		\node [style=none] (112) at (0.25, 1) {};
+		\node [style=none] (44) at (-0.25, 1) {};
+		\node [style=none] (46) at (-0.25, 2) {};
+		\node [style=none] (48) at (-0.25, 3) {};
+		\node [style=none] (50) at (-0.25, 4) {};
+		\node [style=none] (52) at (-0.25, 5) {};
+		\node [style=none] (54) at (-0.25, 6) {};
+		\node [style=none] (68) at (-0.25, 6) {};
+		\node [style=left align] (78) at (-0.25, 1) {\footnotesize 1};
+		\node [style=left align] (79) at (-0.25, 2) {\footnotesize 2};
+		\node [style=left align] (80) at (-0.25, 3) {\footnotesize 3};
+		\node [style=left align] (81) at (-0.25, 4) {\footnotesize 4};
+		\node [style=left align] (82) at (-0.25, 5) {\footnotesize 5};
+		\node [style=left align] (83) at (-0.25, 6) {\footnotesize 6};
+		\node [style=none] (100) at (-0.25, 6) {};
+		\node [style=none] (102) at (-0.25, 5) {};
+		\node [style=none] (105) at (-0.25, 4) {};
+		\node [style=none] (107) at (-0.25, 3) {};
+		\node [style=none] (109) at (-0.25, 2) {};
+		\node [style=none] (111) at (-0.25, 1) {};
+		\node [style=small white] (113) at (1.75, 5.5) {};
+		\node [style=right align] (114) at (-3, -1) {skyline};
+		\node [style=none] (115) at (1, 1) {};
+		\node [style=right align] (116) at (8, 7) {non-skyline};
+		\node [style=none] (117) at (4.5, 4.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=big arrow] (16.center) to (17.center);
+		\draw [style=big arrow] (16.center) to (3.center);
+		\draw [style=big] (94.center)
+			 to [in=90, out=-90] (95.center)
+			 to (85.center)
+			 to (96.center)
+			 to (86.center)
+			 to [in=90, out=-90] (97.center)
+			 to (87.center)
+			 to (98.center)
+			 to (99.center);
+		\draw (101.center) to (100.center);
+		\draw (103.center) to (102.center);
+		\draw (106.center) to (105.center);
+		\draw (108.center) to (107.center);
+		\draw (110.center) to (109.center);
+		\draw (112.center) to (111.center);
+		\draw [style=solid arrow, in=15, out=180, looseness=1.25] (116) to (117.center);
+		\draw [style=solid arrow, in=-165, out=0, looseness=0.75] (114) to (115.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
