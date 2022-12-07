@@ -163,22 +163,31 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
         \end{itemize}
 \end{itemize}
 
-The mechanisms provided by the \dbms are shown in Table~\ref{tab:ACID-properties-DBMS}.
+\subsection{\dbms and ACID properties}
+The mechanisms provided by the \dbms are:
 
-\begin{table}[htbp]
-  \bigskip
-  \centering
-  \scalebox{0.7}{
-    \begin{tabular}{c|c|c|c}
-      \textit{Atomicity} & \textit{Consistency} & \textit{Isolation} & \textit{Durability} \\
-      \hline
-      \shortstack{\smallskip                                                               \\ \texttt{abort}-\texttt{rollback}-\texttt{restart} \\ reliability manager} & \shortstack{\smallskip \\ integrity checking of the \dbms \\ integrity control system at query execution time} & \shortstack{\smallskip \\ concurrency control \\ Concurrency Control System} & \shortstack{\smallskip \\ recovery management \\ reliability manager}
-    \end{tabular}
-  }
-  \bigskip
-  \caption{ACID properties and the \dbms mechanisms}
-  \label{tab:ACID-properties-DBMS}
-\end{table}
+\begin{itemize}
+  \item \textbf{Atomicity}
+        \begin{itemize}
+          \item \textbf{abort}: the transaction is aborted and rolled back
+          \item \textbf{rollback}: the transaction is rolled back to the state it was before the transaction started
+          \item \textbf{restart}: the transaction is restarted
+          \item \textbf{reliability manager}: the \dbms provides a reliability manager that manages the execution of the transaction
+        \end{itemize}
+  \item \textbf{Consistency}
+        \begin{itemize}
+          \item \textbf{integrity checking of the \dbms}: the \dbms checks the integrity of the database before the transaction is committed
+          \item \textbf{integrity control system at query execution time}: the \dbms checks the integrity of the database at query execution time
+        \end{itemize}
+  \item \textbf{Isolation}
+        \begin{itemize}
+          \item \textbf{concurrency control}: the \dbms provides a concurrency control system that manages the execution of the transaction
+        \end{itemize}
+  \item \textbf{Durability}
+        \begin{itemize}
+          \item \textbf{recovery management}: the \dbms provides a reliability manager that manages the execution of the transaction
+        \end{itemize}
+\end{itemize}
 
 \clearpage
 
@@ -392,7 +401,7 @@ As such, it is \(\approx_c\) to a serial schedule \(S'\).
 Without loss of generality, the transaction of \(S\) can be renamed such that their order is \(T_1, T_2, \dots, T_n\).
 
 Since the serial schedule has all conflicting pairs in the same order as schedule \(S\), the \CG will have arcs only connecting the pairs \((i, j)\) with \(i < j\).
-As a direct consequence, the \CG will be acyclic \textit{(a cycle requires at least an arc \((i, j\) with \(i > j\))}.
+As a direct consequence, the \CG will be acyclic \textit{(a cycle requires at least an arc \((i, j)\) with \(i > j\))}.
 
 \paragraph{Acyclicity of the \CG implies \CSR}
 
@@ -494,13 +503,13 @@ The lock manager receives the primitives from the transaction and grants resourc
 \begin{table}[htbp]
   \bigskip
   \centering
-  \begin{tabular}{c|c|c|c}
-    \diagbox{\texttt{request}}{\texttt{status}} & \texttt{free}                 & \texttt{r-locked}                                      & \texttt{w-locked}             \\
+  \begin{tblr}{colspec={c|c|c|c}, cells={font=\ttfamily}, cell{5}{3}={font=\itshape}}
+    {request \(\rightarrow\)                                                                              \\ status \(\downarrow\)}  & free                 & r-locked                                             & w-locked             \\
     \hline
-    \texttt{r\_lock}                            & \colorcmark \texttt{r-locked} & \colorcmark \texttt{r-locked(n++)}                     & \colorxmark \texttt{w-locked} \\
-    \texttt{w\_lock}                            & \colorcmark \texttt{w-locked} & \colorxmark \texttt{r-locked}                          & \colorxmark \texttt{w-locked} \\
-    \texttt{unlock}                             & \colorxmark                   & \colorcmark/\colorxmark \textit{depends on \texttt{n}} & \colorcmark \texttt{free}
-  \end{tabular}
+    r\_lock & \colorcmark r-locked & \colorcmark r-locked(n++)                     & \colorxmark w-locked \\
+    w\_lock & \colorcmark w-locked & \colorxmark r-locked                          & \colorxmark w-locked \\
+    unlock  & \colorxmark          & \colorcmark/\colorxmark depends on \texttt{n} & \colorcmark free
+  \end{tblr}
   \bigskip
   \caption{Conflict table for locking: \texttt{n} is the number of concurrent readers on the object, incremented by \texttt{r\_lock} and decremented by \texttt{unlock}.}
   \label{tab:conflict-table}
@@ -732,7 +741,7 @@ The anomalies of the above non commit-projection schedule are called \textbf{dir
 
 The \texttt{SQL} standard defines transaction isolation levels which specify the anomalies that should be prevented by the \dbms;
 however, the level does not affect write locks.
-A transaction is always able to get (and hold) an exclusive lock on any data it modifies until its commit point, regardless of the isolation level.
+A transaction is always able to get \textit{(and hold)} an exclusive lock on any data it modifies until its commit point, regardless of the isolation level.
 For read operations, levels define the degree of protection against modifications made by other transactions.
 Furthermore, different systems offer different guarantees about lost updates.
 
@@ -745,36 +754,33 @@ Normally, commercial systems use locks and timestamp-based concurrency control m
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tabular}{l|c|c|c}
-    \textit{isolation level}  & \textit{dirty read} & \textit{non repeatable read} & \textit{phantoms} \\
+  \begin{tblr}{colspec={r|c|c|c}, row{1}={font=\itshape}, column{1}={font=\itshape}}
+    isolation level  & dirty read  & non repeatable read & phantoms    \\
     \hline
-    \textit{read uncommitted} & \colorcmark         & \colorcmark                  & \colorcmark       \\
-    \textit{read committed}   & \colorxmark         & \colorcmark                  & \colorcmark       \\
-    \textit{repeatable read}  & \colorxmark         & \colorxmark                  & \colorcmark       \\
-    \textit{snapshot}         & \colorxmark         & \colorxmark                  & \colorxmark       \\
-    \textit{serializable}     & \colorxmark         & \colorxmark                  & \colorxmark       \\
-  \end{tabular}
+    read uncommitted & \colorcmark & \colorcmark         & \colorcmark \\
+    read committed   & \colorxmark & \colorcmark         & \colorcmark \\
+    repeatable read  & \colorxmark & \colorxmark         & \colorcmark \\
+    snapshot         & \colorxmark & \colorxmark         & \colorxmark \\
+    serializable     & \colorxmark & \colorxmark         & \colorxmark \\
+  \end{tblr}
   \caption{\texttt{SQL} isolation levels}
   \label{tab:sql-isolation-levels}
   \bigskip
 \end{table}
 
-\begin{sidewaystable}[htbp]
-  % TODO find a way to clean this mess
+\begin{table}[htbp]
   \centering
   \bigskip
-  \scalebox{0.7}{
-    \begin{tabular}{c|c|c|c|c|c}
-      \diagbox{\textit{Operation}}{\textit{Isolation level}} & \textit{no isolation}           & \textit{read uncommitted} & \textit{read committed} & \textit{repeatable read} & \textit{serializable}                           \\
-      \hline
-      \texttt{READ}                                          & none                            & none                      & shared record lock (RL) & shared record lock (RL)  & shared file lock (FS)                           \\
-      \texttt{WRITE} or \texttt{update}                      & none or update record lock (RU) & update record lock (RU)   & update record lock (RU) & update record lock (RU)  & update file lock (FU) and intent file lock (IX) \\
-      \texttt{SELECT}                                        & -                               & -                         & -                       & -                        & intent file lock (IX)                           \\
-    \end{tabular}
-  }
-  \caption{\texttt{SQL} isolation levels and locks}
+  \begin{tblr}{colspec={r|c|c|c|c|c}, cells={valign=m}, row{1}={font=\itshape}, cell{2-4}{2-6}={font=\itshape}}
+                                     & no isolation & read uncommitted & read committed & repeatable read & serializable \\
+    \hline
+    \texttt{READ}                    & none         & none             & RL             & RL              & FS           \\
+    \texttt{WRITE} - \texttt{UPDATE} & none or RU   & RU               & RU             & RU              & FU or IX     \\
+    \texttt{SELECT}                  & -            & -                & -              & -               & IX           \\
+  \end{tblr}
+  \caption{\texttt{SQL} isolation levels and locks. Legend: \textit{RL} = record lock; \textit{FS} = file lock; \textit{RU} = record update lock; \textit{FU} = file update lock; \textit{IX} = intent lock}
   \label{tab:sql-isolation-locks}
-\end{sidewaystable}
+\end{table}
 
 \bigskip
 It's important to notice that serializable transactions don't necessarily execute serially:
@@ -1031,9 +1037,9 @@ In real-world applications, deadlocks are not a common problem, as their probabi
 
 Consider a file with \(n\) records and \(2\) transactions doing each \(2\) accesses to their records \textit{(assuming a uniform distribution of accesses)}.
 Then, the probability of:
-\begin{itemize}
-  \item a conflict is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \dfrac{1}{n} \right) = n \cdot \dfrac{1}{n} \cdot \dfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
-  \item a deadlock is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\) as it requires mutual conflicts between transactions
+\begin{itemize}[itemsep=0.5ex]
+  \item a \textbf{conflict} is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \dfrac{1}{n} \right) = n \cdot \dfrac{1}{n} \cdot \dfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
+  \item a \textbf{deadlock} is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\) as it requires mutual conflicts between transactions
 \end{itemize}
 
 While deadlocks are a rare occurrence, the probability of them happening increases linearly with regard to the number of concurrent transactions in the system but it increases quadratically with the number of data accesses each transaction performs.
@@ -1051,13 +1057,13 @@ Table~\ref{tab:update-lock-compatibility} shows the escalation of the update loc
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tabular}{c|c|c|c|c}
-    \diagbox{\textit{request}}{\textit{status}} & \textit{free} & \texttt{SL} & \texttt{UL} & \texttt{XL} \\
+  \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\ttfamily}, column{1}={font=\ttfamily}, cell{1}{1}={valign=b, halign=r}, cells={valign=m}}
+    {status \(\rightarrow\)                                    \\ request \(\downarrow\)} & free & SL & UL & XL \\
     \hline
-    \texttt{SL}                                 & \colorcmark   & \colorcmark & \colorcmark & \colorxmark \\
-    \texttt{UL}                                 & \colorcmark   & \colorcmark & \colorxmark & \colorxmark \\
-    \texttt{XL}                                 & \colorcmark   & \colorxmark & \colorxmark & \colorxmark
-  \end{tabular}
+    SL & \colorcmark & \colorcmark & \colorcmark & \colorxmark \\
+    UL & \colorcmark & \colorcmark & \colorxmark & \colorxmark \\
+    XL & \colorcmark & \colorxmark & \colorxmark & \colorxmark
+  \end{tblr}
   \bigskip
   \caption{Update lock compatibility}
   \label{tab:update-lock-compatibility}
@@ -1137,15 +1143,15 @@ The rules of compatibility used by the lock manager to decide whether to accept 
 \begin{table}[htbp]
   \bigskip
   \centering
-  \begin{tabular}{c|c|c|c|c|c|c}
-    \diagbox{\textit{request}}{\textit{resource state}} & \textit{free} & \texttt{ISL} & \texttt{IXL} & \texttt{SL} & \texttt{SIXL} & \texttt{XL} \\
+  \begin{tblr}{colspec={c|c|c|c|c|c|c}, row{1}={font=\ttfamily}, column{1}={font=\ttfamily}, cell{1}{1}={valign=b, halign=r}, cells={valign=m}}
+    {resource \(\rightarrow\)                                                                \\ request \(\downarrow\)} & free & ISL & IXL & SL & SIXL & XL \\
     \hline
-    \texttt{ISL}                                        & \colorcmark   & \colorcmark  & \colorcmark  & \colorcmark & \colorcmark   & \colorxmark \\
-    \texttt{IXL}                                        & \colorcmark   & \colorcmark  & \colorcmark  & \colorxmark & \colorxmark   & \colorxmark \\
-    \texttt{SL}                                         & \colorcmark   & \colorcmark  & \colorxmark  & \colorcmark & \colorxmark   & \colorxmark \\
-    \texttt{SIXL}                                       & \colorcmark   & \colorcmark  & \colorxmark  & \colorxmark & \colorxmark   & \colorxmark \\
-    \texttt{XL}                                         & \colorcmark   & \colorxmark  & \colorxmark  & \colorxmark & \colorxmark   & \colorxmark
-  \end{tabular}
+    ISL  & \colorcmark & \colorcmark & \colorcmark & \colorcmark & \colorcmark & \colorxmark \\
+    IXL  & \colorcmark & \colorcmark & \colorcmark & \colorxmark & \colorxmark & \colorxmark \\
+    SL   & \colorcmark & \colorcmark & \colorxmark & \colorcmark & \colorxmark & \colorxmark \\
+    SIXL & \colorcmark & \colorcmark & \colorxmark & \colorxmark & \colorxmark & \colorxmark \\
+    XL   & \colorcmark & \colorxmark & \colorxmark & \colorxmark & \colorxmark & \colorxmark
+  \end{tblr}
   \caption{Hierarchical lock compatibility}
   \label{tab:hierarchical-lock-compatibility}
   \bigskip
@@ -1283,16 +1289,14 @@ The main differences between \TPL and \TS are shown in Table~\ref{tab:tpl-vs-ts}
 \begin{table}
   \centering
   \bigskip
-  \scalebox{0.9}{
-    \begin{tabular}{l|l|l}
-                             & \TPL                                 & \TS                                               \\
-      \hline
-      \textit{transactions}  & can be actively waiting              & killed and restarted                              \\
-      \textit{serialization} & imposed by conflicts                 & imposed by timestamps                             \\
-      \textit{delays}        & caused by commit wait in strict \TPL & none                                              \\
-      \textit{deadlocks}     & can be caused                        & prevented via the wound-wait and wait-die methods \\
-    \end{tabular}
-  }
+  \begin{tblr}{colspec={r|c|c}, column{1}={font=\itshape}}
+                  & \TPL                                 & \TS                                               \\
+    \hline
+    transactions  & can be actively waiting              & killed and restarted                              \\
+    serialization & imposed by conflicts                 & imposed by timestamps                             \\
+    delays        & caused by commit wait in strict \TPL & none                                              \\
+    deadlocks     & can be caused                        & prevented via the wound-wait and wait-die methods \\
+  \end{tblr}
   \caption{Differences between \TPL and \TS}
   \label{tab:tpl-vs-ts}
   \bigskip
@@ -1863,7 +1867,7 @@ blocks can be contiguous on disk or sparse.
 Two types of sequential structures are:
 
 \begin{itemize}
-  \item \textbf{entry-sequenced} organization: the sequence of tuples is dictated by their e\textbf{ntry orde}r
+  \item \textbf{entry-sequenced} organization: the sequence of tuples is dictated by their \textbf{entry order}
   \item \textbf{sequentially-ordered} organization: the sequence of tuples is dictated by the \textbf{value of one or more keys}
 \end{itemize}
 
@@ -1924,11 +1928,11 @@ In real-world applications, the entry-sequenced organization is the most common 
   \centering
   \bigskip
   \begin{tblr}{colspec={r|c|c}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}, cells={valign=m}}
-                                                                    & entry-sequenced & sequentially-ordered \\
+                                & entry-sequenced & sequentially-ordered \\
     \hline
-    INSERT                                                          & \colorcmark     & \colorxmark          \\
-    UPDATE                                                          & \colorcmark     & \colorxmark          \\
-    DELETE                                                          & \colorxmark     & \colorxmark          \\
+    INSERT                      & \colorcmark     & \colorxmark          \\
+    UPDATE                      & \colorcmark     & \colorxmark          \\
+    DELETE                      & \colorxmark     & \colorxmark          \\
     SELECT * FROM T WHERE [...] & \colorxmark     & \colorcmark          \\
   \end{tblr}
   \caption{Comparison of sequential structures}
@@ -2549,7 +2553,7 @@ The most common class of distance functions is the \textbf{LP-norm} (or Minkowsk
 Some relevant cases:
 
 \begin{itemize}[itemsep=1ex]
-  \item \(p = 1 \rightarrow L_1(t, q) = \displaystyle\sum_{i=1}^m \left| t_i - q_i \right|\), M\textbf{anhattan} distance
+  \item \(p = 1 \rightarrow L_1(t, q) = \displaystyle\sum_{i=1}^m \left| t_i - q_i \right|\), \textbf{Manhattan} distance
   \item \(p = 2 \rightarrow L_2(t, q) = \sqrt{\displaystyle\sum_{i=1}^m \left( t_i - q_i \right)^2}\), \textbf{Euclidean} distance
   \item \(p = \infty \rightarrow L_\infty(t, q) =\displaystyle \max_{i=1}^m \left| t_i - q_i \right|\), \textbf{Chebyshev} distance
 \end{itemize}
@@ -3021,9 +3025,9 @@ A comparison of indexing methods related to the data structures is shown in Tabl
   \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\itshape}, cells={valign=m}}
     type of index & type of structure & search key & ordering & allowed number of indexes \\
     \hline
-    primary       & {sequential                                                           \\ with SK \(=\) OK} & unique & dense or sparse & one per table \\
-    secondary     & {sequential                                                           \\ with SK \(\neq\) OK} & unique or not & dense & many per table \\
-    clustering    & {sequential                                                           \\ with SK \(=\) OK} & not unique & normally sparse & one per table \\
+    primary       & {sequential                                                           \\ with \textit{SK} \(=\) \textit{OK}} & unique & dense or sparse & one per table \\
+    secondary     & {sequential                                                           \\ with \textit{SK} \(\neq\) \textit{OK}} & unique or not & dense & many per table \\
+    clustering    & {sequential                                                           \\ with \textit{SK} \(=\) \textit{OK}} & not unique & normally sparse & one per table \\
   \end{tblr}
   \caption{Comparison of the three indexing techniques}
   \label{tab:indexing-techniques}
