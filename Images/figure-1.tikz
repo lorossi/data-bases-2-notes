@@ -1,31 +1,31 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=rectangle] (0) at (0, 0) {database schema};
-		\node [style=rectangle] (1) at (0, -3) {DDL compiler};
-		\node [style=rectangle] (2) at (0, -6) {data dictionary manager};
+		\node [style=textbox] (0) at (0, 0) {database schema};
+		\node [style=textbox] (1) at (0, -3) {DDL compiler};
+		\node [style=textbox] (2) at (0, -6) {data dictionary manager};
 		\node [style=none] (3) at (0, 3.5) {DBA};
-		\node [style=rectangle] (4) at (10, 0) {queries};
-		\node [style=rectangle] (5) at (10, -3) {query processor};
-		\node [style=rectangle] (6) at (10, -6) {authorization control};
+		\node [style=textbox] (4) at (10, 0) {queries};
+		\node [style=textbox] (5) at (10, -3) {query processor};
+		\node [style=textbox] (6) at (10, -6) {authorization control};
 		\node [style=none] (7) at (0, 3) {};
 		\node [style=none] (8) at (10, 3.5) {users};
 		\node [style=none] (9) at (10, 3) {};
 		\node [style=none] (12) at (20, 3.5) {application programs};
 		\node [style=none] (13) at (20, 3) {};
-		\node [style=rectangle] (15) at (20, -3) {DML compiler};
-		\node [style=rectangle] (16) at (10, -9) {command processor};
-		\node [style=rectangle] (17) at (10, -12) {transaction manager};
-		\node [style=rectangle] (18) at (0, -12) {scheduler};
-		\node [style=rectangle] (19) at (0, -9) {query optimizer};
-		\node [style=rectangle] (20) at (0, -15) {recovery manager};
-		\node [style=rectangle] (22) at (10, -15) {buffer manager};
-		\node [style=rectangle] (23) at (20, -9) {integrity checker};
-		\node [style=rectangle] (24) at (10, -19) {data files};
+		\node [style=textbox] (15) at (20, -3) {DML compiler};
+		\node [style=textbox] (16) at (10, -9) {command processor};
+		\node [style=textbox] (17) at (10, -12) {transaction manager};
+		\node [style=textbox] (18) at (0, -12) {scheduler};
+		\node [style=textbox] (19) at (0, -9) {query optimizer};
+		\node [style=textbox] (20) at (0, -15) {recovery manager};
+		\node [style=textbox] (22) at (10, -15) {buffer manager};
+		\node [style=textbox] (23) at (20, -9) {integrity checker};
+		\node [style=textbox] (24) at (10, -19) {data files};
 		\node [style=none] (25) at (-5, 2) {};
 		\node [style=none] (26) at (25, 2) {};
 		\node [style=none] (27) at (-5, -17) {};
 		\node [style=none] (28) at (25, -17) {};
-		\node [style=none, rotate=90] (29) at (-5.5, -7.5) {DMBS};
+		\node [style=none, rotate=90] (29) at (-5.75, -7.5) {DMBS};
 		\node [style=none] (30) at (-4.5, -16.5) {};
 		\node [style=none] (31) at (24.5, -16.5) {};
 		\node [style=none] (32) at (24.5, -7.5) {};
@@ -38,8 +38,8 @@
 		\node [style=none] (39) at (-4, -14) {};
 		\node [style=none] (40) at (14, -14) {};
 		\node [style=none] (41) at (14, -16) {};
-		\node [style=left align] (42) at (14, -15) {data manager};
-		\node [style=left align] (43) at (15, -7) {database manager};
+		\node [style=right align] (42) at (14.25, -15) {data manager};
+		\node [style=right align] (43) at (15.25, -6.75) {database manager};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=big arrow] (0) to (1);

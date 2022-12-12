@@ -6,6 +6,7 @@
 
 \ProcessOptions\relax
 
+% macros for common abbreviations
 \newcommand{\CC}{\shortfor{CC}}
 \newcommand{\CSR}{\shortfor{CSR}}
 \newcommand{\TPL}{\shortfor{2PL}}
@@ -16,7 +17,19 @@
 \newcommand{\TS}{\shortfor{TS}}
 \newcommand{\SI}{\shortfor{SI}}
 
+% macros for fancy NP and NP-complete
 \newcommand{\NP}{\(\mathcal{NP}\)\xspace}
 \newcommand{\NPC}{\NP-\textit{complete}\xspace}
 
+% macros for common languages and frameworks
 \newcommand{\sql}{\texttt{SQL}\xspace}
+\newcommand{\java}{\texttt{Java}\xspace}
+\newcommand{\javab}{\texttt{JavaBean}\xspace}
+\newcommand{\jpa}{\texttt{JPA}\xspace}
+\newcommand{\jta}{\texttt{JTA}\xspace}
+
+% workaround for showing annotations as keywords
+\lstdefinelanguage{annotatedjava}{
+  language=Java,
+  morecomment=[l][keywordstyle]{@},
+}

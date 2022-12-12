@@ -87,8 +87,8 @@ A \textbf{\dbms} \textit{(short for Data Base Management System)} is a system \t
         \end{itemize}
   \item Database \textbf{communication}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item \dbms provides call level interfaces, ODBC-JDBC, and JPA persistence provider
-          \item The state of an object and the state of the persistent data that corresponds to it is synchronized by the \dbms via JPA manage entities
+          \item \dbms provides call level interfaces, \texttt{ODBC}-\texttt{JDBC}, and \jpa persistence provider
+          \item The state of an object and the state of the persistent data that corresponds to it is synchronized by the \dbms via \jpa manage entities
         \end{itemize}
   \item Data \textbf{ranking}
         \begin{itemize}[label=\(\rightarrow\)]
@@ -2846,7 +2846,7 @@ In \(2D\), the shape of the contour of the dataset resembles a skyline \textit{(
 \begin{figure}[htbp]
   \centering
   \bigskip
-  \tikzfig[1.5]{figure-22.tikz}
+  \tikzfig[1.25]{figure-22.tikz}
   \caption{Skyline in 2D}
   \label{fig:skyline-2d}
   \bigskip
@@ -2862,20 +2862,20 @@ In \(2D\), the shape of the contour of the dataset resembles a skyline \textit{(
 \subparagraph*{Main aspects of skyline queries}
 
 \begin{itemize}
-  \item Pros:
+  \item \textbf{Pros}:
         \begin{itemize}[label=\cmarkthin]
-          \item Effective in identifying potentially interesting objects if nothing is known about the preference of a user
-          \item Very simple to use, as no parameter is needed
+          \item \textbf{Effective} in identifying potentially interesting objects if nothing is known about the preference of a user
+          \item Very \textbf{simple} to use, as no parameter is needed
         \end{itemize}
-  \item Cons:
+  \item \textbf{Cons}:
         \begin{itemize}[label=\xmarkthin]
-          \item Too many objects might be returned in large, non-correlated datasets
-          \item Computation is quadratic in the size of the dataset (and thus infeasible for large datasets)
-          \item Agnostic to the user's preferences
+          \item \textbf{Too many objects} might be returned in large, non-correlated datasets
+          \item Computation is \textbf{quadratic} in the size of the dataset \textit{(and thus infeasible for large datasets)}
+          \item \textbf{Agnostic} to the user's preferences
         \end{itemize}
-  \item Extension:
+  \item \textbf{Extension}:
         \begin{itemize}
-          \item k-skyband: the set of tuples dominated by less than \(k\) tuples
+          \item \textbf{k-skyband}: the set of tuples dominated by less than \(k\) tuples
         \end{itemize}
 \end{itemize}
 
@@ -2945,8 +2945,8 @@ The Sort-Filter-Skyline \textit{(SFS)} Algorithm is a skyline query algorithm th
 \begin{lstlisting}[caption={Sort-Filter-Skyline algorithm}, label=code:sort-filter-skyline-algorithm]
 S := sort(D) // sort by a monotone function of attributes of D
 W := $\emptyset$
-for every point p $in$ S
-  if p is not dominated by any point $in$ W
+for every point p $\in$ S
+  if p is not dominated by any point $\in$ W
     W := W $\cup$ {p}
   end
 end
@@ -2962,21 +2962,1119 @@ The time complexity, however, is still \(\mathcal{O}\left( n^2 \right)\).
 
 A simple comparison of the two techniques is shown in Table~\ref{tab:comparison-top-k-skyline}.
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \bigskip
   \begin{tblr}{colspec={r|c|c}, columns={valign=m}, row{1}={font=\itshape}}
-               & ranking queries & skyline queries \\
+                                        & ranking queries & skyline queries \\
     \hline
-    simplicity & \colorxmark     & \colorcmark     \\
-    {overall view of                               \\interesting results} & \colorxmark & \colorcmark \\
-    {control of                                    \\cardinality} & \colorcmark & \colorxmark \\
-    {trade-off among                               \\attributes} & \colorcmark & \colorxmark \\
+    simplicity                          & \colorxmark     & \colorcmark     \\
+    overall view of interesting results & \colorxmark     & \colorcmark     \\
+    control of cardinality              & \colorcmark     & \colorxmark     \\
+    trade-off among attributes          & \colorcmark     & \colorxmark     \\
   \end{tblr}
   \caption{Comparison of Top-k and Skyline Queries}
   \label{tab:comparison-top-k-skyline}
   \bigskip
 \end{table}
+
+\clearpage
+
+\section{Java Persistence API - \jpa}
+
+The end-point of many web application is the \dbms; in many cases, it exists independently of the application that use it.
+Moving data back and forth between the object model application is a harder task than it would seem:
+a lot of repetitive code is spent to convert row and column data into objects.
+
+The technique involving conversion between the object model and the relational model is called \textbf{object-relational mapping} \textit{(ORM)}.
+\textit{ORM} techniques try to map the concepts from one model onto the other, overcoming the impedance mismatch between the two models:
+there's no logical equivalence between the two models, so the mapping is not always straightforward.
+A mediator is needed to manage the automatic transformation of one onto the other.
+
+The differences between Object Model and Relational Model are highlighted in Table~\ref{tab:object-relational-mapping}.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tblr}{colspec={cc}, hline{2}={solid}, vline{2}={solid}, row{1}={font=\itshape}}
+    Object Oriented Model - \java & Relational Model - \sql      \\
+    classes, objects              & tables, rows                 \\
+    attributes, properties        & columns                      \\
+    identity                      & primary key                  \\
+    reference to other objects    & foreign key                  \\
+    inheritance, polymorphism     & not supported \colorxmark    \\
+    methods                       & stored procedures, triggers  \\
+    code is portable              & vendor-dependent \colorxmark
+  \end{tblr}
+  \caption{Object-Relational Mapping}
+  \label{tab:object-relational-mapping}
+  \bigskip
+\end{table}
+
+The \textbf{\java Persistence API} \textit{(\jpa)} is a standard for object-relational mapping:
+it bridges the aforementioned gap between the object model and the relational model.
+It features:
+
+\begin{itemize}
+  \item POJO \textit{(Plain Old Java Object)} Persistence: any existing \java non-\texttt{final} object with default constructor can be persisted
+  \item Non-intrusiveness: the persistence layer is completely transparent to the application, as the mapped objects are not aware of it
+  \item Object queries: a query powerful is provided to query the database using the object model, without having to use \sql
+\end{itemize}
+
+\subparagraph*{\jpa Main Concepts}
+
+\begin{itemize}
+  \item \textbf{Entity}: a \java class \textit{(called \javab)} representing a collection of persistent objects mapped onto a relational table
+  \item \textbf{Persistence Unit}: the set of all the classes that are persistently mapped to one database
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item analogous to the \textbf{schema} of the database
+        \end{itemize}
+  \item \textbf{Persistence Context}: the set of all the managed objects of the entities defined in the persistence unit
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item analogous to the \textbf{instance} of the database
+        \end{itemize}
+  \item \textbf{Managed Entity}: an entity part of a persistence context for which the changes of the state are tracked
+  \item \textbf{Entity Manager}: the interface for interacting with a Persistence Context
+  \item \textbf{Client}: a component that can interact with a Persistence Context via the Entity Manager
+\end{itemize}
+
+A \textit{UML} diagram showing the entities and the relationships between them is shown in Figure~\ref{fig:uml-diagram-jpa}.
+
+\begin{figure}[htbp]
+  \centering
+  \tikzfig[0.7]{figure-23.tikz}
+  \caption{UML Diagram of \jpa}
+  \label{fig:uml-diagram-jpa}
+\end{figure}
+
+\subsection{Entity}
+
+A \javab \textit{(or POJO)} is a \java class that gets associated with a tuple in a database:
+
+\begin{itemize}
+  \item the class is mapped to the table schema
+  \item the instance of the class is mapped to a tuple
+\end{itemize}
+
+The persistent counterpart of an entity has a longer lifetime than the instance of the class:
+the instance of the class is created and destroyed during the execution of the application, while the persistent counterpart is stored in the database.
+
+The entity class must be associated with the database table it represents by an operation called \textbf{persistence mapping}.
+An entity can enter a managed state: all the modifications to the entity are tracked by the persistence context and automatically synchronized with the database.
+
+\subparagraph*{Properties of the Entity}
+The properties of an entity are:
+
+\begin{itemize}
+  \item identification (the primary key)
+  \item nesting
+  \item relationship
+  \item referential integrity (the foreign key)
+  \item inheritance
+\end{itemize}
+
+\subparagraph*{Constraints of an Entity}
+
+Entities must respect the following \textbf{constraints}:
+
+\begin{itemize}
+  \item the entity class must have a \texttt{public} or \texttt{protected} constructor with \textbf{no arguments}
+  \item the entity class must not be \texttt{final}
+  \item no method or persistent instance variables of the entity class may be \texttt{final}
+  \item if an entity instance is to be passed by value, it must be \texttt{Serializable}
+  \item The persistent state of an entity is represented by instance variables, which correspond to \javab properties
+\end{itemize}
+
+\subsubsection{Entity Identification}
+In a database, objects and tuples have an identity \textit{(the primary key)}: an entity assumes the identity of the tuple it represents;
+the key can be:
+
+\begin{itemize}
+  \item \textbf{simple primary key}, which is a persistent field of the \javab used to represent its identity
+  \item \textbf{composite primary key,} which is a set of persistent fields of the \javab used to represent its identity
+\end{itemize}
+
+Compared to \textit{POJOs}, the persistent identity is a new and different concept: \textit{POJOs} don't have a \textbf{durable identity}.
+
+The syntax of the entity identification is shown in Code~\ref{lst:entity-identification}.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Entity Identification}, label={lst:entity-identification}]
+@Entity
+public class <class name> implements Serializable {
+  @Id
+  private <type> <field name>;
+  ...
+}
+\end{lstlisting}
+
+where:
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{@Entity}: is an annotation indicating the \textbf{nature} of the entity class
+  \item \texttt{@Id}: is an annotation indicating the \textbf{simple primary keys} of the entity
+  \item \texttt{@EmbeddedId}: is an annotation indicating the \textbf{composite primary keys} of the entity
+\end{itemize}
+
+\subparagraph*{Identifier Generation}
+Sometimes, applications do not want to manage the uniqueness of data values;
+in this case, the persistence provider can automatically generate an \textbf{identifier} \textit{(primary key value)} for every instance of an entity of a class.
+Feature is called \textbf{identifier generation} and is specified by the \texttt{@GeneratedValue} annotation;
+there are \(4\) different strategies for identifier generation, shown in Table~\ref{tab:identifier-generation-strategies}.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tblr}{colspec={rl}, hline{2}={solid}, vline{2}={solid}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}, cells={valign=t}}
+    strategy & description                                                \\
+    AUTO     & {the provider generates identifiers                        \\ using whatever strategy is appropriate for the underlying database} \\
+    TABLE    & {identifiers are generated                                 \\ according to a generator table}                                                 \\
+    SEQUENCE & {identifiers are generated via sequences                   \\ if the underlying \dbms supports it}                             \\
+    IDENTITY & {identifiers are generated via primary key identity column \\ if the underlying \dbms supports it}           \\
+  \end{tblr}
+  \caption{Identifier Generation Strategies}
+  \label{tab:identifier-generation-strategies}
+\end{table}
+
+The syntax of the identifier generation is shown in Code~\ref{lst:identifier-generation}.
+
+\begin{lstlisting}[language=annotatedjava, caption={Identifier Generation}, label={lst:identifier-generation}]
+@Entity
+public class <class name> implements Serializable {
+  @Id
+  @GeneratedValue(strategy = GenerationType.<strategy>)
+  private <type> <field name>;
+  ...
+}
+\end{lstlisting}
+
+\subsubsection{Attribute Specification}
+
+Attributes can be properties that direct the mapping between the object and the relational database;
+the annotation \texttt{@Basic} can be placed before a field or property to mark it as a \textbf{persistent attribute}.
+This annotation is mostly used for documentation, as it is the \textbf{default behaviour of the persistence provider}.
+A non-persistent attribute can be marked with the \texttt{@Transient} annotation.
+
+Persistent attributes can be:
+
+\begin{itemize}
+  \item primitive types
+  \item Large Objects (LOBs)
+  \item Enumerated Types
+        \begin{itemize}
+          \item \java enumerations
+          \item strings
+        \end{itemize}
+  \item Temporal Types
+        \begin{itemize}
+          \item \java \texttt{Date} and \texttt{Calendar}
+          \item \texttt{JDBC} temporal types
+        \end{itemize}
+  \item Serializable Types
+\end{itemize}
+
+Furthermore the fetch policy can be specified for the attributes of the entity, between:
+
+\begin{itemize}
+  \item \textbf{\texttt{LAZY}}: the attribute is loaded when it is \textbf{first accessed}
+        \begin{itemize}
+          \item the attribute value remains empty when the object is retrieved until the attribute is accessed
+          \item this is best used for LOBs
+        \end{itemize}
+  \item \textbf{\texttt{EAGER}}: the attribute is loaded when the \textbf{entity is loaded}
+        \begin{itemize}
+          \item this is the default fetch policy
+        \end{itemize}
+\end{itemize}
+
+\begin{lstlisting}[ language=annotatedjava, caption={Attribute Specification}, label={lst:attribute-specification}]
+@Entity
+public class <class name> implements Serializable {
+  @Id
+  @Basic(fetch = FetchType.<fetch policy>)
+  private <type> <field name>;
+  @Transient
+  private <type> <field name>;
+  ...
+}
+\end{lstlisting}
+
+\subparagraph*{Object to Table Mapping}
+By default entities are mapped to tables with the same name and attributes are mapped to columns with the same name;
+default value can be overridden by using the \texttt{@Table} annotation.
+
+Some annotations \textit{(for example \texttt{@Column})} may have attributes used for generating the database schema from the entity classes.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Object to Table Mapping}, label={lst:object-to-table-mapping}]
+@Entity @Table=(name = "<table name>")
+public class <class name> implements Serializable {
+  @Id
+  @Column(name = "<column name>", nullable = <true|false>, length = <length>)
+  private <type> <field name>;
+}
+\end{lstlisting}
+
+\subsubsection{Entity and Relationships}
+
+If entities contained only a simple persistent state, the issuing of the ORM would be trivial;
+however, in most cases, entities are related to each other, and the ORM must be able to handle these relationships.
+
+There is an ambiguity in the meaning of the word \textbf{relationship} in the context of ORM:
+from now on, the relationship will be referred to in the sense of the Object Model (such as shown in Figure~\ref{fig:object-model}).
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig{figure-24.tikz}
+  \bigskip
+  \caption{Object Model}
+  \label{fig:object-model}
+\end{figure}
+
+Every OM relationship has four characteristics:
+
+\begin{enumerate}
+  \item \textbf{Directionality}
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item each of the two entities may have an attribute that enables access to the other entity
+        \end{itemize}
+  \item \textbf{Role}
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item each entity is said to play a role with respect to the relationship direction of access
+        \end{itemize}
+  \item \textbf{Cardinality}
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item the number of entities that can exist on each side of the relationship
+        \end{itemize}
+  \item \textbf{Ownership}
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item one of the two entities is said to own the relationship
+        \end{itemize}
+\end{enumerate}
+
+\subparagraph*{Directionality}
+Each entity in the relationship may have a reference to the other entity:
+
+\begin{itemize}
+  \item \textbf{unidirectional}: the relationship is accessible only from one entity
+  \item \textbf{bidirectional}: the relationship is accessible from both entities
+\end{itemize}
+
+All relations in \jpa are unidirectional;
+bidirectional relationships can be implemented via matched pairs of unidirectional relationships.
+Matching must be declared explicitly via the \texttt{MappedBy} attribute.
+
+\subparagraph*{Role}
+According to the direction, one entity plays the role of source and the other plays the role of target.
+
+In a relation from \texttt{A} to \texttt{B}, \texttt{A} is the source and \texttt{B} is the target.
+
+\subparagraph*{Cardinality}
+Each role in the relationship has its own cardinality, leading to four possible cardinalities:
+
+\begin{itemize}
+  \item \textbf{one-to-one}: one source entity, one target entity
+  \item \textbf{one-to-many}: one source entity, many target entities
+  \item \textbf{many-to-one}: many source entities, one target entity
+  \item \textbf{many-to-many}: many source entities, many target entities
+\end{itemize}
+
+A *-to-one relationship implies that the source entity has one reference to the target entity;
+a *-to-many relationship implies that the source entity has a collection of references to the target entities.
+
+\subparagraph*{Ownership}
+In the database all Relationships are implemented via a foreign key column that refers to the primary key of the referenced table;
+in \jpa, this column is called the \textbf{join column}.
+
+In \textbf{one-to-many} and \textbf{one-to-one} relationships, one of the two entities will have the foreign key column in its table:
+this entity is said to be the owner of the relationship and its side is called the \textbf{owning side}.
+
+In \textbf{many-to-many} relationships, the relationship is implemented via a join table that contains the foreign key columns of both entities;
+in this case, neither entity is the owner of the relationship.
+
+Ownership is important because the annotations that define the physical mapping of the relationship are defined on the owning side.
+
+\paragraph{Relationship Mapping}
+
+The possible relationships between entities are:
+
+\begin{itemize}
+  \item \(1:N\) - bidirectional, unidirectional one-to-many and many-to-one
+  \item \(1:1\) - bidirectional, unidirectional
+  \item \(N:M\) - bidirectional, unidirectional
+\end{itemize}
+
+The choice between uni- and bidirectional relationships is a matter of design and implementation;
+generally speaking, if the relationship is accessed from one side only, it is unidirectional, otherwise, it is bidirectional.
+
+Bi-directionality can be implemented with unidirectional relationship mapping and set-valued queries.
+Performance considerations may prompt the use of bidirectional mappings even if only one direction is used.
+
+\subparagraph*{\(1:N\) bidirectional}
+
+The \(1:N\) bidirectional relationship is expressed via the \texttt{@ManyToOne} and \texttt{@OneToMany} annotations, together with the \texttt{MappedBy} attribute.
+
+The many-to-one mapping direction is defined by annotating the entity that participates with multiple instances with the \texttt{@ManyToOne} annotation;
+the entity that contains the \texttt{@ManyToOne} annotation is the owning side of the relationship.
+The \texttt{@JoinColumn} annotation is used to specify the join column that is used to reference the primary key of the target entity (it defaults to the data member name).
+
+To achieve the bidirectional relationship, the mapping direction must be specified too;
+this is done by including a \texttt{@OneToMany} annotation in the entity that participates with one instance.
+The \texttt{@OneToMany} annotation is placed on a collection data member and includes a \texttt{MappedBy} attribute that specifies the name of the data member in the target entity that is the owner of the relationship.
+
+In a one-to-many mapping, the owner of the relationship is the entity that participates with multiple instances.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyTooOne} annotation}, label={lst:many-to-one-annotation-bidirectional}]
+@Entity
+public class Many {
+  @Id
+  private int id;
+  @ManyToOne
+  @JoinColumn(name="one_fk")
+  private One one;
+}
+
+@Entity
+public class One {
+  @Id
+  private int id;
+  @OneToMany(MappedBy="one") // case insensitive
+  private List<Many> many;
+}
+\end{lstlisting}
+
+\subparagraph*{\(1:N\) unidirectional}
+
+Sometimes applications require access to related entities to be unidirectional: in this case, bi-directional mapping is not needed.
+The same annotation as in bidirectional mapping is used, but the \texttt{MappedBy} attribute is omitted.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToOne} annotation}, label={lst:many-to-one-annotation-unidirectional}]
+@Entity
+public class Many {
+  @Id
+  private int id;
+  @ManyToOne
+  @JoinColumn(name="one_fk")
+  private One one;
+}
+
+@Entity
+public class One {
+  @Id
+  private int id;
+  @OneToMany
+  @JoinColumn(name="one_fk")
+  private List<Many> many;
+}
+\end{lstlisting}
+
+The same goes for the \texttt{@OneToMany} annotation;
+however, two alternatives are available performance-wise:
+
+\begin{itemize}
+  \item Map the relationship as in the bi=directional case and use only the one-to-many direction
+  \item Do not map the collection attribute in the entity that participates with one instance and use a query instead to retrieve the correlated instances, relying on the inverse \textit{(many-to-one)} relationship direction mapping
+\end{itemize}
+
+\subparagraph*{\(1:1\) unidirectional}
+In a one-to-one relationship, the \texttt{@OneToOne} annotation is used to specify the relationship direction, as either entity can be the owner of the relationship.
+A one-to-one mapping is defined by annotating the owner entity (the one with the foreign key column) with the \texttt{@OneToOne} annotation.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-unidirectional}]
+@Entity
+public class One {
+  @Id
+  private int id;
+  @OneToOne
+  @JoinColumn(name="one_fk")
+  private Two two;
+}
+
+@Entity
+public class Two {
+  @Id
+  private int id;
+  @OneToOne(MappedBy="two")
+  private One one;
+}
+\end{lstlisting}
+
+\subparagraph*{\(1:1\) bidirectional}
+The one-to-one bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must be annotated with the \texttt{@OneToOne} annotation too and include the \texttt{MappedBy} attribute;
+the presence of the former tells \jpa that the foreign key constraint is defined in the target entity.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-bidirectional}]
+@Entity
+public class One {
+  @Id
+  private int id;
+  @OneToOne
+  @JoinColumn(name="one_fk")
+  private Two two;
+}
+
+@Entity
+public class Two {
+  @Id
+  private int id;
+  @OneToOne(MappedBy="two")
+  private One one;
+}
+\end{lstlisting}
+
+\subparagraph*{\(N:M\) unidirectional}
+In a many-to-many mapping, there's no foreign key column; such mapping is implemented via a bridge table (also called join table).
+Either entity can therefore be the owner of the relationship.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-unidirectional}]
+@Entity
+public class N {
+  @Id
+  private int id;
+  @ManyToMany
+  @JoinTable(name="N_M",
+             joinColumns=@JoinColumn(name="n_fk"),
+             inverseJoinColumns=@JoinColumn(name="m_fk"))
+  private List<M> m;
+}
+
+@Entity
+public class M {
+  @Id
+  private int id;
+  @ManyToMany
+  @JoinTable(name="N_M",
+             joinColumns=@JoinColumn(name="m_fk"),
+             inverseJoinColumns=@JoinColumn(name="n_fk"))
+  private List<N> n;
+}
+\end{lstlisting}
+
+\subparagraph*{\(N:N\) bidirectional}
+The many-to-many bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must annotated with the \texttt{@ManyToMany} annotation too and include the \texttt{MappedBy} attribute.
+
+\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-bidirectional}]
+@Entity
+public class N {
+  @Id
+  private int id;
+  @ManyToMany
+  @JoinTable(name="N_M",
+             joinColumns=@JoinColumn(name="n_fk"),
+             inverseJoinColumns=@JoinColumn(name="m_fk"))
+  private List<M> m;
+}
+
+@Entity
+public class M {
+  @Id
+  private int id;
+  @ManyToMany(MappedBy="m")
+  private List<N> n;
+}
+\end{lstlisting}
+
+\paragraph{\texttt{@JoinColumn} and \texttt{MappedBy}}
+
+The annotation \texttt{@JoinColumn} is used to specify the join column that is used to reference the primary key of the target entity; such annotation is normally inserted in the entity owner of the relationship (the one mapped to the table that contains the foreign key column).
+It is used to drive the generation of the \sql code to extract the correlated instances.
+
+The \texttt{MappedBy} attribute is used to specify the name of the data member in the target entity that is the owner of the relationship; the owner of the relationship resides in the related entity.
+It is used to specify bidirectional relationships.
+
+In absence of the \texttt{MappedBy} attribute, the default \jpa mapping uses a bridge table to implement the relationship.
+The purpose of this annotation is to instruct \jpa to not create a bridge table as the relationship is already being mapped by the other side.
+
+\paragraph{Relationship Fetch Mode}
+
+When loading an entity, it's not always necessary to fetch and load all related entities;
+performance can be optimized by deferring data loading until it's needed.
+This design pattern is called lazy loading \textit{(opposed to eager loading)} and is supported by \jpa.
+At the relation level, lazy loading can greatly enhance performance because it can reduce the amount of \sql code that is executed if correlated instances are seldom accessed by the application.
+
+Loading policy can be expressed specifying the \texttt{FetchType} attribute of the \texttt{@ManyToOne}, \texttt{@OneToOne}, and \texttt{@OneToMany} annotations;
+when it's not specified, a single-valued relationship is fetched eagerly, while a collection-valued relationship is fetched lazily.
+
+In the case of bidirectional relationships, the fetch mode might be lazy on one side but eager on the other: this situation might occur when the direction of navigation occurs from one side to the other, but not vice versa.
+
+The directive to lazily fetch an attribute is meant to only be a hint to the persistence provider:
+it is not required to respect the request because the behaviour or the entity is not compromised if the provider decides to load eagerly.
+The converse however is not true: specifying that an attribute is to be fetched eagerly is a requirement that the provider must respect.
+
+\subsection{Entity Manager}
+
+Since entity instances are plain \java objects, they do not become managed until the application invokes an \texttt{API} to initiate the process.
+The Entity Manager is the central authority for all operations involving entities:
+it manages the mapping between a fixed set of entity instances and an underlying data source while providing an \texttt{API} for the application to access and manipulate the data.
+
+\subsubsection{Entity Manager Interface}
+
+The Entity Manager exposes all the operations needed to synchronize the managed entities in the persistence context to the database;
+the methods signatures and their descriptions are shown in Table~\ref{tab:entity-manager-interface}.
+
+\begin{table}[htbp]
+  \centering
+  \bigskip
+  \begin{tblr}{colspec={ll}, cells={valign=t}, vline{2}={solid}, hline{2}={solid}, row{1}={font=\itshape, halign=m}, cell{2-6}{1}={font=\ttfamily}, rowsep=1ex}
+    signature                                                      & description                   \\
+    \textbf{public} \textbf{void} persist(Object entity);          & {persists an entity instance  \\ in the database}           \\
+    {\textbf{public} <T> T \textbf{find} (Class<T> entityClass,                                    \\ \hspace{4ex} Object primaryKey);} & {finds an entity instance \\ by its primary key }\\
+    \textbf{public} \textbf{void} \textbf{remove}(Object entity);  & {removes an entity instance   \\ from the database}             \\
+    \textbf{public} \textbf{void} \textbf{refresh}(Object entity); & {resets the entity instance   \\ from the database}            \\
+    \textbf{public} \textbf{void} \textbf{flush}();                & {writes the state of entities \\ to the database \textbf{immediately}}            \\
+  \end{tblr}
+  \caption{Entity Manager Interface}
+  \label{tab:entity-manager-interface}
+  \bigskip
+\end{table}
+
+\subsubsection{Cascading Operations}
+
+By default, every Entity Manager operation applies to the only entity supplied as an argument to the operation:
+the operation will not cascade to other entities that have a relationship with the entity supplied as an argument.
+
+For some operations \textit{(such as \texttt{remove})}, this normally is the desired behaviour;
+for some other operations \textit{(such as \texttt{persist})}, however, it is not since they require propagating to other entities that are related to the entity supplied as an argument.
+If an entity has a relationship with another dependent entity, normally the child must be persisted together with the father.
+
+The \texttt{cascade} attribute is used to define when operations should be automatically cascaded across the relationship;
+it accepts several possible values specified in the \texttt{CascateType} enum:
+
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{PERSIST}
+  \item \texttt{REFRESH}
+  \item \texttt{REMOVE}
+  \item \texttt{MERGE}
+  \item \texttt{DETACH}
+  \item \texttt{ALL}
+        \begin{itemize}[label=\(\rightarrow\)]
+          \item this is a shorthand to specify that all operations should be cascaded
+        \end{itemize}
+\end{itemize}
+
+Like in relations, the cascade settings are unidirectional: they must be specified explicitly on both sides of the relationship if the default behaviour is not desired.
+
+Unless otherwise specified, no cascade operation is performed.
+
+\paragraph{Orphan Removal}
+
+\jpa offers an additional feature to automatically remove orphan entities via the \texttt{orphanRemoval} attribute in the \texttt{@OneToOne} and \texttt{@OneToMany} annotations.
+
+This attribute is appropriate for privately owned part-child relationships, where every child entity is associated only with one parent entity through just one relationship (weak entity in the ER model).
+The relationship is broken either by removing the parent entity or by setting the child entity's relationship to the parent to null;
+in the one-to-many case, the child entity is removed from the collection.
+
+With the \texttt{cascade} attribute, no element is deleted from the database when the parent entity is removed;
+the \texttt{orphanRemoval} automatically deletes them.
+
+\subsubsection{Persistence Context}
+
+The persistence context is a fundamental component of \jpa:
+it's a kind of main memory database that holds the objects that are being manipulated by the application \textit{(in the managed state)}.
+A managed object is tracked and all the modifications to its state are monitored for automatic alignment to the database;
+each of them has two lives: one as a \java object and one as a relational tuple \textit{(the ID of the POJO is the primary key of the relational tuple)}.
+Such bindings exist only inside the persistence context;
+when the POJO exits the persistence context, the binding is lost and the POJO is no longer managed.
+
+Database writes occur asynchronously, at a time decided by the persistence provider;
+for the database writes to happen, the Persistence Context must hook up to a transaction, which is the only way to write to the database.
+
+\paragraph{Creating a new \textit{POJO}}
+
+Calling the \texttt{new} operator does not interact with some underlying database to create a new entity instance;
+when an entity instance is created, it is in the \textbf{transient} state since the Entity Manager has no knowledge of it.
+Transient entities are not part of the Persistence Context associated with the Entity Manager.
+
+\subparagraph*{Managing an Entity}
+Entity Manger's \texttt{persist} method is used to make an entity instance managed and persistent; it does not imply that the entity is immediately written to the database.
+A managed entity lives in a Persistence Context and is associated with an Entity Manager that makes sure that any change to its state is tracked for being persisted to the database:
+the managed entity and the corresponding tuple become associated until the entity exits the managed state.
+When the transaction associated with the Entity Manager's persistence context is committed, the Entity Manager writes the changes to the database.
+
+Calling \texttt{persist} on an entity that is already managed is allowed and triggers the cascade operation.
+
+The \texttt{flush} method can be called to ask the Persistence Provider to write the changes to the database immediately.
+
+\subparagraph*{Finding an Entity}
+The \texttt{find} method is used to find an entity instance by its primary key;
+when the call completes, the returned object will be managed and added to the Persistence Context.
+If the entity is not found, the method returns \textit{null}.
+
+The actual amount of data extracted and added to the persistence context depends on the Fetch Policy of attributes and relationships.
+
+\subparagraph*{Removing an Entity}
+The \texttt{remove} method is used to break the association between an entity and its Persistence Context;
+when the transaction associated with the Entity Manager's persistence commits of the \texttt{flush} method is called, the entity is scheduled for deletion from the database.
+
+The entity still exists but its changes are no longer tracked for being synchronized to the database.
+
+\paragraph{Entity Life Cycle}
+
+The life cycle of an entity is divided into five states:
+
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{NEW}
+        \begin{itemize}
+          \item unknown to the Entity Manager, not yet associated with a Persistence Context
+        \end{itemize}
+  \item \texttt{MANAGED}
+        \begin{itemize}
+          \item associated with a Persistence Context, changes to its state are tracked for being synchronized to the database
+        \end{itemize}
+  \item \texttt{DETACHED}
+        \begin{itemize}
+          \item its identity is potentially associated with a database tuple but changes are not automatically propagated to the database
+        \end{itemize}
+  \item \texttt{REMOVED}
+        \begin{itemize}
+          \item scheduled for removal from the database
+        \end{itemize}
+  \item \texttt{DELETED}
+        \begin{itemize}
+          \item erased from the database
+        \end{itemize}
+\end{itemize}
+
+\subsection{\jpa Application Architectures}
+
+The client exploits the services of a container (via \texttt{EJB} or \texttt{CDI}) to connect to the entity manager;
+the client then interacts with business components, that in turn interacts with the Entity Manager.
+The container provides support to map the \jpa entity method calls into transactions via the automatic creation of transactions.
+
+Details of the implementation:
+
+\begin{itemize}
+  \item an Entity Manager is associated with a persistence context, which tracks changes to entities
+  \item changes are synchronized to the database via transactions
+  \item the transactions exist outside the Entity Manager, which hooks the persistent context to it
+  \item a transaction is the only channel to write to reflect the changes in the Persistence Context to the database
+  \item a transaction can be associated with only one Persistence Context: it reads the changes in it and maps them into transactional operations onto the database
+\end{itemize}
+
+\bigskip
+Furthermore:
+
+\begin{itemize}
+  \item Entity managers are the only interface to the Persistence Manager
+  \item Different components may use their own Entity Managers
+  \item Applications may need to work with different components, therefore with different Entity Managers
+\end{itemize}
+
+\subsubsection{Transaction Management in \jpa}
+
+Database application development requires understanding the transactional properties of the code, such as
+how the Entity Manager participates in transactions and when a Transaction starts or ends.
+Even if transactions are managed transparently by the container, it's important to understand how they work in order to predict the behaviour of the application.
+
+Transactions exist at \(3\) abstraction levels: \dbms transactions, Resource-Local transactions and Container transactions.
+
+\begin{itemize}
+  \item \dbms
+        \begin{itemize}
+          \item they live inside the \dbms
+          \item they are described via \sql commands
+          \item they are managed by the \dbms
+        \end{itemize}
+  \item Resource Local
+        \begin{itemize}
+          \item they are described and issued via \texttt{JDBC} interface
+          \item they are mapped by the \texttt{JDBC} to \dbms transactions
+          \item they must be managed by the application
+        \end{itemize}
+  \item Container (level used in the course)
+        \begin{itemize}
+          \item they are defined through the \jta interface
+          \item they are mapped by the \jta Transaction Manager and \texttt{EJB} container to \texttt{JDBC} transactions
+          \item they are managed by the application or by the container
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Container Managed Entity Manager}
+
+The steps under which the Contained Managed (CM) Entity Manager operates are:
+\begin{enumerate}
+  \item the container injects the Entity Manager into the business object (the client component)
+  \item the container creates and destroys instances of the Entity Manager as needed, transparently to the application
+  \item the container provides the transaction needed for saving the modifications made to the entities of the Persistence Context associated with the Entity Manager into the database
+\end{enumerate}
+
+This is the default behaviour of the Entity Manager unless otherwise specified.
+
+The syntax of the CM Entity Manager is shown in Code~\ref{code:cm-entity-manager}.
+
+\begin{lstlisting}[language=annotatedjava, caption={CM Entity Manager}, label=code:cm-entity-manager]
+@Stateless
+public class <business-object-name> {
+  @PersistenceContext(unitName = "<persistence-unit-name>")
+  private EntityManager <entity-manager-name>;
+}
+\end{lstlisting}
+
+\paragraph{Transacion Management at Container Level}
+
+The \jpa Entity Manager:
+
+\begin{itemize}
+  \item the transaction is created by the container externally to the Entity Manager
+  \item in context-managed mode, the transaction demarcation can be delegated to the container
+        \begin{itemize}
+          \item the transaction is created when a business method that requires it is called and there is no active transaction yet
+          \item the transaction is committed when the method that caused its creation terminates
+        \end{itemize}
+  \item in bean-managed transactions (AM mode), the transaction is created by the component of the application that can implement the \texttt{EntityTransaction} (in \jpa) or \texttt{UserTransaction} (in \jta) interfaces to manage the transaction and \texttt{begin} and \texttt{commit} it explicitly
+\end{itemize}
+
+\paragraph{Propagation}
+
+The process of sharing a Persistence Context between multiple Container Managed Entity Managers in a single \jta transaction is called \textbf{transaction propagation}.
+Thanks to propagation, methods of different components can share the same Persistence Context and thus the same database connection.
+
+Propagation has two forms:
+
+\begin{itemize}
+  \item \textbf{vertical} along the call stack, if the same transactions are executed by different components
+        \begin{itemize}
+          \item the Transaction and the Persistence Context are shared between the components
+          \item the \textbf{\texttt{@Required}} annotation is needed
+        \end{itemize}
+  \item \textbf{Horizontal}, if the Entity Managers of the two components are defined on the same Persistence Unit
+        \begin{itemize}
+          \item the two components share the same Persistence Context
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Transaction and Method Calls}
+
+When a client calls a method of a business object that exploits a Context Managed Entity Manager for persistence, the container (EJB) provides a transaction for saving the modifications made into the database, either by creating a new transaction or by joining an existing one.
+If the called method, in turn, calls another method of the same or a different business object, the same transaction is reused.
+
+This is the most common and default behaviour, but the business methods can be annotated to specify a different way to use the transactions provided by the container.
+
+\bigskip
+When Container Managed transactions are used, the container wraps the method calls of managed components and executes them in a transaction.
+A method can be annotated to obtain the desired transactional behaviour with the annotation:
+\begin{center}
+  \texttt{@TransactionAttribute(TransactionAttributeType.<type>)}
+\end{center}
+
+where \texttt{type} can be:
+
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{REQUIRED} - if no transaction is active, then one is started; otherwise, the method is executed in the active transaction. This is the default type.
+  \item \texttt{MANDATORY} - a transaction is expected to have already been started and be active when the method is called; otherwise, an exception is thrown
+  \item \texttt{REQUIRES\_NEW} - a new transaction is started, and the method is executed in it; if a transaction is already active, it is suspended during the execution of the method
+  \item \texttt{SUPPORTS} - the method is executed in the active transaction if any; otherwise, it is executed without a transaction
+  \item \texttt{NOT\_SUPPORTED} - the method is executed without a transaction, even if one is active; if a transaction is active, it is suspended during the execution of the method
+  \item \texttt{NEVER} - the method is executed without a transaction, even if one is active; if a transaction is active, an exception is thrown
+\end{itemize}
+
+\clearpage
+
+\section{Reliability}
+
+Reliability is defined as the ability of an item to perform a required function under stated conditions for a stated period of time.
+In databases, reliability control ensures fundamental properties of transactions:
+
+\begin{itemize}
+  \item Atomicity: all-or-nothing execution of a transaction
+  \item Durability: once a transaction is committed, its effects are permanent
+\end{itemize}
+
+The \dbms implements a specific architecture for reliability control;
+the keys components are found in \textbf{stable memory} and \textbf{log management}.
+
+\subsection{Reliability Manager}
+
+The Reliability Manager of the \dbms realizes the transactional commands \texttt{COMMIT} and \texttt{ABORT}, which are executed by the \texttt{Transaction Manager}.
+Furthermore, it orchestrates read and write access to pages (of data and log) and handles recovery after failures.
+
+\subsubsection{Persistence of Memory}
+
+Durability implies a memory whose content lasts forever, which is an abstraction built on top of existing storage technology levels.
+
+\begin{itemize}
+  \item Main Memory: non persistent
+  \item Mass Memory: persistent but can be lost
+  \item Stable Memory: cannot be lost, the probability of failure is zero
+\end{itemize}
+
+Since achieving zero probability of failure is impossible, the objective is to reduce the probability of failure to a negligible value;
+the techniques employed are replication and write protocols.
+The failure of stable memory is the subject of the discipline called disaster recovery.
+
+\bigskip
+Stable memory can be guaranteed via:
+
+\begin{itemize}
+  \item On-line replication
+        \begin{itemize}
+          \item the data is replicated on multiple disks
+          \item the RAID disk architecture is an example of on-line replication
+        \end{itemize}
+  \item Off-line replication
+        \begin{itemize}
+          \item the data is replicated on backup units
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Main Memory Management}
+
+The objective of Main Memory Management is to reduce data access time without compromising memory stability, via buffers to cache data in faster memory and deferred writing onto the secondary storage.
+
+A page of the buffer can contain multiple rows and have a:
+
+\begin{itemize}
+  \item transaction counter, stating how many transactions are accessing it
+  \item dirty flag, stating whether the page has been modified and must be aligned to the secondary storage
+\end{itemize}
+
+On dedicated \dbms servers, up to \(80\%\) of the memory is allocated to the buffer.
+
+\subparagraph*{Buffer Management Primitives}
+
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{fix}: responds to the request of a transaction to load a page into the buffer; returns a reference to the page and increments transaction counter
+  \item \texttt{unfix}: unloads a page from the buffer; decrements transaction counter
+  \item \texttt{force}: moves a page from the buffer to the secondary storage
+  \item \texttt{set\_dirty}: sets the dirty flag of a page
+  \item \texttt{flush}: moves pages from the buffer to the secondary storage, when they are no longer needed
+\end{itemize}
+
+\subparagraph*{Buffer Management Policies}
+
+\begin{itemize}
+  \item Write Policies: page writing to disk is normally asynchronous with respect to the transactions
+        \begin{itemize}[label=\texttt{>}]
+          \item \texttt{force}: pages are always transferred at commit
+          \item \texttt{no\_force}: transfer of pages can be delayed by the buffer manager
+        \end{itemize}
+  \item De-allocation Policies
+        \begin{itemize}[label=\texttt{>}]
+          \item \texttt{steal}: a page in an active transaction is discarded and flushed to disk
+          \item \texttt{no\_steal}: the transaction is put on a waitlist and the request is managed when the page is no longer needed
+        \end{itemize}
+  \item Pre-fetch Policies: pages that are likely to be read are loaded in the buffer before they are needed
+  \item Pre-flushing Policies: pages that are likely to be written are de-allocated from the buffer before they are needed
+\end{itemize}
+
+\paragraph{Execution of a \texttt{fix} primitive}
+
+The execution of a \texttt{fix} primitive is performed in the following steps:
+
+\begin{enumerate}
+  \item if the page is in the buffer, increment the transaction counter and return a reference to the page
+  \item select a free page in the buffer (FIFO or LRU policy)
+  \item if found, increment the transaction counter and return a reference to the page
+  \item if the dirty flag is true, flush the current page to disk before loading the new page
+  \item if no page is found, select a page to be discarded, with one of two policies:
+        \begin{itemize}[label=\texttt{>}]
+          \item \textbf{\texttt{steal} policy}: the new page is loaded, the transaction counter is incremented and a reference to the page is returned
+          \item \textbf{\texttt{no\_steal} policy}: the transaction is put in a waitlist
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Failure Handling}
+
+\subparagraph*{Recall on transactions}
+A transaction is an atomic transformation from an initial state into a final state.
+The possible outcomes of a transaction are:
+
+\begin{itemize}
+  \item commit: success
+  \item rollback or fault before commit: undo
+  \item fault after commit: redo
+\end{itemize}
+
+\subparagraph*{Implications for recovery after failure}
+If a failure occurs between commit and buffers flush in secondary storage, then the transactions are rolled forward by the Reliability Manager and the buffers are flushed to disk;
+if a failure occurs before commit, the Reliability Manager rolls back the transactions, discarding any changes made to the buffers.
+
+\subsubsection{Transactions and Recovery}
+
+Refer to Figure~\ref{fig:transaction-recovery}.
+
+Suppose that \dbms starts at time \(T_0\) and fails at \(T_f\).
+Assume that data for transactions \(T_2,\ T_3\) has been written to secondary storage (committed and permanently stored):
+transactions \(T_1,\ T_6\) have to be undone.
+
+In absence of information of whether modified pages have been flushed, Reliability Manager has to red \(T_4\) and \(T_5\).
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig{figure-25.tikz}
+  \caption{Transactions and Recovery}
+  \label{fig:transaction-recovery}
+  \bigskip
+\end{figure}
+
+\subsubsection{Transaction Log}
+
+The transaction log is a file containing records describing the actions carried out by the various transactions.
+It's written sequentially up to the block top (the current instant).
+
+\begin{figure}[htbp]
+  \centering
+  \bigskip
+  \tikzfig{figure-26.tikz}
+  \caption{Transaction Log}
+  \label{fig:transaction-log}
+  \bigskip
+\end{figure}
+
+The log is recorded on sable memory in the form of state transitions (the actions carried out by the transactions).
+If an update (\texttt{U}) operation transforms object \(O\) from value \(v_1\) to value \(v_2\), the log contains the following record:
+
+\begin{itemize}
+  \item \texttt{BEFORE-STATE(U)} = \(v_1\)
+  \item \texttt{AFTER-STATE(U)} = \(v_2\)
+\end{itemize}
+
+Logging \texttt{INSERT} and \texttt{DELETE} operations is the same as logging \texttt{UPDATE} operations, but:
+
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{INSERT} log record does not have a \texttt{BEFORE-STATE}
+  \item \texttt{DELETE} log record does not have an \texttt{AFTER-STATE}
+\end{itemize}
+
+\subparagraph*{Using the log}
+Assume a transaction \(T_1\) that updates object \(O\) from value \(O_1\) to value \(O_2\).
+
+To rollback the transaction or to fix a failure that occurred before the commit, the log is used to recover the previous state of the object:
+\begin{center}
+  \texttt{UNDO \(T_1\)}: \(O = O_1\)
+\end{center}
+To fix a failure that occurred after the commit, the log is used to recover the new state of the object:
+\begin{center}
+  \texttt{REDO \(T_1\)}: \(O = O_2\)
+\end{center}
+
+\subparagraph*{Idempotence of \texttt{UNDO} and \texttt{REDO}}
+
+\begin{itemize}
+  \item \texttt{UNDO}(T) = \texttt{UNDO}(\texttt{UNDO(T)})
+  \item \texttt{REDO}(T) = \texttt{REDO}(\texttt{REDO(T)})
+\end{itemize}
+
+Idempotence is an important property of the two operations because the Reliability Manager may have to apply them multiple times;
+for example, if a failure occurs after the commit of a transaction \(T_1\) and the log is not flushed, the Reliability Manager has to apply \texttt{REDO} to \(T_1\) and then to \(T_2\).
+This property ensures that the Reliability Manager can apply the operations multiple times without changing the state of the database.
+
+\subparagraph*{Types of Log Records}
+
+\begin{itemize}
+  \item Records concerning a transactional command:
+        \begin{itemize}[label=\texttt{>}]
+          \item \texttt{B(T)} - begin transaction \texttt{T}
+          \item \texttt{C(T)} - commit transaction \texttt{T}
+          \item \texttt{A(T)} - abort transaction \texttt{T}
+        \end{itemize}
+  \item Records concerning UPDATE, DELETE and INSERT operations:
+        \begin{itemize}
+          \item \texttt{U(T, O, v\_1, v\_2)} - update object \texttt{O} from value \texttt{v\_1} to value \texttt{v\_2} in transaction \texttt{T}
+          \item \texttt{D(T, O, v)} - delete object \texttt{O} with value \texttt{v} in transaction \texttt{T}
+          \item \texttt{I(T, O, v)} - insert object \texttt{O} with value \texttt{v} in transaction \texttt{T}
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Transactional Rules}
+
+Log management must ensure that transactions implement \texttt{WRITE} operations in a reliable way;
+to do so, the Reliability Manager has to apply the following rules:
+
+\begin{enumerate}
+  \item\label{enum:transactional-rules-1} a commit log record must be written synchronously (with a force operation)
+  \item\label{enum:transactional-rules-2} the before-state must be written in the log before carrying out the corresponding operation on the database (write-ahead logging)
+  \item\label{enum:transactional-rules-3} the after-state must be written in the log before carrying out the commit (commit rule)
+\end{enumerate}
+
+Rule \ref{enum:transactional-rules-2} ensures that actions can be undone in case of failure;
+rule \ref{enum:transactional-rules-3} ensures that actions can be redone in case of failure.
+
+\subsubsection{Types of Failures}
+
+There are \(3\) types of failures:
+
+\begin{itemize}
+  \item Soft failure
+        \begin{itemize}
+          \item loss of part or all of the main memory
+          \item requires a warm restart
+          \item log is exploited to replay the transactions
+        \end{itemize}
+  \item Hard failure
+        \begin{itemize}
+          \item failure or loss of part or all of the secondary memory devices
+          \item requires a cold restart
+          \item dump is exploited to replay the transactions
+        \end{itemize}
+  \item Disaster
+        \begin{itemize}
+          \item loss of stable memory (of the log and the dump)
+          \item not treated in this course
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Checkpointing}
+
+Checkpoints are used to reduce the amount of work that has to be done in case of failure;
+they are snapshots of the database and the log at a given time.
+
+They are performed periodically by the Reliability Manager:
+all transactions that committed flush their data from the buffer to the disk, while all active transactions are recorded in the log.
+
+A simple checkpointing strategy consists of the following steps:
+
+\begin{enumerate}
+  \item acceptance of all transactions that have committed their work
+  \item suspension of all abort requests
+  \item all dirty buffer pages modified by committed transactions rea transferred to mass storage forcefully
+  \item the identifiers of the transactions still in progress are recorded in the checkpoint log record; no new transaction can start while this record is being written
+  \item acceptance of the operations is resumed
+\end{enumerate}
+
+In this way, it's ensured that all the data relative to committed transactions is on mass storage, while transactions that are still ongoing are listed in the checkpoint log record (in stable memory).
+
+\paragraph{Dump}
+
+The dump is a complete backup of the database at a given time.
+
+Dumps are normally created when there's low activity on the database; usually at night or during the weekend.
+The availability of the dump is recorded in the log, while the content of the dump itself is stored in stable memory.
+
+\paragraph{Restarting the Database}
+
+\subparagraph*{Warm Restart}
+The warm restart is performed according to the following steps:
+
+\begin{enumerate}
+  \item find the most recent checkpoint
+  \item build the \texttt{UNDO} and \texttt{REDO} sets
+        \begin{lstlisting}
+UNDO := active transactions in the checkpoint
+REDO := {}
+for log records from the checkpoint to the top of the log do:
+  if B(T\_i) then
+    UNDO := UNDO $\cup$ {T\_i} // started, maybe undone
+  else if C(T_i) then
+    UNDO := UNDO $\setminus$ {T\_i}
+    REDO := REDO $\cup$ {T\_i} // ended, to redo
+  end
+end
+  \end{lstlisting}
+  \item undo the transactions in the \texttt{UNDO} set by applying the \texttt{UNDO} operations in reverse order
+  \item redo the transactions in the \texttt{REDO} set by applying the \texttt{REDO} operations
+\end{enumerate}
+
+\subparagraph*{Cold Restart}
+The cold restart is performed according to the following steps:
+
+\begin{enumerate}
+  \item data is restored starting from the last backup (dump)
+  \item operations recorded into the log before the failure time are replayed
+  \item data on dick is restored in the status existing at failure time
+  \item a warm restart is performed
+\end{enumerate}
+
+During the cold restart, uncertain transactions are undone.
 
 \clearpage
 
