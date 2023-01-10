@@ -1,26 +1,18 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=rectangle] (0) at (0, 2) {\(T_1\)};
-		\node [style=rectangle] (1) at (0, -2) {\(T_2\)};
-		\node [style=white] (2) at (-5, 0) {\(x\)};
-		\node [style=white] (3) at (5, 0) {\(y\)};
-		\node [style=none] (4) at (-1.25, 1.75) {};
-		\node [style=none] (5) at (-4, 0.5) {};
-		\node [style=none] (6) at (1.25, 1.75) {};
-		\node [style=none] (7) at (4, 0.5) {};
-		\node [style=none] (8) at (-1.25, -1.75) {};
-		\node [style=none] (9) at (-4, -0.5) {};
-		\node [style=none] (10) at (1.25, -1.75) {};
-		\node [style=none] (11) at (4, -0.5) {};
-		\node [style=top align, rotate=25] (12) at (-2.75, 1.25) {holds};
-		\node [style=top align, rotate=-25] (13) at (2.5, 1.25) {requests};
-		\node [style=top align, rotate=-25] (14) at (-2.5, -1.25) {requests};
-		\node [style=top align, rotate=25] (15) at (2.5, -1) {holds};
+		\node [style=clear textbox] (9) at (-4.25, 0) {\(x\)};
+		\node [style=textbox] (6) at (0, 4) {\(T_1\)};
+		\node [style=clear textbox] (7) at (4, 0) {\(y\)};
+		\node [style=textbox] (8) at (0, -4) {\(T_2\)};
+		\node [style=top align, rotate=45] (12) at (-2.5, 2.25) {holds};
+		\node [style=top align, rotate=-45] (13) at (2.25, 2.25) {requires};
+		\node [style=top align, rotate=-45] (14) at (-2, -2) {requires};
+		\node [style=top align, rotate=45] (15) at (1.75, -2) {holds};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
-		\draw [style=solid arrow] (4.center) to (5.center);
-		\draw [style=dashed arrow] (6.center) to (7.center);
-		\draw [style=dashed arrow] (8.center) to (9.center);
-		\draw [style=solid arrow] (10.center) to (11.center);
+		\draw [style=dashed arrow] (6) to (7);
+		\draw [style=dashed arrow] (8) to (9);
+		\draw [style=solid arrow] (6) to (9);
+		\draw [style=solid arrow] (8) to (7);
 	\end{pgfonlayer}
 \end{tikzpicture}

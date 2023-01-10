@@ -54,27 +54,28 @@ A \textbf{\dbms} \textit{(short for Data Base Management System)} is a system \t
 \begin{itemize}
   \item \textbf{Transaction} management
         \begin{itemize}[label=\(\rightarrow\)]
-          \item ACID properties make sure that a set of operations is performed as a single unit
+          \item \textit{ACID} properties make sure that a set of operations is performed as a single unit
         \end{itemize}
   \item \textbf{Concurrency} control
         \begin{itemize}[label=\(\rightarrow\)]
-          \item \CC theory, pessimistic and optimistic locking prevent data corruption in presence of concurrent accesses
+          \item pessimistic and optimistic locking prevent data corruption in presence of concurrent accesses
+          \item also known as \cc theory
         \end{itemize}
   \item \textbf{Reliability} control
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Log and recover protocols prevent data loss in case of failures
+          \item log and recover protocols prevent data loss in case of failures
         \end{itemize}
   \item \textbf{Buffer} and secondary memory management
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Paging and caching techniques improve performance by reducing the number of disk accesses
+          \item paging and caching techniques improve performance by reducing the number of disk accesses
         \end{itemize}
   \item \textbf{Physical data structures} and \textbf{access} structures
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Sequential, hash-based and tree-based structures are some of the low-level data structures used by the \dbms
+          \item sequential, hash-based and tree-based structures are some of the low-level data structures used by the \dbms
         \end{itemize}
   \item \textbf{Query} management
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Cost-based query optimization techniques are used to find the best execution plan for a given query
+          \item cost-based query optimization techniques are used to find the best execution plan for a given query
         \end{itemize}
 \end{itemize}
 
@@ -83,16 +84,16 @@ A \textbf{\dbms} \textit{(short for Data Base Management System)} is a system \t
 \begin{itemize}
   \item \textbf{Impedance mismatch} handling
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Differences between database and application models are solved with code-level procedures and object-relational mapping
+          \item differences between database and application models are solved with code-level procedures and object-relational mapping
         \end{itemize}
   \item Database \textbf{communication}
         \begin{itemize}[label=\(\rightarrow\)]
           \item \dbms provides call level interfaces, \texttt{ODBC}-\texttt{JDBC}, and \jpa persistence provider
-          \item The state of an object and the state of the persistent data that corresponds to it is synchronized by the \dbms via \jpa manage entities
+          \item the state of an object and the state of the persistent data that corresponds to it is synchronized by the \dbms via \jpa manage entities
         \end{itemize}
   \item Data \textbf{ranking}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item Questions regarding all kinds of data preference and ranking are solved by the simultaneous optimization of several criteria
+          \item questions regarding all kinds of data preference and ranking are solved by the simultaneous optimization of several criteria
         \end{itemize}
 \end{itemize}
 
@@ -113,16 +114,16 @@ Each transaction is encapsulated in a \textbf{transaction boundary}, defined by 
 Within a transaction, one of two commands \textbf{is executed exactly once} to signal the end of the transaction:
 
 \begin{enumerate}
-  \item \texttt{commit-work} the transaction is committed
-  \item \texttt{rollback-work} the transaction is aborted and rolled back
+  \item \texttt{commit-work}, the transaction is committed
+  \item \texttt{rollback-work}, the transaction is aborted and rolled back
 \end{enumerate}
 
 A transaction is defined as \textbf{well formed} if it fulfils the following conditions:
 
 \begin{enumerate}
-  \item It begins its execution with a \texttt{begin transaction} command
-  \item It ends its execution with a \texttt{commit-work} or \texttt{rollback-work} command
-  \item It includes only one command between \texttt{commit-work} and \texttt{rollback-work}
+  \item It \textbf{begins} its execution with a \texttt{begin transaction} command
+  \item It \textbf{ends} its execution with a \texttt{commit-work} or \texttt{rollback-work} command
+  \item It \textbf{includes} only one command between \texttt{commit-work} and \texttt{rollback-work}
 \end{enumerate}
 
 An application is normally composed of multiple transactions, which are executed in a sequence.
@@ -134,7 +135,7 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
 \begin{itemize}
   \item \textbf{Atomicity}
         \begin{itemize}
-          \item a transaction is an indivisible unit of execution: it either \textit{succeeds} or \textit{fails} completely
+          \item a transaction is an indivisible unit of execution: it either \textbf{succeeds} or \textbf{fails} completely
                 \begin{itemize}
                   \item if it fails, the data is \textbf{rolled back} to the state it was before the transaction started
                   \item an error after the end does not alter the effect of the transaction
@@ -164,7 +165,8 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
 \end{itemize}
 
 \subsection{\dbms and ACID properties}
-The mechanisms provided by the \dbms are:
+
+The mechanisms provided by the \dbms, conform to the \textit{ACID} properties, are:
 
 \begin{itemize}
   \item \textbf{Atomicity}
@@ -197,7 +199,7 @@ Since multiple applications can access the same data at the same time, the \dbms
 The application load of a \dbms can be measured using the number of transactions per second \textit{(TPS)};
 by exploiting the parallelism, the \textit{TPS} can be increased.
 
-The \textbf{Concurrency Control System} \textit{(or \CC system)} manages the execution of transactions, avoiding the insurgence of anomalies while ensuring performances.
+The \textbf{Concurrency Control System} \textit{(or \cc system)} manages the execution of transactions, avoiding the insurgence of anomalies while ensuring performances.
 The anomalies can be:
 
 \begin{itemize}
@@ -225,7 +227,7 @@ The anomalies can be:
 \textbf{Model}: an abstraction of a system, an object of process, which purposely ignores some details to focus on the relevant aspects.
 
 The concurrency theory builds upon a model of transaction and concurrency control principles that helps understand real-world systems;
-they exploit implementation level mechanisms \textit{(like locks and snapshots)} that help achieve some of the desirable properties postulated by the theory.
+they exploit implementation-level mechanisms \textit{(like locks and snapshots)} that help achieve some of the desirable properties postulated by the theory.
 
 For the sake of simplicity, the concurrency theory is based on the following assumptions:
 
@@ -238,7 +240,7 @@ For the sake of simplicity, the concurrency theory is based on the following ass
   \item A \textbf{schedule} is a \textbf{sequence of operations} performed by concurrent transactions that respect the order of operations of each transaction
 \end{itemize}
 
-\subsubsection{Transactions notation}
+\subparagraph*{Transactions notation}
 
 \begin{itemize}
   \item A \textbf{transaction} is denoted by \(T_i\), where \(i\) is a number
@@ -253,7 +255,7 @@ Let \(N_S\) and \(N_D\) be respectively the number of \textbf{serial schedules} 
 Then:
 
 \begin{align*}
-  N_S & = n!                                                                                        \quad & \text{number of permutations of } n \text{ transactions} \\
+  N_S & = n!                                                                                        \quad & \text{number of permutations of } n \text{ transactions} \\[0.5ex]
   N_D & = \dfrac{\displaystyle \left(\sum_{i=1}^{n}\right)!}{\displaystyle \prod_{i=1}^{n} (k_i!)}        & \text{number of permutations of all operations}
 \end{align*}
 
@@ -263,8 +265,8 @@ The goal of the \textbf{Concurrency Control} is to \textbf{reject schedules that
 To enable Concurrency Control, two components are needed:
 
 \begin{enumerate}
-  \item \textbf{Scheduler}, a component that accepts or rejects the operations requested by the transactions
-  \item \textbf{Serial schedule}, a schedule in which the actions of each transaction occur in a contiguous sequence
+  \item \textbf{scheduler}, a component that accepts or rejects the operations requested by the transactions
+  \item \textbf{serial schedule}, a schedule in which the actions of each transaction occur in a contiguous sequence
 \end{enumerate}
 
 \bigskip
@@ -304,21 +306,21 @@ And finally:
   \item \textbf{View equivalence}: two schedules \(S_i\) and \(S_j\) are view equivalent \textit{(\(S_i \approx_v S_j\))} if they have the same operations, the same final writes and the same final reads
   \item \textbf{View serializability}: a schedule is view serializable if it is view-equivalent to a serial schedule of the same transactions
         \begin{itemize}
-          \item the class of view-serializable schedules is called \VSR
+          \item the class of view-serializable schedules is called \vsr
         \end{itemize}
 \end{itemize}
 
-\paragraph{Complexity of view serializability}
+\paragraph{Complexity of View Serializability}
 
 Deciding whether two given schedules are view equivalent is done in polynomial time and space;
-deciding whether a generic schedule is in \VSR is a \NPC problem, as it requires considering the \textit{reads-from} and \textit{final writes} of all possible serial schedules with the same operations \textit{(a combinatorial problem)}.
+deciding whether a generic schedule is in \vsr is a \NPC problem, as it requires considering the \textit{reads-from} and \textit{final writes} of all possible serial schedules with the same operations \textit{(a combinatorial problem)}.
 
 However, by giving up some accuracy, it's possible to increase the performance: a stricter definition of view equivalence is introduced.
 This simplification may lead to the rejection of the schedules that are view-serializable under the broader definition.
 
-\subsubsection{Conflict serializability}
+\subsubsection{Conflict Serializability}
 
-First, let's define the notion of \textbf{conflict}:
+First, the notion of \textbf{conflict} is introduced:
 
 \begin{itemize}
   \item Two operations \(o_i\) and \(o_j\), with \(i \neq j\), are \textbf{in conflict} if they address the same resource and at least one of them is a \texttt{WRITE}
@@ -333,15 +335,15 @@ Then, the notion of \textbf{conflict serializability} is defined:
 \begin{itemize}
   \item Two schedules \(S_i\) and \(S_j\) are \textbf{conflict-equivalent} \textit{(\(S_i \approx_C S_k\))} if they contain the same operations and in all the conflicting pairs the transactions occur in the same order
   \item A schedule is conflict-serializable if it is \textbf{conflict-equivalent to a serial schedule} of the same transactions
-  \item The class of conflict-serializable schedules is called \CSR
+  \item The class of conflict-serializable schedules is called \csr
 \end{itemize}
 
 \paragraph{Relation between VSR and CSR}
 
-First of all, it's immediate to establish that \(\VSR \subseteq \CSR\)
+First of all, it's immediate to establish that \(\vsr \subseteq \csr\)
 
 \begin{itemize}
-  \item \textbf{Proof}: there are \VSR schedules that are not \CSR because they contain operations that are not in conflict.
+  \item \textbf{Proof}: there are \vsr schedules that are not \csr because they contain operations that are not in conflict.
   \item \textbf{Counter example}: consider the schedule \(r_1(x) w_2(x) w_1(x) w_3(x)\)
         \begin{itemize}
           \item it's view-serializable, as it's view-equivalent to the schedule \(T_1 T_2 T_3 = r_1(x) w_1(x) w_2(x) w_3(x)\)
@@ -351,7 +353,7 @@ First of all, it's immediate to establish that \(\VSR \subseteq \CSR\)
 \end{itemize}
 
 \bigskip
-Therefore it can be deducted that \(\CSR \Rightarrow \VSR\): conflict-equivalence \(\approx_C\) implies view-equivalence \(\approx_v\), by assuming that \(S_1 \approx_C S_2\) and \(S_2 \approx_v S_3\).
+Therefore it can be deducted that \(\csr \Rightarrow \vsr\): conflict-equivalence \(\approx_C\) implies view-equivalence \(\approx_v\), by assuming that \(S_1 \approx_C S_2\) and \(S_2 \approx_v S_3\).
 
 To achieve this assumption, \(S_1\) and \(S_2\) must have:
 
@@ -370,51 +372,51 @@ To achieve this assumption, \(S_1\) and \(S_2\) must have:
   \bigskip
   \centering
   \tikzfig[0.8]{figure-3.tikz}
-  \caption{Relation between \VSR and \CSR}
+  \caption{Relation between \vsr and \csr}
   \label{fig:relation-between-vsr-and-csr}
   \bigskip
 \end{figure}
 
-\paragraph{Testing \CSR}
+\paragraph{Testing \csr}
 
 As already said, determining the conflict serializability of two generic schedules is a \NPC problem.
-To test the conflict-serializability of a schedule, it's necessary to build a \textbf{conflict graph} \textit{(or \CG)} that has:
+To test the conflict-serializability of a schedule, it's necessary to build a \textbf{conflict graph} \textit{(or \cg)} that has:
 
 \begin{itemize}
   \item One \textbf{node} for each transaction \(T_i\)
   \item One \textbf{arc} from \(T_i\) to \(T_j\) if exists at least one conflict between an operation \(o_i\) of \(T_i\) and an operation \(o_j\) of \(T_j\) such that \(o_i\) precedes \(o_j\)
 \end{itemize}
 
-The schedule is conflict-serializable \textit{(in \CSR)} if and only if the conflict graph is acyclic.
+The schedule is conflict-serializable \textit{(in \csr)} if and only if the conflict graph is acyclic.
 
 \bigskip
-Finally, each schedule \(S \in \VSR\) and \(S \notin \CSR\) has cycles in its \CG due to the presence of blind writes.
+Finally, each schedule \(S \in \vsr\) and \(S \notin \csr\) has cycles in its \cg due to the presence of blind writes.
 Such pairs can be swapped without affecting the reads-from and final-write relationships creating a new schedule \(S^\text{mod}\) that is view equivalent to \(S\);
-its \CG is acyclic and can be used to find serial schedules that are transitively view equivalent to \(S\).
+its \cg is acyclic and can be used to find serial schedules that are transitively view equivalent to \(S\).
 
-\paragraph{\CSR implies acyclicity of the \CG}
+\paragraph{\csr implies acyclicity of the \cg}
 
 This Paragraph is going to provide a simple explanation of the previous statement.
 
-Consider a schedule \(S\) in \CSR.
+Consider a schedule \(S\) in \csr.
 As such, it is \(\approx_c\) to a serial schedule \(S'\).
 Without loss of generality, the transaction of \(S\) can be renamed such that their order is \(T_1, T_2, \dots, T_n\).
 
-Since the serial schedule has all conflicting pairs in the same order as schedule \(S\), the \CG will have arcs only connecting the pairs \((i, j)\) with \(i < j\).
-As a direct consequence, the \CG will be acyclic \textit{(a cycle requires at least an arc \((i, j)\) with \(i > j\))}.
+Since the serial schedule has all conflicting pairs in the same order as schedule \(S\), the \cg will have arcs only connecting the pairs \((i, j)\) with \(i < j\).
+As a direct consequence, the \cg will be acyclic \textit{(a cycle requires at least an arc \((i, j)\) with \(i > j\))}.
 
-\paragraph{Acyclicity of the \CG implies \CSR}
+\paragraph{Acyclicity of the \cg implies \csr}
 
 Consider once again the schedule \(S\) already explored in the previous Paragraph.
 
-If the \CG is acyclic, then it induces a topological ordering on its nodes \textit{(an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\))}.
+If the \cg is acyclic, then it induces a topological ordering on its nodes \textit{(an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\))}.
 The same partial order exists on the transactions of \(S\).
 
 Generally speaking, any serial schedule whose transactions are ordered according to the partial order is conflict-equivalent to \(S\), because for all conflicting pairs \(i, j\) the transaction \(T_i\) precedes \(T_j\) in both schedules.
 
 \subsection{Concurrency control in practice}
 
-In the real world, the concurrency control methods explained so far are not used directly: \CSR checking would be efficient if it was possible to know the graph in the beginning, but it's not the case.
+In the real world, the concurrency control methods explained so far are not used directly: \csr checking would be efficient if it was possible to know the graph in the beginning, but it's not the case.
 Additionally, as stated, the problem is \NPC, so it's not possible to solve it in a reasonable time.
 
 A scheduler must work \inlinequote{online} \textit{(or \inlinequote{on the fly})}: it must be able to decide for each operation if it can be executed or not, without knowing the whole schedule in advance;
@@ -437,21 +439,21 @@ When dealing with concurrency control, it's important to consider \textbf{arriva
 With abuse of notation, the arrival schedule will be denoted in the same way as the a posteriori schedule.
 The distinction will be clear from the context.
 
-The \CC system maps an arrival sequence to an a posteriori schedule, and it must guarantee that the a posteriori schedule is conflict-serializable.
+The \cc system maps an arrival sequence to an a posteriori schedule, and it must guarantee that the a posteriori schedule is conflict-serializable.
 
 \bigskip
-To implement a real \CC system, two main approaches are used in the real world:
+To implement a real \cc system, two main approaches are used in the real world:
 
 \begin{itemize}
   \item \textbf{Pessimistic}
         \begin{itemize}
-          \item based on locks or resource access control
+          \item based on \textbf{locks} or resource access control
           \item if a resource is being used, no other transaction can access it
           \item \textbf{prevents the errors from happening}
         \end{itemize}
   \item \textbf{Optimistic}
         \begin{itemize}
-          \item based on timestamping and versioning
+          \item based on \textbf{timestamping} and versioning
           \item serve as many requests as possible, possibly using out-of-date data
           \item \textbf{solves the error after it has happened}
         \end{itemize}
@@ -467,10 +469,10 @@ It works on a simple principle: a transaction can access a data item \textit{(ei
 
 Three primitive operations are defined:
 
-\begin{itemize}
-  \item \texttt{r\_lock(\(x\))}, to acquire a read lock on \(x\)
-  \item \texttt{w\_lock(\(x\))}, to acquire a write lock on \(x\)
-  \item \texttt{unlock(\(x\))}, to release the lock on \(x\)
+\begin{itemize}[label=\texttt{>}]
+  \item \texttt{r\_lock(\(x\))}, used to acquire a read lock on \(x\)
+  \item \texttt{w\_lock(\(x\))}, used to acquire a write lock on \(x\)
+  \item \texttt{unlock(\(x\))}, used to release the lock on \(x\)
 \end{itemize}
 
 The \textbf{scheduler} \textit{(also called lock manager in this context)} receives those requests and decides if they can be executed or not by checking an adequate data structure with minimal computational cost and overhead.
@@ -504,7 +506,7 @@ The lock manager receives the primitives from the transaction and grants resourc
   \bigskip
   \centering
   \begin{tblr}{colspec={c|c|c|c}, cells={font=\ttfamily}, cell{5}{3}={font=\itshape}}
-    {request \(\rightarrow\)                                                                              \\ status \(\downarrow\)}  & free                 & r-locked                                             & w-locked             \\
+    {status \(\rightarrow\)                                                                               \\ request \(\downarrow\)}  & free                 & r-locked                                             & w-locked             \\
     \hline
     r\_lock & \colorcmark r-locked & \colorcmark r-locked(n++)                     & \colorxmark w-locked \\
     w\_lock & \colorcmark w-locked & \colorxmark r-locked                          & \colorxmark w-locked \\
@@ -518,16 +520,13 @@ The lock manager receives the primitives from the transaction and grants resourc
 \paragraph{Predicate locks}
 
 To prevent phantom reads and inserts, a lock should also be placed on \inlinequote{future} data \textit{(inserted data that would satisfy previously issued queries)};
-to achieve this goal, a new type of lock is introduced: the \textbf{predicate lock}, written \(\phi\).
+to achieve this goal, a new type of lock is introduced: the \textbf{predicate lock}, represented by the symbol \(\phi\).
 
 Predicate locks extend the notion of data locks to future data:
 \begin{itemize}
-  \item The lock manager can acquire a predicate lock on a predicate \(\phi\)
-  \item Other transaction cannot insert, delete or upgrade any tuple satisfying \(\phi\)
-  \item If the predicate lock is not supported, the transaction must acquire a lock on all the tuples satisfying \(\phi\)
-        \begin{itemize}
-          \item otherwise, the lock is managed via the help of indexes
-        \end{itemize}
+  \item the \textbf{lock manager} can \textbf{acquire} a predicate lock on a predicate \(\phi\)
+  \item Other \textbf{transactions cannot insert, delete or upgrade} any tuple satisfying \(\phi\)
+  \item if the predicate lock is not supported, the transaction must acquire a lock on all the tuples satisfying \(\phi\); otherwise, the lock is managed via the help of \textbf{indexes}
 \end{itemize}
 
 \paragraph{Locks implementation}
@@ -555,24 +554,23 @@ This technique may cause:
 \begin{itemize}
   \item \textbf{Deadlocks}
         \begin{itemize}
-          \item two or more transactions are stuck in endless mutual wait
-          \item typically occurs due to transactions waiting for each other to release a lock
-          \item explored in Section~\ref{sec:deadlocks}
+          \item two or more transactions are stuck in endless \textbf{mutual wait}
+          \item typically occurs due to transactions \textbf{waiting for each other} to release a lock
+          \item explained in Section~\ref{sec:deadlocks}
         \end{itemize}
   \item \textbf{Starvation}
         \begin{itemize}
-          \item a transaction is waiting for a lock for a long time
-          \item typically occurs due to write transactions waiting for resources that are continuously \textit{read-locked} by other transactions
-                % \item explored in Section~\ref{sec:starvation} % TODO uncomment this when a section about starvation is added
+          \item a transaction is waiting for a lock \textbf{for a long time}
+          \item typically occurs due to write transactions \textbf{waiting for resources} that are continuously \textit{read-locked} by other transactions
         \end{itemize}
 \end{itemize}
 
-\subsection{Two-Phase Locking - \TPL}
+\subsection{Two-Phase Locking - \tpl}
 
 The locking method ensures that the writing actions are exclusive while reading actions can occur concurrently;
 however, it doesn't guarantee that the reading actions are consistent with the writing actions.
 
-The schedule mapped by the \CC system can be \textbf{inconsistent} if the following conditions are met:
+The schedule mapped by the \cc system can be \textbf{inconsistent} if the following conditions are met:
 
 \begin{itemize}
   \item a transaction \(T_1\) reads a data item \(x\) and then writes it
@@ -580,20 +578,20 @@ The schedule mapped by the \CC system can be \textbf{inconsistent} if the follow
 \end{itemize}
 
 To avoid this situation, the locking method can be extended with a \textbf{two-phase locking} mechanism \textit{(also called
-  \TPL for brevity)}.
-This method introduces a new restriction: a transaction, after having released a lock, cannot acquire another lock.
+  \tpl for brevity)}.
+This method introduces a new restriction: \textbf{a transaction, after having released a lock, cannot acquire another lock}.
 
 As a consequence of this principle, two phases can be distinguished:
 
 \begin{enumerate}
   \item \textbf{Growing phase}
         \begin{itemize}
-          \item the transaction acquires all the locks it needs to execute its operations
+          \item the transaction \textbf{acquires} all the locks it needs to execute its operations
           \item the transfer of an \texttt{r\_lock} into a \texttt{w\_lock} can only appear in this phase
         \end{itemize}
   \item \textbf{Shrinking phase}
         \begin{itemize}
-          \item the transaction releases all the locks it has acquired
+          \item the transaction \textbf{releases} all the locks it has acquired
         \end{itemize}
 \end{enumerate}
 
@@ -603,7 +601,7 @@ An illustration of the resources used in the two phases is shown in Figure~\ref{
   \centering
   \bigskip
   \tikzfig[]{figure-5.tikz}
-  \caption{Illustration of the resources used in the two phases of the \TPL}
+  \caption{Illustration of the resources used in the two phases of the \tpl}
   \label{fig:resources-use-phases-two-phases-locking}
   \bigskip
 \end{figure}
@@ -612,27 +610,27 @@ This extension is sufficient to prevent non-repeatable reads and phantom reads, 
 however, it does ensure serializability.
 
 \bigskip
-Finally, a scheduler that:
+Finally, a \textbf{scheduler} that:
 
 \begin{itemize}
-  \item only processes well-formed transactions
-  \item grants locks according to the conflict table
-  \item checks that all transactions apply the two-phase locking
+  \item only processes \textbf{well-formed transactions}
+  \item grants locks according to the \textbf{conflict table}
+  \item checks that all transactions apply the \textbf{two-phase locking}
 \end{itemize}
 
-generates schedules in the \TPL class.
-Those schedules are both view-serializable and conflict-serializable.
+generates schedules in the \tpl class;
+as soon will be shown, those schedules are both \textbf{view-serializable} and \textbf{conflict-serializable}.
 
 It can be noted that:
 
-\[ \VSR \subset \CSR \subset \TPL \]
+\[ \vsr \subset \csr \subset \tpl \]
 
-\subsubsection{\TPL implies \CSR}
+\subsubsection{\tpl implies \csr}
 
-If \(\TPL \subseteq \CSR\), then every \TPL schedule is also conflict serializable.
+If \(\tpl \subseteq \csr\), then \textbf{every \tpl schedule is also conflict serializable}.
 
 \bigskip
-First, let's suppose that a \TPL schedule is not \CSR.
+First, let's suppose that a \tpl schedule is not \csr.
 Then, there exists a transaction \(T_i\) that has acquired a lock on a data item \(x\) and then released it (a cycle \(T_i \rightarrow T_j \rightarrow T_i\)).
 
 Therefore there must be a pair of conflicting operations in reverse order, such that:
@@ -647,14 +645,14 @@ Therefore there must be a pair of conflicting operations in reverse order, such 
   \item later in the schedule, when the instructions \(\text{OP}_{j}^{u}, \text{OP}_{i}^{v}\) are executed,
         \begin{itemize}
           \item for a conflict to occur, the transaction must have acquired a lock on \(x\)
-          \item this is a contradiction on the \TPL
+          \item this is a contradiction on the \tpl
         \end{itemize}
 \end{enumerate}
 
-The inclusion of \TPL in \CSR is therefore proved;
-this proves also that all \TPL schedules are view-serializable too.
+The inclusion of \tpl in \csr is therefore proved;
+this proves also that all \tpl schedules are view-serializable too.
 
-In the same way, the inclusion of \TPL in \VSR can be proved \textit{(showing that \(\CSR \subset \VSR\))}.
+In the same way, the inclusion of \tpl in \vsr can be proved \textit{(showing that \(\csr \subset \vsr\))}.
 
 \paragraph{Alternate proof}
 
@@ -668,16 +666,16 @@ An alternate proof of the same relation can be found in the following steps.
   \item Is it possible that \(o_i\) and \(o_j\) execute in the reverse order?
         \begin{itemize}
           \item no, because then \(T_j\) would have released the lock on \(r\) before \(T_i\) acquired it
-          \item this would be a contradiction of the ordering criterion in the \TPL
+          \item this would be a contradiction of the ordering criterion in the \tpl
         \end{itemize}
 \end{itemize}
 
 \bigskip
-This also proves that all \TPL schedules are view-serializable too and that they can be also checked with negligible overhead.
+This also proves that all \tpl schedules are view-serializable too and that they can be also checked with negligible overhead.
 
-\paragraph{\TPL is smaller than \CSR}
+\paragraph{\tpl is smaller than \csr}
 
-It can be proven that \(\TPL \subset \CSR\): every \TPL schedule is also conflict serializable, while the opposite is not always true.
+It can be proven that \(\tpl \subset \csr\): every \tpl schedule is also conflict serializable, while the opposite is not always true.
 
 \bigskip
 Figure~\ref{fig:relation-between-tpl-csr-vsr-schedules} shows the relation between the three classes of schedules.
@@ -686,27 +684,27 @@ Figure~\ref{fig:relation-between-tpl-csr-vsr-schedules} shows the relation betwe
   \centering
   \bigskip
   \tikzfig[0.8]{figure-6.tikz}
-  \caption{Relation between \TPL, \CSR and \VSR schedules}
+  \caption{Relation between \tpl, \csr and \vsr schedules}
   \label{fig:relation-between-tpl-csr-vsr-schedules}
   \bigskip
 \end{figure}
 
-\subsection{Strict \TPL}
+\subsection{Strict \tpl}
 
 In the previous Sections, the hypothesis of commit-projection \textit{(no transactions in the schedule are aborted)} was used;
-however, the \TPL does not protect against dirty reads \textit{(caused by uncommitted transactions)}, as releasing locks before rollbacks expose dirty data.
-In the same way, neither \VSR nor \CSR protects against dirty reads.
+however, the \tpl does not protect against dirty reads \textit{(caused by uncommitted transactions)}, as releasing locks before rollbacks expose dirty data.
+In the same way, neither \vsr nor \csr protects against dirty reads.
 
-To remove this hypothesis, an additional constraint to \TPL is added, therefore obtaining the \textbf{\STPL}:
+To remove this hypothesis, an additional constraint to \tpl is added, therefore obtaining the \textbf{\stpl}:
 \textbf{locks held by a transaction can be released only after commit or rollback.}
 
-This version of \TPL is used in most of the modern \dbms whenever a level of higher isolation is required.
+This version of \tpl is used in most of the modern \dbms whenever a level of higher isolation is required.
 
 \bigskip
 In practice:
 \begin{itemize}
-  \item \STPL locks are also called \textbf{long duration locks}, while \TPL locks are called \textbf{short duration locks}
-  \item Real systems may apply \TPL policies differently, depending on the type of the lock:
+  \item \stpl locks are also called \textbf{long duration locks}, while \tpl locks are called \textbf{short duration locks}
+  \item Real systems may apply \tpl policies differently, depending on the type of the lock:
         \begin{itemize}
           \item \textbf{write locks} are usually released after commit or rollback \textit{(long duration)}
           \item \textbf{read locks} are usually implemented with mixed policies \textit{(both short and long duration)}
@@ -755,13 +753,13 @@ Normally, commercial systems use locks and timestamp-based concurrency control m
   \centering
   \bigskip
   \begin{tblr}{colspec={r|c|c|c}, row{1}={font=\itshape}, column{1}={font=\itshape}}
-    isolation level  & dirty read  & non repeatable read & phantoms    \\
+    {error \(\rightarrow\)                                     \\ isolation level \(\downarrow\)}  & dirty read  & non repeatable read & phantoms    \\
     \hline
-    read uncommitted & \colorcmark & \colorcmark         & \colorcmark \\
-    read committed   & \colorxmark & \colorcmark         & \colorcmark \\
-    repeatable read  & \colorxmark & \colorxmark         & \colorcmark \\
-    snapshot         & \colorxmark & \colorxmark         & \colorxmark \\
-    serializable     & \colorxmark & \colorxmark         & \colorxmark \\
+    read uncommitted & \colorcmark & \colorcmark & \colorcmark \\
+    read committed   & \colorxmark & \colorcmark & \colorcmark \\
+    repeatable read  & \colorxmark & \colorxmark & \colorcmark \\
+    snapshot         & \colorxmark & \colorxmark & \colorxmark \\
+    serializable     & \colorxmark & \colorxmark & \colorxmark \\
   \end{tblr}
   \caption{\texttt{SQL} isolation levels}
   \label{tab:sql-isolation-levels}
@@ -792,7 +790,9 @@ Because of this problem, the \textit{serializable} level is used sparingly and i
 \bigskip
 The \texttt{SQL} code to set the isolation level is shown in Code~\ref{lst:sql-set-isolation-level}.
 
-\begin{lstlisting}[language=SQL, caption={\texttt{SQL} statement to set the isolation level of a transaction}, label={lst:sql-set-isolation-level}]
+\begin{minipage}{\textwidth}
+  \bigskip
+  \begin{lstlisting}[language=SQL, caption={\texttt{SQL} statement to set the isolation level of a transaction}, label={lst:sql-set-isolation-level}]
 SET TRANSACTION ISOLATION LEVEL <isolation level>;
 <set transaction statement> ::=
   SET [LOCAL] TRANSACTION <transaction characteristics>
@@ -812,16 +812,17 @@ SET TRANSACTION ISOLATION LEVEL <isolation level>;
 <isolation level name> ::=
   READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE
 \end{lstlisting}
+\end{minipage}
 
 \subsection{Deadlocks}
 \label{sec:deadlocks}
 
-A deadlock is a situation where two or more transactions are waiting for each other to complete.
+A \textbf{deadlock} is a situation where two or more transactions are waiting for each other to complete.
 The presence of a deadlock in a set of transactions can be shown via:
 
 \begin{itemize}
-  \item Lock graphs: a bipartite graph in which nodes are resources or transactions and arcs represent lock assignments or requests
-  \item Wait-for graphs: a directed graph in which nodes are transactions and arcs represent requests for locks
+  \item \textbf{Lock graphs}: a bipartite graph in which nodes are resources or transactions and arcs represent lock assignments or requests
+  \item \textbf{Wait-for graphs}: a directed graph in which nodes are transactions and arcs represent requests for locks
 \end{itemize}
 
 In both cases, a cycle in the graph represents a deadlock.
@@ -870,46 +871,46 @@ A deadlock can be created in the following way:
 Many different techniques exist to solve deadlocks, such as:
 
 \begin{itemize}
-  \item Timeout
-  \item Deadlock prevention
-  \item Deadlock detection
+  \item \textbf{Timeout}
+  \item Deadlock \textbf{prevention}
+  \item Deadlock \textbf{detection}
 \end{itemize}
 
 The deadlock resolution techniques will be discussed in more detail in the next Sections.
 
 \subsubsection{Timeout}
 
-A transaction is killed and restarted if it has been waiting for a lock for a certain amount of time, as it's assumed that the wait it's caused by a deadlock.
+A transaction is killed and restarted if it has been \textbf{waiting for a lock for a certain amount of time}, as it's assumed that the wait it's caused by a deadlock.
 Determining the maximum time interval is a difficult task, as it can vary greatly;
 as such, it must be determined for each system and sometimes can be altered by the database administrator.
 
 The timeout value must be chosen carefully, keeping in mind the following tradeoff:
 
 \begin{itemize}
-  \item An high value can lead to long delays whenever a deadlock occurs
-  \item A low value can lead to frequent and unneeded restarts of transactions
+  \item an \textbf{high value} can lead to \textbf{long delays} whenever a deadlock occurs
+  \item a \textbf{low value} can lead to \textbf{frequent and unneeded restarts} of transactions
 \end{itemize}
 
 This is the most used technique to solve deadlocks, as it's the simplest to implement and it's the one that requires the least amount of resources.
 
 \subsubsection{Deadlock Prevention}
 
-The deadlock prevention techniques work by killing transactions that are likely to cause a deadlock.
+The deadlock prevention techniques work by \textbf{killing transactions} that are likely to cause a deadlock.
 This solution is implemented mainly in \(2\) ways:
 
 \begin{itemize}
   \item \textbf{Resource-based} prevention
         \begin{itemize}
-          \item introduces restrictions on lock requests
-          \item resources are globally sorted and must be locked in a specific order
-          \item since not all transactions know beforehand which resources they will need, this technique is not very effective
+          \item introduces \textbf{restrictions on lock requests}
+          \item resources are globally sorted and must be \textbf{locked in a specific order}
+          \item since not all transactions know beforehand which resources they will need, \textbf{this technique is not very effective}
         \end{itemize}
   \item \textbf{Transaction-based} prevention
         \begin{itemize}
-          \item introduces restrictions based on the transactions themselves
-          \item to each transaction an ID is assigned incrementally, giving the transaction a priority
+          \item introduces \textbf{restrictions} based on the transactions themselves
+          \item to each transaction an ID is assigned incrementally, \textbf{giving the transaction a priority}
                 \begin{itemize}
-                  \item the ID assignment can be implemented via timestamps
+                  \item the ID assignment can be implemented via \textbf{timestamps}
                 \end{itemize}
           \item \inlinequote{older} transaction don't have to wait for \inlinequote{younger} transactions
           \item there are two ways of determining which transaction to kill:
@@ -917,68 +918,67 @@ This solution is implemented mainly in \(2\) ways:
                   \item \textit{preemptive} - the holding transaction is killed \textit{(wound-wait)}
                   \item \textit{non-preemptive} - the requesting transaction is killed \textit{(wait-die)}
                 \end{itemize}
-          \item the problem with this technique is that too many transactions get killed
+          \item the problem with this technique is that \textbf{too many transactions get killed}
         \end{itemize}
 \end{itemize}
 
 \subsubsection{Deadlock Detection}
 
-This technique requires controlling the contents of the lock tables to reveal possible concurrency issues.
+This technique requires \textbf{controlling the contents of the lock tables} to reveal possible concurrency issues.
 The discovery of a deadlock requires the analysis of the \textit{wait-for graph}, determining if it contains a cycle;
-to do so, the Obermarck algorithm is used.
+to do so, the \textbf{Obermarck algorithm} is used.
 
 Assumptions of the algorithm:
 
 \begin{itemize}
-  \item Transactions execute on a single main node \textit{(one locus of control)}
-  \item Transactions may be decomposed in sub-transactions running on other nodes
-  \item When a transaction spawns a sub-transaction, it waits for the latter to complete
-  \item Two kinds of wait-for relationships exist:
+  \item transactions execute on a \textbf{single main node} \textit{(one locus of control)}
+  \item transactions may be \textbf{decomposed in sub-transactions} running on other nodes
+  \item when a transaction spawns a sub-transaction, it \textbf{waits} for the latter to complete
+  \item two kinds of wait-for relationships exist:
         \begin{itemize}
           \item \(T_i\) waits for \(T_j\) to release a resource on the same node
-          \item A sub transaction of \(T_i\) waits for another sub transaction of \(T_i\) running on a different node
+          \item a sub transaction of \(T_i\) waits for another sub transaction of \(T_i\) running on a different node
         \end{itemize}
 \end{itemize}
 
-\bigskip
-This is proven to be a feasible solution and it's implemented by most \dbms.
+This is proven to be a \textbf{feasible solution} and it's implemented by most \dbms.
 
 \paragraph{Obermarck Algorithm}
 
-\textbf{Goal}:
-detection of a potential deadlock by looking only at the local view of a node.
+\subparagraph*{Goal}
+\textbf{Detection of a potential deadlock} by looking only at the local view of a node.
 
-\textbf{Method}:
-establishment of a communication protocol whereby each node has a local projection of the global dependencies.
+\subparagraph*{Method}
+Establishment of a \textbf{communication protocol} whereby each node has a local projection of the global dependencies.
 Nodes exchange information and update their local graph based on the received information;
 communication has to be further optimized to avoid situations in which multiple nodes detect the same \textit{(potential)} deadlock.
 
 \bigskip
-Node \texttt{A} sends its local info to a node \texttt{B} if:
+Node \texttt{A} \textbf{sends} its local info to a node \texttt{B} if:
 
 \begin{itemize}
-  \item \texttt{A} contains a transaction \(T_i\) that is waited from another remote transaction and waits for a transaction \(T_j\) active on \texttt{B}
-  \item \(i > j\) \textit{(the transaction with the highest ID is the oldest)}, ensuring a message forwarding along a node path where node \texttt{A} precedes node \texttt{B}
+  \item \texttt{A} \textbf{contains a transaction} \(T_i\) that is waited from another remote transaction and waits for a transaction \(T_j\) active on \texttt{B}
+  \item \(i > j\) \textit{(the transaction with the highest ID is the oldest)}, ensuring a \textbf{message forwarding along a node path} where node \texttt{A} precedes node \texttt{B}
 \end{itemize}
 
 \bigskip
 The algorithm runs periodically at each node and consists of \(4\) steps:
 
 \begin{enumerate}
-  \item Get graph info (wait for dependencies among transactions and external calls) from the previous nodes
+  \item \textbf{get graph info} \textit{(wait for dependencies among transactions and external calls)} from the previous nodes
         \begin{itemize}[label=\(\rightarrow\)]
           \item sequences contain only node and top-level transaction identifiers
         \end{itemize}
-  \item Update the local graph by adding the received info
-  \item Check the existence of cycles among transactions; if found, select one transaction in the cycle and kill it
-  \item Send updated graph info to the next nodes
+  \item \textbf{update the local graph} by adding the received info
+  \item \textbf{check the existence of cycles} among transactions; if found, select one transaction in the cycle and kill it
+  \item \textbf{send updated graph} info to the next nodes
 \end{enumerate}
 
-\bigskip
-The algorithm contains the arbitrary choice of:
+The algorithm contains the \textbf{arbitrary} choice of:
+
 \begin{itemize}
-  \item sending the message to the following node (\(i > j\))
-  \item sending the message to the previous node (\(i < j\))
+  \item \textbf{sending} the message to the \textbf{following} node (\(i > j\))
+  \item \textbf{sending} the message to the \textbf{previous} node (\(i < j\))
 \end{itemize}
 Therefore \(4\) variants of the algorithm exist, each one with a different behaviour;
 each of them sends messages in different orders, while every one of them can detect the same deadlocks.
@@ -1012,10 +1012,10 @@ Description of the graph:
           \item is being waited for by a remote transaction
           \item the sink waits for a remote transaction
         \end{itemize}
-  \item Potential deadlock: \(T_{2a}\) waits for \(T_{1a}\) (data lock) that waits for \(T_{1b}\) (call) that waits for \(T_{2b}\) (data lock) that waits for \(T_{2a}\)
+  \item \textbf{Potential deadlock}: \(T_{2a}\) waits for \(T_{1a}\) (data lock) that waits for \(T_{1b}\) (call) that waits for \(T_{2b}\) \textit{(data lock)} that waits for \(T_{2a}\)
 \end{itemize}
 
-Application of the Obermarck algorithm to this graph:
+Application of the Obermarck Algorithm to this graph:
 \begin{itemize}
   \item Node \texttt{A}
         \begin{itemize}
@@ -1039,10 +1039,10 @@ Consider a file with \(n\) records and \(2\) transactions doing each \(2\) acces
 Then, the probability of:
 \begin{itemize}[itemsep=0.5ex]
   \item a \textbf{conflict} is \(\displaystyle \sum_{i=1}^n \left( \prod_{j=1}^n \dfrac{1}{n} \right) = n \cdot \dfrac{1}{n} \cdot \dfrac{1}{n} = \mathcal{O}\left(\dfrac{1}{n}\right)\)
-  \item a \textbf{deadlock} is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\) as it requires mutual conflicts between transactions
+  \item a \textbf{deadlock} is \(\mathcal{O}\left(\dfrac{1}{n^2}\right)\), as it requires mutual conflicts between transactions
 \end{itemize}
 
-While deadlocks are a rare occurrence, the probability of them happening increases linearly with regard to the number of concurrent transactions in the system but it increases quadratically with the number of data accesses each transaction performs.
+While deadlocks are a rare occurrence, the probability of them happening increases linearly with the number of concurrent transactions in the system but it increases quadratically with the number of data accesses each transaction performs.
 There are more advanced techniques to avoid deadlocks, such as update locks and hierarchical locks.
 Those techniques are covered in the following Sections.
 
@@ -1057,7 +1057,7 @@ Table~\ref{tab:update-lock-compatibility} shows the escalation of the update loc
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\ttfamily}, column{1}={font=\ttfamily}, cell{1}{1}={valign=b, halign=r}, cells={valign=m}}
+  \begin{tblr}{colspec={c|c|c|c|c}, row{1}={font=\ttfamily, valign=t}, column{1}={font=\ttfamily}}
     {status \(\rightarrow\)                                    \\ request \(\downarrow\)} & free & SL & UL & XL \\
     \hline
     SL & \colorcmark & \colorcmark & \colorcmark & \colorxmark \\
@@ -1103,13 +1103,13 @@ the objective is to lock the minimum amount of data possible while recognizing c
 The technique works by:
 
 \begin{itemize}
-  \item Requesting resources top-down until the right level is obtained
+  \item \textbf{Requesting} resources \textbf{top-down} until the right level is obtained
         \begin{itemize}[label=\(\downarrow\)]
-          \item locks are requested starting from the root and going down to the leaf
+          \item locks are requested starting from the \textbf{root} and going down to the \textbf{leaf}
         \end{itemize}
-  \item Releasing the locks bottom-up
+  \item \textbf{Releasing} the locks \textbf{bottom-up}
         \begin{itemize}[label=\(\uparrow\)]
-          \item locks are released starting from the leaf and going up to the root
+          \item locks are released starting from the \textbf{leaf} and going up to the \textbf{root}
         \end{itemize}
 \end{itemize}
 
@@ -1119,11 +1119,11 @@ The technique provides a richer set of primitives for lock requests; they are:
 \begin{itemize}
   \item \texttt{XL} \textit{(exclusive lock)}: the transaction is the only one that can access the resource
         \begin{itemize}[label=\(\rightarrow\)]
-          \item corresponds to the write lock of the \TPL
+          \item corresponds to the write lock of the \tpl
         \end{itemize}
   \item \texttt{SL} \textit{(shared lock)}: the transaction can read the resource
         \begin{itemize}[label=\(\rightarrow\)]
-          \item corresponds to the read lock of the \TPL
+          \item corresponds to the read lock of the \tpl
         \end{itemize}
   \item \texttt{ISL} \textit{(intent shared lock)}: expresses the intention of locking in a shared manner one of the nodes that descend from the current node
   \item \texttt{IXL} \textit{(intent exclusive lock)}: expresses the intention of locking exclusively one of the nodes that descend from the current node
@@ -1143,7 +1143,7 @@ The rules of compatibility used by the lock manager to decide whether to accept 
 \begin{table}[htbp]
   \bigskip
   \centering
-  \begin{tblr}{colspec={c|c|c|c|c|c|c}, row{1}={font=\ttfamily}, column{1}={font=\ttfamily}, cell{1}{1}={valign=b, halign=r}, cells={valign=m}}
+  \begin{tblr}{colspec={c|c|c|c|c|c|c}, row{1}={font=\ttfamily}, column{1}={font=\ttfamily}}
     {resource \(\rightarrow\)                                                                \\ request \(\downarrow\)} & free & ISL & IXL & SL & SIXL & XL \\
     \hline
     ISL  & \colorcmark & \colorcmark & \colorcmark & \colorcmark & \colorcmark & \colorxmark \\
@@ -1157,29 +1157,29 @@ The rules of compatibility used by the lock manager to decide whether to accept 
   \bigskip
 \end{table}
 
-\subsection{Concurrency control based on timestamps}
+\subsection{Concurrency Control based on timestamps}
 
-The \textbf{timestamp based} concurrency control \textit{(or \TS)} makes use of timestamps or identifiers that define a total ordering of temporal events within a system.
+The \textbf{timestamp based} concurrency control \textit{(or \ts)} makes use of timestamps or identifiers that define a total ordering of temporal events within a system.
 In centralized systems, the timestamp is generated by reading the value of the system clock at the time at which the event occurs.
 
 The concurrency control with timestamps works as follows:
 
 \begin{itemize}
-  \item every transaction is assigned a timestamp at the beginning of its execution
-  \item a schedule is accepted if and only if it reflects the serial ordering of the transaction based on the value of the timestamp of each transaction
+  \item every transaction is assigned a \textbf{timestamp} at the beginning of its execution
+  \item a schedule is \textbf{accepted} if and only if it reflects the serial ordering of the transaction based on the value of the timestamp of each transaction
 \end{itemize}
 
 \bigskip
-This method is the easiest to implement, but it's less efficient than then \TPL;
-compared to the former \textit{(which is described as pessimistic)}, this method is optimistic as it does not assume that collisions will arise.
+This method is the easiest to implement, but it's less efficient than then \tpl;
+compared to the former \textit{(which is described as pessimistic)}, \textbf{this method is optimistic} as it does not assume that collisions will arise.
 
 \subsubsection{Timestamps in distributed systems}
 
-Concurrency control in a distributed environment causes theoretical difficulties because the system clock is not synchronized among the different nodes;
-as such, the timestamp is not an indicator of global time anymore.
+Concurrency control in a distributed environment causes theoretical difficulties because the system clock is not synchronized among the different nodes:
+the timestamp is not an indicator of global time.
 To solve this issue, a system function must give out timestamps on requests
 
-This technique is called \textit{Lamport Method}.
+This technique is called \textbf{Lamport Method}.
 Using this method, a timestamp is a number characterized by two groups of digits:
 
 \begin{itemize}
@@ -1187,7 +1187,7 @@ Using this method, a timestamp is a number characterized by two groups of digits
   \item the \textbf{most significant digits} represent the \textbf{time} at which the event occurs
 \end{itemize}
 
-The syntax of a timestamp is then \texttt{timestamp = event-id.node-id}
+The syntax of a timestamp is then \texttt{timestamp = <event-id>.<node-id>}
 
 \bigskip
 The most significant digits can be obtained through a local counter, incremented at each event; in this way, each event is assigned a unique timestamp.
@@ -1202,21 +1202,21 @@ The scheduler receives requests from access to objects of the type \texttt{read(
 \begin{itemize}
   \item \texttt{read(x, ts)}
         \begin{itemize}
-          \item the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)}; the transaction is killed
-          \item the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)}; the transaction is allowed to read the object and the value of \texttt{RTM(x)} is set equal to the greater between \texttt{ts} and \texttt{RTM(x)}
+          \item[\xmarkthin] the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)}; the transaction is killed
+          \item[\cmarkthin] the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)}; the transaction is allowed to read the object and the value of \texttt{RTM(x)} is set equal to the greater between \texttt{ts} and \texttt{RTM(x)}
         \end{itemize}
   \item \texttt{write(x, ts)}
         \begin{itemize}
-          \item the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)} or \texttt{ts \(<\) RTM(x)}; the transaction is killed
-          \item the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)} and \texttt{ts \(\geq\) RTM(x)}; the transaction is allowed to write the object and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
+          \item[\xmarkthin] the request is \textbf{rejected} if \texttt{ts \(<\) WTM(x)} or \texttt{ts \(<\) RTM(x)}; the transaction is killed
+          \item[\cmarkthin] the request is \textbf{accepted} if \texttt{ts \(\geq\) WTM(x)} and \texttt{ts \(\geq\) RTM(x)}; the transaction is allowed to write the object and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
         \end{itemize}
 \end{itemize}
 
 \bigskip
-Basic \TS-based control considers only committed transactions in the schedule, while aborted transactions are not considered \textit{(commit-projection hypothesis)};
+Basic \ts-based control considers only committed transactions in the schedule, while aborted transactions are not considered \textit{(commit-projection hypothesis)};
 however, if aborts occur, dirty reads may happen.
 
-To cope with dirty reads, a variant of basic \TS has been introduced: a transaction \(T_i\) that issues a \(r_{\texttt{ts}}(x)\) or a \(w_{\texttt{ts}}(x)\) such that \texttt{ts \(>\) WTM(X)} is delayed until the transaction \(T_j\) that has written the object \(x\) commits or aborts.
+To cope with dirty reads, a variant of basic \ts has been introduced: a transaction \(T_i\) that issues a \(r_{\texttt{ts}}(x)\) or a \(w_{\texttt{ts}}(x)\) such that \texttt{ts \(>\) WTM(X)} is delayed until the transaction \(T_j\) that has written the object \(x\) commits or aborts.
 
 This method works similarly to long-duration write locks, but buffering operations might introduce big delays.
 
@@ -1226,23 +1226,23 @@ In order to reduce the kill rate, the \textit{Thomas Rule} has been introduced.
 It makes a slight change to the \texttt{write(x, ts)} request:
 
 \begin{itemize}
-  \item if \texttt{ts \(<\) RTM(x)} the request is rejected and the transaction is killed
-  \item else, if \texttt{ts \(<\) WTM(x)} the write request is obsolete and the transaction is skipped
-  \item else, access is granted and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
+  \item if \texttt{ts \(<\) RTM(x)} the request is \textbf{rejected} and the transaction is \textbf{killed}
+  \item else, if \texttt{ts \(<\) WTM(x)} the write request is \textbf{obsolete} and the transaction is \textbf{skipped}
+  \item else, access is \textbf{granted} and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
 \end{itemize}
 
 This rule then allows the scheduler to skip a \texttt{WRITE} on an object that has already been written by a younger transaction, without killing it.
 It works only if the transaction issues a write without requiring a previous read on the object;
 instructions like \texttt{SET X = X + 1} would fail.
 
-\subsection{Comparison between \VSR, \CSR, \TPL and \TS}
+\subsection{Comparison between \vsr, \csr, \tpl and \ts}
 
-Figure~\ref{fig:concurrency-control-comparison} illustrates the taxonomy of the methods \VSR, \CSR, \TPL and \TS:
+Figure~\ref{fig:concurrency-control-comparison} illustrates the taxonomy of the methods \vsr, \csr, \tpl and \ts:
 
 \begin{itemize}
-  \item \VSR is the most general class, strictly including \CSR
-  \item \CSR strictly includes both \TPL and \TS
-  \item \TPL and \TS are neither mutually exclusive nor mutually inclusive, as they share some schedules that are accepted by both methods but other schedules that are accepted by one method but not by the other exists
+  \item \vsr is the most general class, strictly including \csr
+  \item \csr strictly includes both \tpl and \ts
+  \item \tpl and \ts are neither mutually exclusive nor mutually inclusive, as they share some schedules that are accepted by both methods but other schedules that are accepted by one method but not by the other exists
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -1255,54 +1255,54 @@ Figure~\ref{fig:concurrency-control-comparison} illustrates the taxonomy of the 
 \end{figure}
 
 \bigskip
-The relation between \TS and \TPL can be summarized by \(3\) schedules:
+The relation between \ts and \tpl can be summarized by \(3\) schedules:
 
 \begin{itemize}
-  \item \(r_1(x) w_1(x) r_2(x) w_2(x) r_0(y) w_1(y)\) is accepted by \TS but not by \TPL
-  \item \(r_2(x) w_2(x) r_1(x) w_1(x)\) is accepted by \TPL but not by \TS
-  \item \(r_1(x) w_1(x) r_2(x) w_2(x)\) is accepted by both \TS and \TPL
+  \item \(r_1(x) w_1(x) r_2(x) w_2(x) r_0(y) w_1(y)\) is accepted by \ts but not by \tpl
+  \item \(r_2(x) w_2(x) r_1(x) w_1(x)\) is accepted by \tpl but not by \ts
+  \item \(r_1(x) w_1(x) r_2(x) w_2(x)\) is accepted by both \ts and \tpl
 \end{itemize}
 
-\subsubsection{\TS implies \CSR}
+\subsubsection{\ts implies \csr}
 
-The objective of this Section is to illustrate the relation between \TS and \CSR.
+The objective of this Section is to illustrate the relation between \ts and \csr.
 To do so, consider the following:
 
 \begin{itemize}
-  \item Let \(S\) be a \textbf{schedule} accepted by \TS and containing two \textbf{transactions} \(T_1\) and \(T_2\)
-  \item Suppose that \(S\) is not accepted by \CSR, which implies that there is a cycle between \(T_1\) and \(T_2\)
+  \item Let \(S\) be a \textbf{schedule} accepted by \ts and containing two \textbf{transactions} \(T_1\) and \(T_2\)
+  \item Suppose that \(S\) is not accepted by \csr, which implies that there is a cycle between \(T_1\) and \(T_2\)
         \begin{itemize}
           \item \(S\) contains \(\text{OP}_1(x)\) and \(\text{OP}_2(x)\) where at least one of the two is a \texttt{WRITE}
           \item \(S\) also contains \(\text{OP}_2(y)\) and \(\text{OP}_1(y)\) where at least one of the two is a \texttt{WRITE}
         \end{itemize}
   \item When \(\text{OP}_1(y)\) arrives, the following statements are true:
         \begin{itemize}
-          \item if \(\text{OP}_1(y)\) is a \texttt{READ}, then \(T_1\) is killed by \TS because it tries to read a value written by a younger transaction. This is a contradiction.
-          \item If \(\text{OP}_1(y)\) is a \texttt{WRITE}, then \(T_1\) is killed by \TS because it tries to write a value written by a younger transaction. This is a contradiction.
+          \item if \(\text{OP}_1(y)\) is a \texttt{READ}, then \(T_1\) is killed by \ts because it tries to read a value written by a younger transaction. This is a contradiction.
+          \item If \(\text{OP}_1(y)\) is a \texttt{WRITE}, then \(T_1\) is killed by \ts because it tries to write a value written by a younger transaction. This is a contradiction.
         \end{itemize}
 \end{itemize}
 
-\subsubsection{\TPL and \TS}
+\subsubsection{\tpl and \ts}
 
-The main differences between \TPL and \TS are shown in Table~\ref{tab:tpl-vs-ts}.
+The main differences between \tpl and \ts are shown in Table~\ref{tab:tpl-vs-ts}.
 
 \begin{table}
   \centering
   \bigskip
   \begin{tblr}{colspec={r|c|c}, column{1}={font=\itshape}}
-                  & \TPL                                 & \TS                                               \\
+                  & \tpl                                 & \ts                                               \\
     \hline
     transactions  & can be actively waiting              & killed and restarted                              \\
     serialization & imposed by conflicts                 & imposed by timestamps                             \\
-    delays        & caused by commit wait in strict \TPL & none                                              \\
+    delays        & caused by commit wait in strict \tpl & none                                              \\
     deadlocks     & can be caused                        & prevented via the wound-wait and wait-die methods \\
   \end{tblr}
-  \caption{Differences between \TPL and \TS}
+  \caption{Differences between \tpl and \ts}
   \label{tab:tpl-vs-ts}
   \bigskip
 \end{table}
 
-However, normally restarting a transaction costs more than waiting; for this reason, \TPL is normally preferred.
+However, normally restarting a transaction costs more than waiting; for this reason, \tpl is normally preferred.
 Commercial systems implement a mix of optimistic and pessimistic concurrency control.
 
 \subsection{Multi version Concurrency Control}
@@ -1330,9 +1330,9 @@ Mechanism of \texttt{READ} and \texttt{WRITE} operations:
         \end{itemize}
 \end{itemize}
 
-\subsubsection{Snapshot Isolation - \SI}
+\subsubsection{Snapshot Isolation - \si}
 
-The realization of multi-\TS allows introducing into \dbms another level of isolation, called \textbf{snapshot isolation} \textit{(or \SI)}.
+The realization of multi-\ts allows introducing into \dbms another level of isolation, called \textbf{snapshot isolation} \textit{(or \si)}.
 
 At this level:
 
@@ -1352,8 +1352,8 @@ At this level:
 However, this method introduces a \textbf{write skew anomaly}, since:
 
 \begin{itemize}
-  \item \SI does not guarantee serializability
-  \item an execution under \SI in which the two transactions \(T_1\) and \(T_2\) are executed in parallel is not equivalent to an execution in which \(T_1\) is executed before \(T_2\)
+  \item \si does not guarantee serializability
+  \item an execution under \si in which the two transactions \(T_1\) and \(T_2\) are executed in parallel is not equivalent to an execution in which \(T_1\) is executed before \(T_2\)
 \end{itemize}
 
 \clearpage
@@ -1377,7 +1377,7 @@ Triggers define the \textbf{Event-Condition-Action} \textit{(ECA)} paradigm:
         \end{itemize}
   \item then \textbf{action} \(A\) is executed
         \begin{itemize}[label=\(\rightarrow\)]
-          \item a generic update statement in or a stored PROCEDURE
+          \item a generic update statement in or a stored procedure
           \item usually composed of database updates \textit{(\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE})}
           \item can include also error notifications
         \end{itemize}
@@ -1424,7 +1424,9 @@ As such, the \textbf{acyclicity condition is sufficient for termination}, but no
 
 \subsection{Triggers in \sql}
 
-\begin{lstlisting}[language=SQL, caption={Trigger Syntax}, label={lst:trigger-syntax}]
+\begin{minipage}{\textwidth}
+  \bigskip
+  \begin{lstlisting}[language=SQL, caption={Trigger Syntax}, label={lst:trigger-syntax}]
 CREATE TRIGGER <trigger_name>
   [BEFORE | AFTER] -- EXECUTION MODE
   [INSERT | UPDATE | DELETE [ OF <column> ]] ON <table_name> -- EVENT
@@ -1436,6 +1438,7 @@ CREATE TRIGGER <trigger_name>
   [WHEN <condition>] -- CONDITION
   <trigger_action> -- ACTION
 \end{lstlisting}
+\end{minipage}
 
 \subparagraph*{Multiple triggers on the same event}
 \sql \texttt{1999} specifies the ordered execution of multiple triggers on the same event;
@@ -1456,7 +1459,7 @@ The execution sequence is:
 The action of the trigger is executed \textbf{before the database status changes} \textit{(if the conditions hold)};
 the trigger is used to check the validity of the operation before it takes place, possibly conditioning its effects.
 
-\textbf{Safeness constraint}: before triggers cannot update the database directly but can affect the transition variables in row-level granularity.
+\subparagraph*{Safeness constraint} Before triggers cannot update the database directly but can affect the transition variables in row-level granularity.
 
 \subparagraph*{After}
 
@@ -1471,7 +1474,7 @@ Writing row-level triggers is simpler, but the triggers are potentially less eff
 
 \subparagraph*{Statement level}
 The trigger is considered and possibly executed only \textbf{once for each activating statement}, independently of the number of affected tuples in the target table \textit{(even if the statement does not affect any tuple)}.
-This is close to the traditional approach of \sql statements, which are normally set oriented.
+This is close to the traditional approach of \sql statements, which are normally set-oriented.
 
 \subsubsection{Transition Variables}
 
@@ -1479,7 +1482,7 @@ Special variables denoting the before and after the state of the database are av
 their syntax depends on the granularity of the event.
 
 \begin{itemize}
-  \item row level: tuple variables \texttt{old} and \texttt{new} represent the value of the tuple before and \textbf{after the update}
+  \item \textbf{row level}: tuple variables \texttt{old} and \texttt{new} represent the value of the tuple before and \textbf{after the update}
   \item \textbf{statement level}: \textbf{table variables} \texttt{old} and \texttt{new} represent the set of tuples \textbf{before} and \textbf{after the update}
 \end{itemize}
 
@@ -1506,8 +1509,15 @@ an alternative is to implement the materialization via triggers.
 Incremental View Maintenance is the process of updating a materialized view when the base tables are updated.
 
 Suppose that view \texttt{V} is defined by a query \texttt{Q} over a set of base relations \texttt{D}.
-When \texttt{D} changes to \texttt{D' := D + dD}, the new view state is \texttt{V' := Q(D') = Q(D) + dQ}:
-the \dbms computes the new view state over the increment of the base relations.
+When \texttt{D} changes to:
+\begin{center}
+  \texttt{D' := D + dD}
+\end{center}
+its corresponding new state is:
+\begin{center}
+  \texttt{V' := Q(D') = Q(D) + dQ}
+\end{center}
+The \dbms computes the new view state over the increment of the base relations.
 
 \subsection{Design Principles}
 
@@ -1515,7 +1525,7 @@ the \dbms computes the new view state over the increment of the base relations.
   \item Use triggers to \textbf{guarantee} that when a specific operation is performed, all the related actions are performed
   \item Do not define triggers that \textbf{duplicate features} already built into the \dbms
         \begin{itemize}[label=\(\rightarrow\)]
-          \item do not define triggers that reject bad data if the same can be done with \sql \texttt{CHECK} constraints
+          \item does not define triggers that reject bad data if the same can be done with \sql \texttt{CHECK} constraints
         \end{itemize}
   \item Limit the \textbf{size} of the trigger action
         \begin{itemize}[label=\(\rightarrow\)]
@@ -1628,7 +1638,7 @@ A block for sequential and hash-based methods is divided in:
 \begin{itemize}
   \item \textbf{block header} and \textbf{trailer} with control information used by the File System
   \item \textbf{page header} and \textbf{trailer} with control information about the access method
-  \item a p\textbf{age dictionary} containing pointers to each elementary item of useful data contained in the page
+  \item a \textbf{page dictionary} containing pointers to each elementary item of useful data contained in the page
   \item a \textbf{useful part} containing the data
         \begin{itemize}
           \item normally, page dictionaries and useful data grow as a stack in opposite directions
@@ -1727,7 +1737,7 @@ while the former associate a search key to a single tuple, the latter associate 
 \subparagraph*{Sparse indexes}
 \begin{itemize}
   \item an entry index is associated with \textbf{every} search-key value in the file
-  \item \textbf{high performances}: in order to access a tuple, the index is accessed first, then the block is accessed
+  \item \textbf{high performances}: to access a tuple, the index is accessed first, and then the block is accessed
   \item can be used on \textbf{entry-sequenced} primary structures
 \end{itemize}
 
@@ -1739,7 +1749,7 @@ while the former associate a search key to a single tuple, the latter associate 
         \begin{itemize}[label=\(\rightarrow\)]
           \item the search key corresponds to the ordering key of the tuple
         \end{itemize}
-  \item \textbf{low performances}: in order to access a tuple, it's necessary to scan each block until the search key is found; then the block must be scanned to locate the tuple itself
+  \item \textbf{low performances}: to access a tuple, it's necessary to scan each block until the search key is found; then the block must be scanned to locate the tuple itself
   \item good \textbf{tradeoff} between memory and performance as only one index entry is necessary for each block in the file
 \end{itemize}
 
@@ -1801,7 +1811,7 @@ Guidelines for choosing indexes:
   \item do not index \textbf{small tables}
   \item index \textbf{primary key }of a table only if it is not a key of the primary file organization
   \item add a \textbf{secondary index} to any column that is heavily used as a \textbf{secondary key}
-  \item add secondary index structures on columns that are involved in \texttt{SELECT} or \texttt{JOIN} criteria, \texttt{ORDER BY}, \texttt{GROUP BY}, and other operation involving sorting
+  \item add secondary index structures on columns that are involved in \texttt{SELECT} or \texttt{JOIN} criteria, \texttt{ORDER BY}, \texttt{GROUP BY}, and other operations involving sorting
   \item \textbf{avoid} indexing a column or table that is \textbf{frequently updated}
   \item \textbf{avoid} indexing a column if the query will retrieve a \textbf{significant number of rows}
   \item \textbf{avoid} indexing columns that consists of \textbf{long strings}
@@ -1910,7 +1920,7 @@ Tuples are sorted according to the value of a key field.
         \end{itemize}
 \end{itemize}
 
-In order to avoid the global reordering problem, the following techniques can be used:
+To avoid the global reordering problem, the following techniques can be used:
 
 \begin{itemize}
   \item \textbf{Differential files} and periodic \textbf{merging}
@@ -2011,7 +2021,7 @@ they are shaped and managed exactly like a hash-based primary structure, but ins
 
 In a huge database it would be very inefficient to search all the index values to reach the desired data:
 a good performance equality query predicates on the key field.
-This technique is as such inefficient for access based on interval predicates or on the value of non search-key attributes.
+This technique is as such inefficient for access based on interval predicates or the value of non search-key attributes.
 
 \subsubsection{Tree-based structures}
 
@@ -2053,7 +2063,7 @@ Each pointer addresses a sub-tree:
   \item each intermediate pointer addresses a sub-tree that contains all the information about the keys \(K\) included in the interval \(K_j \leq K < K_{j + 1}\)
 \end{itemize}
 
-The value of \(F\) depends on the size of the page and on the amount of space occupied by the key values and the pointers.
+The value of \(F\) depends on the size of the page and the amount of space occupied by the key values and the pointers.
 
 \subparagraph*{Structure of a leaf node}
 The structure of a leaf node is similar to the one of an internal node, but it contains only pointers to the data tuples or the data tuples themselves;
@@ -2262,7 +2272,7 @@ If any of the predicates are not supported by indexes, then a sequential scan is
 otherwise, indexes can be used to evaluate all predicates and then the results are merged and duplicates are removed.
 
 \subparagraph*{Sort}
-Various methods allow to sort the tuples of a table optimally;
+Various methods allow sorting the tuples of a table optimally;
 however, the problem lies in the fact that the \dbms must load the entire loaded data in the buffer, which may be too large for the available memory.
 
 Data can be sorted in the main memory \textit{(in which case it's performed via ad-hoc algorithms such as quicksort or merge sort)} or in the disk \textit{(in which case it's performed via external sorting algorithms)}.
@@ -2331,7 +2341,7 @@ It is formulated as a multi-objective optimization problem, in which the objecti
 A general formulation is:
 
 \begin{center}
-  Given \(N\) objects described by \(d\) attributes and a notion of goodness \(g_i\) for each object \(i\), find the \(k\) objects that maximize the goodness.
+  Given \(N\) \textbf{objects} described by \(d\) \textbf{attributes} and a notion of \textbf{goodness} \(g_i\) for each object \(i\),\\ find the \(k\) objects that maximize the goodness.
 \end{center}
 
 The two main approaches are:
@@ -2369,7 +2379,7 @@ Arrow stated a list of \(5\) axioms that a solution to the problem must satisfy:
   \item \textbf{Independence of irrelevant alternatives}: if candidate \(x\) is preferred over candidate \(y\) by every voter, then the winner should be indifferent between \(x\) and \(y\)
 \end{enumerate}
 
-He then promptly proved the \textbf{Arrow's Impossibility Theorem}: when more than \(2\) or alternatives are present, there's no solution that satisfies all the axioms;
+He then promptly proved the \textbf{Arrow's Impossibility Theorem}: when more than \(2\) or alternatives are present, no solution satisfies all the axioms;
 the axioms are then inconsistent with each other and as such, they stop being axioms.
 
 \subparagraph*{Metric Approach}
@@ -2413,7 +2423,7 @@ When the median ranks are all distinct, the algorithm provides the best possible
 
 \subsubsection{Instance Optimality}
 
-Instance Optimality is a form of optimality applied when standard optimality is unachievable.
+\textbf{Instance Optimality} is a form of optimality applied when standard optimality is unachievable.
 
 Let \(A\) be a family of algorithms, \(I\) a family of instances, and \(c\) a cost function that maps an algorithm and an instance to a cost.
 Then algorithm \(A^\ast\) is instance optimal with regards to \(A\) and \(I\) for the cost metric \(c\) if there exists constants \(k_1, \ k_2\) such that, for all \(A_i \in A\) and \(I_j \in I\):
@@ -2534,20 +2544,20 @@ A representation of the weights of the Top-k query is shown in Figure \ref{subfi
 
 For this reason, it is sometimes useful to consider distances rather than scores;
 therefore, the model is now a \(m\)-dimensional space of ranking attributes \(A = \left( A_1, A_2, \,\ldots\, A_m \right)\).
-A relation \(R = \left( A_1, A_2, \,\ldots\, A_m, B_1, B_2 \,\ldots\, B_n \right)\) is a set of attributes, where \(A_i, \ 1 leq i \leq m\) are the attributes of the first tuple and \(B_j, \ 1 leq j \leq m\) are the attributes of the second tuple.
+A relation \(R = \left( A_1, A_2, \,\ldots\, A_m, B_1, B_2 \,\ldots\, B_n \right)\) is a set of attributes, where \(A_i, \ 1 \leq i \leq m\) are the attributes of the first tuple and \(B_j, \ 1 \leq j \leq m\) are the attributes of the second tuple.
 The target tuple is \(q = \left( q_1, q_2, \,\ldots\, q_m \right),\ q \in A\), while a function \(d: A \times A \rightarrow \mathbb{R}\) is used to calculate the distance between two tuples in \(A\).
 
 \bigskip
 Under this model, a Top-k query is transformed into a k-Nearest Neighbours \textit{(k-NN)} query.
 
 \begin{itemize}
-  \item[\(\leftarrow\)] Input: point \(q\), relation \(R\), integer \(k \geq 1\), and a distance function \(d\)
-  \item[\(\rightarrow\)] Output: the \(k\) tuples in \(R\) that are closest to \(q\) according to \(d\)
+  \item[\(\leftarrow\)] \textbf{Input}: point \(q\), relation \(R\), integer \(k \geq 1\), and a distance function \(d\)
+  \item[\(\rightarrow\)] \textbf{Output}: the \(k\) tuples in \(R\) that are closest to \(q\) according to \(d\)
 \end{itemize}
 
 \subsubsection{Distance Functions}
 
-The most common class of distance functions is the \textbf{LP-norm} (or Minkowski distance), defined as:
+The most common class of distance functions is the \textbf{LP-norm} \textit{(or Minkowski distance)}, defined as:
 \[ L_p(t, q) = \left( \displaystyle\sum_{i=1}^m \left| t_i - q_i \right|^p  \right)^{\sfrac{1}{p}} \]
 
 Some relevant cases:
@@ -2571,9 +2581,9 @@ The different functions generate different shapes of the attribute space:
 The use of weights \(W = \left( w_1, \,\ldots\,, w_m \right)\) allows to give more importance to some attributes than others;
 as a consequence, the distance function is modified and the attribute space is modified as follows:
 
-\begin{itemize}[itemsep=1ex]
+\begin{itemize}[itemsep=1.5ex]
   \item \textbf{Manhattan} distance: \(L_1(t, q, W) = \displaystyle\sum_{i=1}^m w_i \left| t_i - q_i \right|\), the relative space is a \textbf{hyper rhomboid}
-  \item \textbf{Euclidean} distance: \(L_2(t, q, W) = \sqrt{\displaystyle\sum_{i=1}^m w_i \left( t_i - q_i \right)^2}\), the relative space is a hyper ellipsoid
+  \item \textbf{Euclidean} distance: \(L_2(t, q, W) = \sqrt{\displaystyle\sum_{i=1}^m w_i \left( t_i - q_i \right)^2}\), the relative space is a \textbf{hyper ellipsoid}
   \item \textbf{Chebyshev} distance: \(L_\infty(t, q, W) = \max_{i=1}^m w_i \left| t_i - q_i \right|\), the relative space is a \textbf{hyper rectangle}
 \end{itemize}
 
@@ -2630,10 +2640,10 @@ It's the simplest case of the Top-k query.
 Assumptions that allow the use of the \sql Top-k 1-1 \texttt{JOIN} query:
 
 \begin{itemize}
-  \item each input list supports sorted access: each access returns the id of the next best object and its partial score \(p_j\)
-  \item each input list supports random access: each access returns the partial score of an object, given its id
-  \item the id of an object is the same across all inputs
-  \item each input consists of the same set of objects
+  \item each input list supports \textbf{sorted access}: each access returns the id of the next best object and its partial score \(p_j\)
+  \item each input list supports \textbf{random access}: each access returns the partial score of an object, given its id
+  \item the \textbf{id} of an object is the \textbf{same} across all inputs
+  \item each input consists of the \textbf{same set} of objects
 \end{itemize}
 
 \paragraph{Scoring Functions Model}
@@ -2663,7 +2673,7 @@ The algorithm does not need to obtain missing partial scores and does not need r
 Furthermore, \(B_0\) is \textbf{instance-optimal}.
 
 \paragraph{Fagin's Algorithm}
-Fagin's algorithm \textit{(or FA)} is described as follows.
+\textbf{Fagin's algorithm} \textit{(or FA)} is described as follows.
 
 \begin{itemize}
   \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), function \(S\) combining ranked lists \(R_1, \,\ldots\, R_m\)
@@ -2710,7 +2720,7 @@ The limits of Fagin's algorithm are:
 
 \paragraph{Treshold Algorithm}
 
-The Threshold algorithm \textit{(or TA)} is a variant of Fagin's algorithm that exploits the scoring function to improve the performance.
+The \textbf{Threshold Algorithm} \textit{(or TA)} is a variant of Fagin's algorithm that exploits the scoring function to improve the performance.
 
 \begin{itemize}
   \item[\(\leftarrow\)] \textbf{Input}: integer \(k \geq 1\), monotone function \(S\) combining ranked lists \(R_1, \,\ldots\, R_m\)
@@ -2776,7 +2786,7 @@ in other cases, the base cost may differ:
 \end{itemize}
 
 \paragraph{No Random Access Algorithm}
-The No Random Access Algorithm \textit{(or NORA)} is a variant of the Threshold Algorithm that does not use random accesses;
+The \textbf{No Random Access Algorithm} \textit{(or NORA)} is a variant of the Threshold Algorithm that does not use random accesses;
 it still returns the Top-k results, but the scores might be uncertain.
 
 The main idea of the algorithm is to maintain a lower bound \(S^-(o)\) and an upper bound \(S^+(o)\) of the score for each retrieved object \(o\);
@@ -2822,12 +2832,13 @@ Table~\ref{tab:comparison-algorithms} shows a comparison between the three algor
 \subsection{Skyline Queries}
 
 The Skylines Queries technique aims to retrieve the best objects in a set according to several different criteria.
-Instead of specifying a score function \textit{(as in the Top-k Queries)}, the algorithm is based on the notion of \textbf{dominance}:
-tuple \(t\) dominates tuple \(s\) \textit{(denoted \(t \prec s\))} if and only if:
+Instead of specifying a score function \textit{(as in the Top-k Queries)}, the algorithm is based on the notion of \textbf{dominance}.
+
+Tuple \(t\) \textbf{dominates} tuple \(s\) \textit{(denoted \(t \prec s\))} if and only if two conditions are satisfied:
 
 \begin{enumerate}
   \item \(\forall \, i \ 1 \leq i \leq m: t[A_i] \leq s[A_i]\) - tuple \(t\) is better than \(s\) on all attributes
-  \item \(\exists \, k \ \land t[A_j] < s[A_j]\) - tuple \(t\) is better than \(s\) on at least one attribute
+  \item \(\exists \, k \, \mid t[A_k] < s[A_j]\) - tuple \(t\) is better than \(s\) on at least one attribute
 \end{enumerate}
 
 Note that these conditions assume that a lower score is better;
@@ -2855,8 +2866,8 @@ In \(2D\), the shape of the contour of the dataset resembles a skyline \textit{(
 \subparagraph*{Properties of the skyline}
 
 \begin{itemize}
-  \item A tuple \(t\) is in the skyline if and only if is the Top-1 tuple according to at leas one monotone scoring function
-  \item The skyline is not the Top-k query, since there's no scoring function that yields in the first \(k\) positions the skyline points on all possible instances
+  \item A tuple \(t\) is in the skyline if and only if is the Top-1 tuple according to at least one monotone scoring function
+  \item The skyline is not the Top-k query, since no scoring function yields in the first \(k\) positions the skyline points on all possible instances
 \end{itemize}
 
 \subparagraph*{Main aspects of skyline queries}
@@ -2982,13 +2993,13 @@ A simple comparison of the two techniques is shown in Table~\ref{tab:comparison-
 
 \section{Java Persistence API - \jpa}
 
-The end-point of many web application is the \dbms; in many cases, it exists independently of the application that use it.
+The end-point of many web applications is the \dbms; in many cases, it exists independently of the application that uses it.
 Moving data back and forth between the object model application is a harder task than it would seem:
 a lot of repetitive code is spent to convert row and column data into objects.
 
 The technique involving conversion between the object model and the relational model is called \textbf{object-relational mapping} \textit{(ORM)}.
 \textit{ORM} techniques try to map the concepts from one model onto the other, overcoming the impedance mismatch between the two models:
-there's no logical equivalence between the two models, so the mapping is not always straightforward.
+there's no logical equivalence between the two of them, so the mapping is not always straightforward.
 A mediator is needed to manage the automatic transformation of one onto the other.
 
 The differences between Object Model and Relational Model are highlighted in Table~\ref{tab:object-relational-mapping}.
@@ -2997,14 +3008,14 @@ The differences between Object Model and Relational Model are highlighted in Tab
   \centering
   \bigskip
   \begin{tblr}{colspec={cc}, hline{2}={solid}, vline{2}={solid}, row{1}={font=\itshape}}
-    Object Oriented Model - \java & Relational Model - \sql      \\
-    classes, objects              & tables, rows                 \\
-    attributes, properties        & columns                      \\
-    identity                      & primary key                  \\
-    reference to other objects    & foreign key                  \\
-    inheritance, polymorphism     & not supported \colorxmark    \\
-    methods                       & stored procedures, triggers  \\
-    code is portable              & vendor-dependent \colorxmark
+    Object Oriented Model - \java & Relational Model - \sql     \\
+    classes, objects              & tables, rows                \\
+    attributes, properties        & columns                     \\
+    identity                      & primary key                 \\
+    reference to other objects    & foreign key                 \\
+    inheritance, polymorphism     & \textbf{not supported}      \\
+    methods                       & stored procedures, triggers \\
+    code is portable              & \textbf{vendor-dependent}   \\
   \end{tblr}
   \caption{Object-Relational Mapping}
   \label{tab:object-relational-mapping}
@@ -3016,9 +3027,9 @@ it bridges the aforementioned gap between the object model and the relational mo
 It features:
 
 \begin{itemize}
-  \item POJO \textit{(Plain Old Java Object)} Persistence: any existing \java non-\texttt{final} object with default constructor can be persisted
-  \item Non-intrusiveness: the persistence layer is completely transparent to the application, as the mapped objects are not aware of it
-  \item Object queries: a query powerful is provided to query the database using the object model, without having to use \sql
+  \item \textit{POJO} \textit{(Plain Old Java Object)} \textbf{Persistence}: any existing \java non-\texttt{final} object with default constructor can be persisted
+        \item\textbf{Non-intrusiveness}: the persistence layer is completely transparent to the application, as the mapped objects are not aware of it
+  \item \textbf{Object queries}: a query powerful is provided to query the database using the object model, without having to use \sql
 \end{itemize}
 
 \subparagraph*{\jpa Main Concepts}
@@ -3066,11 +3077,11 @@ An entity can enter a managed state: all the modifications to the entity are tra
 The properties of an entity are:
 
 \begin{itemize}
-  \item identification (the primary key)
-  \item nesting
-  \item relationship
-  \item referential integrity (the foreign key)
-  \item inheritance
+  \item \textbf{identification} \textit{(the primary key)}
+  \item \textbf{nesting}
+  \item \textbf{relationship}
+  \item \textbf{referential integrity} \textit{(the foreign key)}
+  \item \textbf{inheritance}
 \end{itemize}
 
 \subparagraph*{Constraints of an Entity}
@@ -3117,7 +3128,7 @@ where:
 \subparagraph*{Identifier Generation}
 Sometimes, applications do not want to manage the uniqueness of data values;
 in this case, the persistence provider can automatically generate an \textbf{identifier} \textit{(primary key value)} for every instance of an entity of a class.
-Feature is called \textbf{identifier generation} and is specified by the \texttt{@GeneratedValue} annotation;
+This feature is called \textbf{identifier generation} and is specified by the \texttt{@GeneratedValue} annotation;
 there are \(4\) different strategies for identifier generation, shown in Table~\ref{tab:identifier-generation-strategies}.
 
 \begin{table}[htbp]
@@ -3125,10 +3136,10 @@ there are \(4\) different strategies for identifier generation, shown in Table~\
   \bigskip
   \begin{tblr}{colspec={rl}, hline{2}={solid}, vline{2}={solid}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}, cells={valign=t}}
     strategy & description                                                \\
-    AUTO     & {the provider generates identifiers                        \\ using whatever strategy is appropriate for the underlying database} \\
-    TABLE    & {identifiers are generated                                 \\ according to a generator table}                                                 \\
-    SEQUENCE & {identifiers are generated via sequences                   \\ if the underlying \dbms supports it}                             \\
-    IDENTITY & {identifiers are generated via primary key identity column \\ if the underlying \dbms supports it}           \\
+    AUTO     & {the provider generates identifiers                        \\ \ using whatever strategy is appropriate for the underlying database} \\
+    TABLE    & {identifiers are generated                                 \\ \ according to a generator table}                                                 \\
+    SEQUENCE & {identifiers are generated via sequences                   \\ \ if the underlying \dbms supports it}                             \\
+    IDENTITY & {identifiers are generated via primary key identity column \\ \ if the underlying \dbms supports it}           \\
   \end{tblr}
   \caption{Identifier Generation Strategies}
   \label{tab:identifier-generation-strategies}
@@ -3156,22 +3167,22 @@ A non-persistent attribute can be marked with the \texttt{@Transient} annotation
 Persistent attributes can be:
 
 \begin{itemize}
-  \item primitive types
-  \item Large Objects (LOBs)
-  \item Enumerated Types
+  \item \textbf{Primitive} types
+  \item Large \textbf{Objects} \textit{(LOBs)}
+  \item \textbf{Enumerated} Types
         \begin{itemize}
           \item \java enumerations
           \item strings
         \end{itemize}
-  \item Temporal Types
+  \item \textbf{Temporal} Types
         \begin{itemize}
           \item \java \texttt{Date} and \texttt{Calendar}
           \item \texttt{JDBC} temporal types
         \end{itemize}
-  \item Serializable Types
+  \item \textbf{Serializable} Types
 \end{itemize}
 
-Furthermore the fetch policy can be specified for the attributes of the entity, between:
+Furthermore the fetch policy can be specified for the attributes of the entity, between the:
 
 \begin{itemize}
   \item \textbf{\texttt{LAZY}}: the attribute is loaded when it is \textbf{first accessed}
@@ -3214,11 +3225,11 @@ public class <class name> implements Serializable {
 
 \subsubsection{Entity and Relationships}
 
-If entities contained only a simple persistent state, the issuing of the ORM would be trivial;
-however, in most cases, entities are related to each other, and the ORM must be able to handle these relationships.
+If entities contained only a simple persistent state, the issuing of the \textit{ORM} would be trivial;
+however, in most cases, entities are related to each other, and the \textit{ORM} must be able to handle these relationships.
 
-There is an ambiguity in the meaning of the word \textbf{relationship} in the context of ORM:
-from now on, the relationship will be referred to in the sense of the Object Model (such as shown in Figure~\ref{fig:object-model}).
+There is an ambiguity in the meaning of the word \textbf{relationship} in the context of \textit{ORM}:
+from now on, the relationship will be referred to in the sense of the Object Model \textit{(such as the one shown in Figure~\ref{fig:object-model})}.
 
 \begin{figure}[htbp]
   \centering
@@ -3229,7 +3240,7 @@ from now on, the relationship will be referred to in the sense of the Object Mod
   \label{fig:object-model}
 \end{figure}
 
-Every OM relationship has four characteristics:
+Every \textit{OMR} has 4 characteristics:
 
 \begin{enumerate}
   \item \textbf{Directionality}
@@ -3250,6 +3261,8 @@ Every OM relationship has four characteristics:
         \end{itemize}
 \end{enumerate}
 
+\paragraph{Explanation of the Characteristics}
+
 \subparagraph*{Directionality}
 Each entity in the relationship may have a reference to the other entity:
 
@@ -3268,7 +3281,7 @@ According to the direction, one entity plays the role of source and the other pl
 In a relation from \texttt{A} to \texttt{B}, \texttt{A} is the source and \texttt{B} is the target.
 
 \subparagraph*{Cardinality}
-Each role in the relationship has its own cardinality, leading to four possible cardinalities:
+Each role in the relationship has its cardinality, leading to four possible cardinalities:
 
 \begin{itemize}
   \item \textbf{one-to-one}: one source entity, one target entity
@@ -3308,21 +3321,22 @@ generally speaking, if the relationship is accessed from one side only, it is un
 Bi-directionality can be implemented with unidirectional relationship mapping and set-valued queries.
 Performance considerations may prompt the use of bidirectional mappings even if only one direction is used.
 
-\subparagraph*{\(1:N\) bidirectional}
+\begin{onepage}
+  \subparagraph*{\(1:N\) bidirectional}
 
-The \(1:N\) bidirectional relationship is expressed via the \texttt{@ManyToOne} and \texttt{@OneToMany} annotations, together with the \texttt{MappedBy} attribute.
+  The \(1:N\) bidirectional relationship is expressed via the \texttt{@ManyToOne} and \texttt{@OneToMany} annotations, together with the \texttt{MappedBy} attribute.
 
-The many-to-one mapping direction is defined by annotating the entity that participates with multiple instances with the \texttt{@ManyToOne} annotation;
-the entity that contains the \texttt{@ManyToOne} annotation is the owning side of the relationship.
-The \texttt{@JoinColumn} annotation is used to specify the join column that is used to reference the primary key of the target entity (it defaults to the data member name).
+  The many-to-one mapping direction is defined by annotating the entity that participates with multiple instances with the \texttt{@ManyToOne} annotation;
+  the entity that contains the \texttt{@ManyToOne} annotation is the \textbf{owning} side of the relationship.
+  The \texttt{@JoinColumn} annotation is used to specify the \textbf{join column} that is used to \textbf{reference} the primary key of the target entity \textit{(it defaults to the data member name)}.
 
-To achieve the bidirectional relationship, the mapping direction must be specified too;
-this is done by including a \texttt{@OneToMany} annotation in the entity that participates with one instance.
-The \texttt{@OneToMany} annotation is placed on a collection data member and includes a \texttt{MappedBy} attribute that specifies the name of the data member in the target entity that is the owner of the relationship.
+  To achieve the bidirectional relationship, the mapping direction must be specified too;
+  this is done by including a \texttt{@OneToMany} annotation in the entity that participates with one instance.
+  The \texttt{@OneToMany} annotation is placed on a collection data member and includes a \texttt{MappedBy} attribute that specifies the name of the data member in the target entity that is the owner of the relationship.
 
-In a one-to-many mapping, the owner of the relationship is the entity that participates with multiple instances.
+  In a \textbf{one-to-many mapping}, the \textbf{owner} of the relationship is the entity that participates with \textbf{multiple instances}.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyTooOne} annotation}, label={lst:many-to-one-annotation-bidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyTooOne} annotation}, label={lst:many-to-one-annotation-bidirectional}]
 @Entity
 public class Many {
   @Id
@@ -3340,13 +3354,15 @@ public class One {
   private List<Many> many;
 }
 \end{lstlisting}
+\end{onepage}
 
-\subparagraph*{\(1:N\) unidirectional}
+\begin{onepage}
+  \subparagraph*{\(1:N\) unidirectional}
 
-Sometimes applications require access to related entities to be unidirectional: in this case, bi-directional mapping is not needed.
-The same annotation as in bidirectional mapping is used, but the \texttt{MappedBy} attribute is omitted.
+  Sometimes applications require access to related entities to be unidirectional: in this case, bi-directional mapping is not needed.
+  The same annotation as in bidirectional mapping is used, but the \texttt{MappedBy} attribute is omitted.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToOne} annotation}, label={lst:many-to-one-annotation-unidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToOne} annotation}, label={lst:many-to-one-annotation-unidirectional}]
 @Entity
 public class Many {
   @Id
@@ -3366,19 +3382,21 @@ public class One {
 }
 \end{lstlisting}
 
-The same goes for the \texttt{@OneToMany} annotation;
-however, two alternatives are available performance-wise:
+  The same goes for the \texttt{@OneToMany} annotation;
+  however, two alternatives are available performance-wise:
 
-\begin{itemize}
-  \item Map the relationship as in the bi=directional case and use only the one-to-many direction
-  \item Do not map the collection attribute in the entity that participates with one instance and use a query instead to retrieve the correlated instances, relying on the inverse \textit{(many-to-one)} relationship direction mapping
-\end{itemize}
+  \begin{itemize}
+    \item Map the relationship as in the bi=directional case and use only the one-to-many direction
+    \item Do not map the collection attribute in the entity that participates with one instance and use a query instead to retrieve the correlated instances, relying on the inverse \textit{(many-to-one)} relationship direction mapping
+  \end{itemize}
+\end{onepage}
 
-\subparagraph*{\(1:1\) unidirectional}
-In a one-to-one relationship, the \texttt{@OneToOne} annotation is used to specify the relationship direction, as either entity can be the owner of the relationship.
-A one-to-one mapping is defined by annotating the owner entity (the one with the foreign key column) with the \texttt{@OneToOne} annotation.
+\begin{onepage}
+  \subparagraph*{\(1:1\) unidirectional}
+  In a one-to-one relationship, the \texttt{@OneToOne} annotation is used to specify the relationship direction, as either entity can be the owner of the relationship.
+  A one-to-one mapping is defined by annotating the owner entity (the one with the foreign key column) with the \texttt{@OneToOne} annotation.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-unidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-unidirectional}]
 @Entity
 public class One {
   @Id
@@ -3396,12 +3414,14 @@ public class Two {
   private One one;
 }
 \end{lstlisting}
+\end{onepage}
 
-\subparagraph*{\(1:1\) bidirectional}
-The one-to-one bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must be annotated with the \texttt{@OneToOne} annotation too and include the \texttt{MappedBy} attribute;
-the presence of the former tells \jpa that the foreign key constraint is defined in the target entity.
+\begin{onepage}
+  \subparagraph*{\(1:1\) bidirectional}
+  The one-to-one bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must be annotated with the \texttt{@OneToOne} annotation too and include the \texttt{MappedBy} attribute;
+  the presence of the former tells \jpa that the foreign key constraint is defined in the target entity.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-bidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@OneToOne} annotation}, label={lst:one-to-one-annotation-bidirectional}]
 @Entity
 public class One {
   @Id
@@ -3419,12 +3439,14 @@ public class Two {
   private One one;
 }
 \end{lstlisting}
+\end{onepage}
 
-\subparagraph*{\(N:M\) unidirectional}
-In a many-to-many mapping, there's no foreign key column; such mapping is implemented via a bridge table (also called join table).
-Either entity can therefore be the owner of the relationship.
+\begin{onepage}
+  \subparagraph*{\(N:M\) unidirectional}
+  In a many-to-many mapping, there's no foreign key column; such mapping is implemented via a bridge table \textit{(also called join table)}.
+  Either entity can therefore be the owner of the relationship.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-unidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Unidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-unidirectional}]
 @Entity
 public class N {
   @Id
@@ -3447,11 +3469,13 @@ public class M {
   private List<N> n;
 }
 \end{lstlisting}
+\end{onepage}
 
-\subparagraph*{\(N:N\) bidirectional}
-The many-to-many bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must annotated with the \texttt{@ManyToMany} annotation too and include the \texttt{MappedBy} attribute.
+\begin{onepage}
+  \subparagraph*{\(N:N\) bidirectional}
+  The many-to-many bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must be annotated with the \texttt{@ManyToMany} annotation too and include the \texttt{MappedBy} attribute.
 
-\begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-bidirectional}]
+  \begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-bidirectional}]
 @Entity
 public class N {
   @Id
@@ -3471,6 +3495,7 @@ public class M {
   private List<N> n;
 }
 \end{lstlisting}
+\end{onepage}
 
 \paragraph{\texttt{@JoinColumn} and \texttt{MappedBy}}
 
@@ -3636,7 +3661,7 @@ The life cycle of an entity is divided into five states:
 \subsection{\jpa Application Architectures}
 
 The client exploits the services of a container (via \texttt{EJB} or \texttt{CDI}) to connect to the entity manager;
-the client then interacts with business components, that in turn interacts with the Entity Manager.
+the client then interacts with business components, that in turn interact with the Entity Manager.
 The container provides support to map the \jpa entity method calls into transactions via the automatic creation of transactions.
 
 Details of the implementation:
@@ -3654,7 +3679,7 @@ Furthermore:
 
 \begin{itemize}
   \item Entity managers are the only interface to the Persistence Manager
-  \item Different components may use their own Entity Managers
+  \item Different components may use their Entity Managers
   \item Applications may need to work with different components, therefore with different Entity Managers
 \end{itemize}
 
@@ -3749,7 +3774,7 @@ If the called method, in turn, calls another method of the same or a different b
 This is the most common and default behaviour, but the business methods can be annotated to specify a different way to use the transactions provided by the container.
 
 \bigskip
-When Container Managed transactions are used, the container wraps the method calls of managed components and executes them in a transaction.
+When Container-Managed transactions are used, the container wraps the method calls of managed components and executes them in a transaction.
 A method can be annotated to obtain the desired transactional behaviour with the annotation:
 \begin{center}
   \texttt{@TransactionAttribute(TransactionAttributeType.<type>)}
@@ -3770,7 +3795,7 @@ where \texttt{type} can be:
 
 \section{Reliability}
 
-Reliability is defined as the ability of an item to perform a required function under stated conditions for a stated period of time.
+Reliability is defined as the ability of an item to perform a required function under stated conditions for a stated time length.
 In databases, reliability control ensures fundamental properties of transactions:
 
 \begin{itemize}
@@ -3784,14 +3809,14 @@ the keys components are found in \textbf{stable memory} and \textbf{log manageme
 \subsection{Reliability Manager}
 
 The Reliability Manager of the \dbms realizes the transactional commands \texttt{COMMIT} and \texttt{ABORT}, which are executed by the \texttt{Transaction Manager}.
-Furthermore, it orchestrates read and write access to pages (of data and log) and handles recovery after failures.
+Furthermore, it orchestrates read and write access to pages \textit{(of data and log)} and handles recovery after failures.
 
 \subsubsection{Persistence of Memory}
 
 Durability implies a memory whose content lasts forever, which is an abstraction built on top of existing storage technology levels.
 
 \begin{itemize}
-  \item Main Memory: non persistent
+  \item Main Memory: non-persistent
   \item Mass Memory: persistent but can be lost
   \item Stable Memory: cannot be lost, the probability of failure is zero
 \end{itemize}
@@ -3807,7 +3832,7 @@ Stable memory can be guaranteed via:
   \item On-line replication
         \begin{itemize}
           \item the data is replicated on multiple disks
-          \item the RAID disk architecture is an example of on-line replication
+          \item the RAID disk architecture is an example of online replication
         \end{itemize}
   \item Off-line replication
         \begin{itemize}
@@ -3895,7 +3920,7 @@ Suppose that \dbms starts at time \(T_0\) and fails at \(T_f\).
 Assume that data for transactions \(T_2,\ T_3\) has been written to secondary storage (committed and permanently stored):
 transactions \(T_1,\ T_6\) have to be undone.
 
-In absence of information of whether modified pages have been flushed, Reliability Manager has to red \(T_4\) and \(T_5\).
+In absence of information on whether modified pages have been flushed, Reliability Manager has to red \(T_4\) and \(T_5\).
 
 \begin{figure}[htbp]
   \centering
@@ -3977,7 +4002,7 @@ This property ensures that the Reliability Manager can apply the operations mult
 
 \paragraph{Transactional Rules}
 
-Log management must ensure that transactions implement \texttt{WRITE} operations in a reliable way;
+Log management must ensure that transactions implement \texttt{WRITE} operations reliably;
 to do so, the Reliability Manager has to apply the following rules:
 
 \begin{enumerate}
@@ -4031,7 +4056,7 @@ A simple checkpointing strategy consists of the following steps:
   \item acceptance of the operations is resumed
 \end{enumerate}
 
-In this way, it's ensured that all the data relative to committed transactions is on mass storage, while transactions that are still ongoing are listed in the checkpoint log record (in stable memory).
+In this way, it's ensured that all the data relative to committed transactions are on mass storage, while transactions that are still ongoing are listed in the checkpoint log record (in stable memory).
 
 \paragraph{Dump}
 
@@ -4084,15 +4109,15 @@ During the cold restart, uncertain transactions are undone.
 
 \subsubsection{Schedule classification}
 
-Due to the presence of blind writes, the \CG of a schedule is cyclic;
-as such, it's not in \CSR.
-By swapping two of the nodes in the \CG, it may be possible to obtain a schedule that is in \VSR;
-if it's not possible, then the schedule is not in \VSR either.
+Due to the presence of blind writes, the \cg of a schedule is cyclic;
+as such, it's not in \csr.
+By swapping two of the nodes in the \cg, it may be possible to obtain a schedule that is in \vsr;
+if it's not possible, then the schedule is not in \vsr either.
 
 In some schedules, the blind writes may appear multiple times involving the same transactions with different objects in different orders;
-in such cases the schedule is not in \CSR \textit{(and thus not in \VSR)}.
+in such cases the schedule is not in \csr \textit{(and thus not in \vsr)}.
 
-\paragraph{\TPL}
+\paragraph{\tpl}
 
 It's necessary to impose temporal constraints on the lock and unlock requests, based on two principles:
 
@@ -4104,7 +4129,7 @@ It's necessary to impose temporal constraints on the lock and unlock requests, b
 \end{itemize}
 
 The instants in which the actions take place, in to write inequalities.
-This approach is needed because the non-strict \TPL does not allow showing when a transaction has released a lock.
+This approach is needed because the non-strict \tpl does not allow showing when a transaction has released a lock.
 
 \subsubsection{Update lock}
 

@@ -1,9 +1,9 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=rectangle] (0) at (-4, 0) {\(T_4\)};
-		\node [style=rectangle] (1) at (0, -4) {\(T_1\)};
-		\node [style=rectangle] (2) at (0, -10) {\(T_1\)};
-		\node [style=rectangle] (3) at (4, -8) {\(T_3\)};
+		\node [style=textbox] (0) at (-4, 0) {\(T_4\)};
+		\node [style=textbox] (1) at (0, -4) {\(T_1\)};
+		\node [style=textbox] (2) at (0, -10) {\(T_1\)};
+		\node [style=textbox] (3) at (4, -8) {\(T_3\)};
 		\node [style=none] (6) at (-0.5, -4.25) {};
 		\node [style=none] (7) at (-0.5, -9) {};
 		\node [style=none] (8) at (0.5, -9.75) {};

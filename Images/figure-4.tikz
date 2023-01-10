@@ -5,10 +5,10 @@
 		\node [style=none] (29) at (0, -16) {};
 		\node [style=none] (30) at (2, -16) {};
 		\node [style=none] (35) at (2, -7) {};
-		\node [style=rectangle, minimum size=20pt] (50) at (4, -7) {\(23\)};
+		\node [style=textbox, outer sep=0pt] (50) at (4, -7) {\(23\)};
 		\node [style=none] (51) at (2, -1) {};
 		\node [style=white, minimum size=20pt] (55) at (7, -1) {\(T_1\)};
-		\node [style=rectangle, minimum size=20pt] (56) at (4, -1) {\(9\)};
+		\node [style=textbox, outer sep=0pt] (56) at (4, -1) {\(9\)};
 		\node [style=white, minimum size=20pt] (57) at (10, -1) {\(T_4\)};
 		\node [style=white, minimum size=20pt] (58) at (13, -1) {\(T_3\)};
 		\node [style=white, minimum size=20pt] (59) at (7, -13) {\(T_2\)};
@@ -17,7 +17,7 @@
 		\node [style=white, minimum size=20pt] (63) at (7, -7) {\(T_2\)};
 		\node [style=white, minimum size=20pt] (64) at (10, -7) {\(T_9\)};
 		\node [style=none] (65) at (2, -13) {};
-		\node [style=rectangle, minimum size=20pt] (66) at (4, -13) {\(99\)};
+		\node [style=textbox, outer sep=0pt] (66) at (4, -13) {\(99\)};
 		\node [style=none] (67) at (2, -2) {};
 		\node [style=none] (68) at (0, -2) {};
 		\node [style=none] (69) at (2, -4) {};
