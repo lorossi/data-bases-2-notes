@@ -30,7 +30,7 @@
 		\node [style=none] (27) at (20, 0) {};
 		\node [style=none] (28) at (20, -2) {};
 		\node [style=clear textbox] (29) at (1, -5) {\shortstack{pointer to block of primary storage\\containing tuples with search-key \(K_1\)}};
-		\node [style=clear textbox] (30) at (13, 3) {\shortstack{pointer to block of primary storage\\containing tuples with search-key \(K_i\)}};
+		\node [style=clear textbox] (30) at (13, 3) {\shortstack{pointer to block of primary storage\\containing tuples with search-key \(K_j\)}};
 		\node [style=clear textbox] (31) at (21, -5) {pointer to the next leaf node};
 		\node [style=none] (32) at (1, -2) {};
 		\node [style=none] (33) at (13, 0) {};
