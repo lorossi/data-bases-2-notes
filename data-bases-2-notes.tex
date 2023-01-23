@@ -3410,8 +3410,6 @@ public class One {
 public class Two {
   @Id
   private int id;
-  @OneToOne(MappedBy="two")
-  private One one;
 }
 \end{lstlisting}
 \end{onepage}
@@ -3472,7 +3470,7 @@ public class M {
 \end{onepage}
 
 \begin{onepage}
-  \subparagraph*{\(N:N\) bidirectional}
+  \subparagraph*{\(N:M\) bidirectional}
   The many-to-many bidirectional relationship is expressed like the unidirectional counterpart, but the other entity must be annotated with the \texttt{@ManyToMany} annotation too and include the \texttt{MappedBy} attribute.
 
   \begin{lstlisting}[ language=annotatedjava, caption={Bidirectional \texttt{@ManyToMany} annotation}, label={lst:many-to-many-annotation-bidirectional}]
