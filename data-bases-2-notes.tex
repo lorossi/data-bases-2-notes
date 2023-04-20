@@ -1,10 +1,10 @@
 \documentclass[english]{article}
-\usepackage{notestemplate}
+\usepackage[title={Data Bases 2 notes}, date={2022/2023}]{notestemplate}
 \usepackage{db2}
 
 \begin{document}
 
-\makecover{Data bases 2}{2022/2023}
+\makecover
 
 \section{Introduction}
 
@@ -30,7 +30,7 @@ A \textbf{\dbms} \textit{(short for Data Base Management System)} is a system \t
   \item \textbf{Reliable}
         \begin{itemize}[label=\(\rightarrow\)]
           \item ensures tolerance to hardware and software failures
-          \item the DBMS provides backup and recovery capabilities
+          \item the \dbms provides backup and recovery capabilities
         \end{itemize}
   \item \textbf{Data-ownership respectful}
         \begin{itemize}[label=\(\rightarrow\)]
@@ -163,6 +163,8 @@ A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACI
           \item no piece of data is ever lost, for any reason
         \end{itemize}
 \end{itemize}
+
+\newpage
 
 \subsection{\dbms and ACID properties}
 
@@ -334,13 +336,13 @@ Then, the notion of \textbf{conflict serializability} is defined:
 
 \begin{itemize}
   \item Two schedules \(S_i\) and \(S_j\) are \textbf{conflict-equivalent} \textit{(\(S_i \approx_C S_k\))} if they contain the same operations and in all the conflicting pairs the transactions occur in the same order
-  \item A schedule is conflict-serializable if it is \textbf{conflict-equivalent to a serial schedule} of the same transactions
-  \item The class of conflict-serializable schedules is called \csr
+  \item A schedule is \textbf{conflict-serializable} if it is \textbf{conflict-equivalent to a serial schedule} of the same transactions
+  \item The class of conflict-serializable schedules is called \textbf{\csr}
 \end{itemize}
 
 \paragraph{Relation between VSR and CSR}
 
-First of all, it's immediate to establish that \(\vsr \subseteq \csr\)
+First of all, it's immediate to establish that \(\csr \subseteq \vsr\)
 
 \begin{itemize}
   \item \textbf{Proof}: there are \vsr schedules that are not \csr because they contain operations that are not in conflict.
@@ -409,7 +411,7 @@ As a direct consequence, the \cg will be acyclic \textit{(a cycle requires at le
 
 Consider once again the schedule \(S\) already explored in the previous Paragraph.
 
-If the \cg is acyclic, then it induces a topological ordering on its nodes \textit{(an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\))}.
+If the \cg is acyclic, then it induces a \textbf{topological ordering} on its nodes \textit{(an ordering such that the graph only contains arcs from \(i\) to \(j\) if \(i < j\))}.
 The same partial order exists on the transactions of \(S\).
 
 Generally speaking, any serial schedule whose transactions are ordered according to the partial order is conflict-equivalent to \(S\), because for all conflicting pairs \(i, j\) the transaction \(T_i\) precedes \(T_j\) in both schedules.
@@ -469,7 +471,7 @@ It works on a simple principle: a transaction can access a data item \textit{(ei
 
 Three primitive operations are defined:
 
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{r\_lock(\(x\))}, used to acquire a read lock on \(x\)
   \item \texttt{w\_lock(\(x\))}, used to acquire a write lock on \(x\)
   \item \texttt{unlock(\(x\))}, used to release the lock on \(x\)
@@ -483,11 +485,11 @@ During the execution of \texttt{READ} and \texttt{WRITE} operations, the followi
   \item Each \texttt{READ} operation should be preceded by an \texttt{r\_lock} and followed by an \texttt{unlock}
         \begin{itemize}
           \item this type of lock is \textbf{shared}, as many transactions can acquire it at the same time
-          \item this lock can be upgraded into a \texttt{w\_lock} via lock escalation
+          \item this lock can be upgraded into a \texttt{w\_lock} via \textbf{lock escalation}
         \end{itemize}
   \item Each \texttt{WRITE} operation should be preceded by a \texttt{w\_lock} and followed by an \texttt{unlock}
         \begin{itemize}
-          \item this type of lock is \textbf{exclusive}, as only one transaction can acquire it at the same time
+          \item this type of lock is \textbf{exclusive}, as only one transaction can acquire it at a time
         \end{itemize}
 \end{itemize}
 
@@ -531,7 +533,7 @@ Predicate locks extend the notion of data locks to future data:
 
 \paragraph{Locks implementation}
 
-Typically, locks are implemented via lock tables: hash tables index the lockable items via hashing.
+Typically, locks are implemented via \textbf{lock tables}: hash tables index the lockable items via hashing.
 Each locked item has a linked list of transactions that have required a lock on it.
 Every new lock request for the data item is appended as a new node to the list;
 locks can be applied to both data and index items.
@@ -600,13 +602,13 @@ An illustration of the resources used in the two phases is shown in Figure~\ref{
 \begin{figure}[htbp]
   \centering
   \bigskip
-  \tikzfig[]{figure-5.tikz}
+  \tikzfig{figure-5.tikz}
   \caption{Illustration of the resources used in the two phases of the \tpl}
   \label{fig:resources-use-phases-two-phases-locking}
   \bigskip
 \end{figure}
 
-This extension is sufficient to prevent non-repeatable reads and phantom reads, but it doesn't prevent dirty reads;
+This extension is sufficient to \textbf{prevent non-repeatable reads and phantom reads}, but it \textbf{doesn't prevent dirty reads};
 however, it does ensure serializability.
 
 \bigskip
@@ -623,7 +625,7 @@ as soon will be shown, those schedules are both \textbf{view-serializable} and \
 
 It can be noted that:
 
-\[ \vsr \subset \csr \subset \tpl \]
+\[ \tpl \subset \csr \subset \vsr \]
 
 \subsubsection{\tpl implies \csr}
 
@@ -937,7 +939,7 @@ Assumptions of the algorithm:
   \item two kinds of wait-for relationships exist:
         \begin{itemize}
           \item \(T_i\) waits for \(T_j\) to release a resource on the same node
-          \item a sub transaction of \(T_i\) waits for another sub transaction of \(T_i\) running on a different node
+          \item a sub-transaction of \(T_i\) waits for another sub transaction of \(T_i\) running on a different node
         \end{itemize}
 \end{itemize}
 
@@ -1012,7 +1014,7 @@ Description of the graph:
           \item is being waited for by a remote transaction
           \item the sink waits for a remote transaction
         \end{itemize}
-  \item \textbf{Potential deadlock}: \(T_{2a}\) waits for \(T_{1a}\) (data lock) that waits for \(T_{1b}\) (call) that waits for \(T_{2b}\) \textit{(data lock)} that waits for \(T_{2a}\)
+  \item \textbf{Potential deadlock}: \(T_{2a}\) waits for \(T_{1a}\) \textit{(data lock)} that waits for \(T_{1b}\) (call) that waits for \(T_{2b}\) \textit{(data lock)} that waits for \(T_{2a}\)
 \end{itemize}
 
 Application of the Obermarck Algorithm to this graph:
@@ -1020,14 +1022,14 @@ Application of the Obermarck Algorithm to this graph:
   \item Node \texttt{A}
         \begin{itemize}
           \item activation/wait sequence: \(E_b \rightarrow T_{2} \rightarrow T_{1} \rightarrow E_b\)
-          \item \(i = 2, j = 1\)
-          \item \texttt{A} can dispatch its local info to \texttt{B}
+          \item \(i = 2,\ j = 1\)
+          \item \texttt{A} \textbf{can dispatch} its local info to \texttt{B}
         \end{itemize}
   \item Node \texttt{B}
         \begin{itemize}
           \item activation/wait sequence: \(E_a \rightarrow T_{1} \rightarrow T_{2} \rightarrow E_a\)
-          \item \(i = 1, j = 2\)
-          \item \texttt{B} can't dispatch its local info to \texttt{A}
+          \item \(i = 1,\ j = 2\)
+          \item \texttt{B} \textbf{can't dispatch} its local info to \texttt{A}
         \end{itemize}
 \end{itemize}
 
@@ -1043,13 +1045,13 @@ Then, the probability of:
 \end{itemize}
 
 While deadlocks are a rare occurrence, the probability of them happening increases linearly with the number of concurrent transactions in the system but it increases quadratically with the number of data accesses each transaction performs.
-There are more advanced techniques to avoid deadlocks, such as update locks and hierarchical locks.
-Those techniques are covered in the following Sections.
+There are more advanced techniques to avoid deadlocks, such as \textbf{update locks} and \textbf{hierarchical locks};
+they will be covered in the following Sections.
 
 \subsubsection{Update lock}
 
-The most frequent deadlock occurs when \(2\) concurrent transactions start by reading the same resource \textit{(\texttt{SL})} and then try to write via updating their lock to \texttt{XL} \textit{(exclusive)}.
-To avoid such situations, systems offer the update lock (\texttt{UL}) that allows a transaction to update \textit{(read followed by a write)} a resource without having to acquire an exclusive lock.
+The most frequent deadlock occurs when \(2\) concurrent transactions start by reading the same resource \textit{(with a shared lock, \texttt{SL})} and then try to write via updating their lock to \texttt{XL} \textit{(exclusive)}.
+To avoid such situations, systems offer the \textbf{update lock} \textit{(\texttt{UL})} that allows a transaction to update \textit{(read followed by a write)} a resource without having to acquire an exclusive lock.
 
 \bigskip
 Table~\ref{tab:update-lock-compatibility} shows the escalation of the update lock.
@@ -1077,13 +1079,13 @@ An example of this situation would be the schedule \(r_1(x) r_2(x) w_1(x) w_2(x)
 
 \subsubsection{Hierarchical locks}
 
-To increase the granularity of the locks, the traditional lock protocol is extended via the use of hierarchical locks.
+To increase the granularity of the locks, the traditional lock protocol is extended via the use of \textbf{hierarchical locks}.
 This technique allows the transactions to lock items at a given level of the hierarchy;
 the objective is to lock the minimum amount of data possible while recognizing conflicts as soon as possible.
 
 \begin{minipage}{0.8\textwidth}
   \bigskip
-  Locks can be specified with different granularities: database, table, fragment, tuple, or field.
+  Locks can be specified with different granularities: \textit{database}, \textit{table}, \textit{fragment}, \textit{tuple}, or \textit{field}.
 
   This introduces a tradeoff since:
   \begin{itemize}
@@ -1177,9 +1179,9 @@ compared to the former \textit{(which is described as pessimistic)}, \textbf{thi
 
 Concurrency control in a distributed environment causes theoretical difficulties because the system clock is not synchronized among the different nodes:
 the timestamp is not an indicator of global time.
-To solve this issue, a system function must give out timestamps on requests
+To solve this issue, a system function must give out timestamps on requests.
 
-This technique is called \textbf{Lamport Method}.
+This technique is called \textbf{Lamport Method} \textit{(or TS MONO)}.
 Using this method, a timestamp is a number characterized by two groups of digits:
 
 \begin{itemize}
@@ -1222,14 +1224,16 @@ This method works similarly to long-duration write locks, but buffering operatio
 
 \subsubsection{Thomas Rule}
 
-In order to reduce the kill rate, the \textit{Thomas Rule} has been introduced.
+In order to reduce the kill rate, the \textbf{Thomas Rule} \textit{(or TS MULTI)} has been introduced.
 It makes a slight change to the \texttt{write(x, ts)} request:
 
 \begin{itemize}
-  \item if \texttt{ts \(<\) RTM(x)} the request is \textbf{rejected} and the transaction is \textbf{killed}
-  \item else, if \texttt{ts \(<\) WTM(x)} the write request is \textbf{obsolete} and the transaction is \textbf{skipped}
-  \item else, access is \textbf{granted} and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
+  \item[\xmarkthin] if \texttt{ts \(<\) RTM(x)} the request is \textbf{rejected} and the transaction is \textbf{killed}
+  \item[\xmarkthin] else, if \texttt{ts \(<\) WTM(x)} the write request is \textbf{obsolete} and the transaction is \textbf{skipped}
+  \item[\cmarkthin] else, access is \textbf{granted} and the value of \texttt{WTM(x)} is set equal to \texttt{ts}
 \end{itemize}
+
+The \texttt{read} requests are always accepted, and the value of \texttt{RTM(x)} is set equal to the greater between \texttt{ts} and \texttt{RTM(x)}.
 
 This rule then allows the scheduler to skip a \texttt{WRITE} on an object that has already been written by a younger transaction, without killing it.
 It works only if the transaction issues a write without requiring a previous read on the object;
@@ -1302,7 +1306,7 @@ The main differences between \tpl and \ts are shown in Table~\ref{tab:tpl-vs-ts}
   \bigskip
 \end{table}
 
-However, normally restarting a transaction costs more than waiting; for this reason, \tpl is normally preferred.
+However, normally restarting a transaction costs more than waiting; for this reason, \textbf{\tpl is normally preferred}.
 Commercial systems implement a mix of optimistic and pessimistic concurrency control.
 
 \subsection{Multi version Concurrency Control}
@@ -1459,7 +1463,7 @@ The execution sequence is:
 The action of the trigger is executed \textbf{before the database status changes} \textit{(if the conditions hold)};
 the trigger is used to check the validity of the operation before it takes place, possibly conditioning its effects.
 
-\subparagraph*{Safeness constraint} Before triggers cannot update the database directly but can affect the transition variables in row-level granularity.
+\subparagraph*{Safeness constraint} Before triggers \textbf{cannot update the database directly} but can affect the transition variables in row-level granularity.
 
 \subparagraph*{After}
 
@@ -1519,7 +1523,7 @@ its corresponding new state is:
 \end{center}
 The \dbms computes the new view state over the increment of the base relations.
 
-\subsection{Design Principles}
+\subsection{Design Principles for Triggers and Views}
 
 \begin{itemize}
   \item Use triggers to \textbf{guarantee} that when a specific operation is performed, all the related actions are performed
@@ -1529,7 +1533,7 @@ The \dbms computes the new view state over the increment of the base relations.
         \end{itemize}
   \item Limit the \textbf{size} of the trigger action
         \begin{itemize}[label=\(\rightarrow\)]
-          \item if the logic of a trigger requires more than \(60\) lines of code, then it is probably better to implement it as a stored procedure and call it from the trigger
+          \item if the logic of a trigger requires more than \(\approx 60\) lines of code, then it is probably better to implement it as a stored procedure and call it from the trigger
         \end{itemize}
   \item Use triggers only for \textbf{centralized, global operations} that should be fired for the triggering statement, regardless of which user or database application issues the statement
   \item Avoid recursive triggers if not strictly necessary
@@ -1559,11 +1563,11 @@ data stored in secondary memory can only be used if it is loaded into the main m
 
 The units of storage are called:
 \begin{itemize}
-  \item \textbf{Block}, if in the secondary memory
+  \item \textbf{Block}, if in the \textbf{secondary} memory
         \begin{itemize}
           \item normally, blocks have a fixed size \textit{(\(\approx 4\,\) KB)}
         \end{itemize}
-  \item \textbf{Page}, if in the main memory
+  \item \textbf{Page}, if in the \textbf{primary} \textit{(main)} memory
         \begin{itemize}
           \item normally, pages have the same size of blocks
           \item in some systems, a page can contain multiple blocks
@@ -1608,11 +1612,11 @@ The access time of the secondary memory can be measured as the sum of:
 The cost of access to secondary memory is about \(4\) orders of magnitude (\(10^4\)) higher than the one of access to main memory.
 In I/O bound applications, the cost exclusively depends on the number of accesses to secondary memory.
 
-The cost of a query is closely related to the number of numbers that are read (moved) from secondary memory.
+The cost of a query is closely related to the amount of data that is read \textit{(moved)} from secondary memory.
 
 \subparagraph*{\dbms and file systems}
 The File System \textit{(FS)} is the layer of the operating system that manages the secondary memory:
-\dbms make limited use of FS functionalities \textit{(such as creating or deleting files, reading or writing blocks, etc.)}, since they manage directly the file organization, both in terms of the distribution of data within the blocks and with respect to the internal structures of the blocks.
+\dbms make limited use of \textit{FS} functionalities \textit{(such as creating or deleting files, reading or writing blocks, etc.)}, since they manage directly the file organization, both in terms of the distribution of data within the blocks and with respect to the internal structures of the blocks.
 Furthermore, a \dbms may also control the physical allocation of blocks onto the disk, to optimize the access time or increase the reliability.
 
 \subparagraph*{Data dictionary}
@@ -1625,8 +1629,8 @@ The data dictionary is a centralized repository of information about data such a
 The files can be split into their physical and logical components:
 
 \begin{itemize}
-  \item \textbf{blocks}: the physical components
-  \item \textbf{tuples}: the logical components
+  \item \textbf{blocks}, representing the physical components
+  \item \textbf{tuples}, representing the logical components
 \end{itemize}
 
 While the size of a block is typically fixed, depending on the file system and on how the disk is formatted, the size of a tuple depends on the database design and is typically variable within a file.
@@ -1636,7 +1640,7 @@ While the size of a block is typically fixed, depending on the file system and o
 A block for sequential and hash-based methods is divided in:
 
 \begin{itemize}
-  \item \textbf{block header} and \textbf{trailer} with control information used by the File System
+  \item \textbf{block header} and \textbf{trailer} with control information used by the \textit{FS}
   \item \textbf{page header} and \textbf{trailer} with control information about the access method
   \item a \textbf{page dictionary} containing pointers to each elementary item of useful data contained in the page
   \item a \textbf{useful part} containing the data
@@ -1658,7 +1662,7 @@ An illustration of a block is shown in Figure~\ref{fig:block-structure}.
 \end{figure}
 
 \bigskip
-The block factor B represents the number of tuples within a block.
+The \textbf{block factor} \textit{(B)} represents the \textbf{number of tuples within a block.}
 It's fundamental to estimate the cost of queries:
 
 \begin{itemize}
@@ -1671,7 +1675,7 @@ The block factor is defined as:
 The rest of the space can be:
 
 \begin{itemize}
-  \item \textbf{used} if the records are \textbf{spanned} between block
+  \item \textbf{used}, if the records are \textbf{spanned} between block
   \item \textbf{not used}, if the records are \textbf{unspanned}
 \end{itemize}
 
@@ -1684,16 +1688,16 @@ Operations are:
 \begin{itemize}
   \item \textbf{insertion} an update of a tuple
         \begin{itemize}
-          \item may require a reorganization of the page or the usage of a new page
+          \item may require a \textbf{reorganization} of the page or the usage of a \textbf{new page}
           \item an update to a file may require a reorganization of the page
         \end{itemize}
   \item \textbf{deletion} of a tuple
         \begin{itemize}
-          \item often carried out by marking the tuple as invalid and triggering later a reorganization of the page
+          \item often carried out by \textbf{marking the tuple as invalid} and triggering later a reorganization of the page
         \end{itemize}
   \item \textbf{access} to a field of a tuple
         \begin{itemize}
-          \item identified by a pointer to the beginning of the tuple and the length of the field itself
+          \item identified by a \textbf{pointer} to the beginning of the tuple and the \textbf{length of the field} itself
         \end{itemize}
 \end{itemize}
 
@@ -1828,7 +1832,7 @@ DROP INDEX <index_name>
 
 \subsection{Physical Access Structures}
 
-Each \dbms has a distinctive and limited set of access methods and software modules that provide data access and manipulation (\texttt{STORE} and \texttt{RETRIEVE}) primitives for each physical data structure.
+Each \dbms has a distinctive and limited set of access methods and software modules that provide data access and manipulation \textit{(\texttt{STORE} and \texttt{RETRIEVE})} primitives for each physical data structure.
 
 Access methods have their own data structures to organize data:
 
@@ -1858,7 +1862,7 @@ Not all types of structures are equally suited for implementing the primary or s
 \begin{table}
   \centering
   \bigskip
-  \begin{tblr}{colspec={r|l|l}, row{1}={font=\itshape}, column{1}={font=\bfseries}}
+  \begin{tblr}{colspec={r|l|l}, row{1}={font=\itshape}}
                & primary                     & secondary             \\
     \hline
     sequential & \colorcmark (typical)       & \colorxmark           \\
@@ -2047,7 +2051,7 @@ There are two types of B-trees:
 
 The \textbf{B+ tree} represents an evolution from the B-tree.
 Each node is stored in a block, and the key values are stored in the leaf nodes only;
-since the majority of the nodes are leaf nodes, the B+ tree is more efficient than the B-tree.
+since the majority of the nodes are leaves, the B+ tree is more efficient than the B-tree.
 
 The fan-out depends on the size of the block, the size of the key and the size of the pointer.
 
@@ -2070,13 +2074,13 @@ The structure of a leaf node is similar to the one of an internal node, but it c
 the nodes can be structured in two ways:
 
 \begin{enumerate}
-  \item the leaf node contains the entire tuple
+  \item the leaf node contains \textbf{the entire tuple}
         \begin{itemize}
           \item the data structure is called \textbf{key-sequenced}
           \item the position of a tuple is determined by the value of its key
           \item it's simple to insert or change a tuple
         \end{itemize}
-  \item the leaf node contains pointers to the blocks of the database that contain tuples with the same key value
+  \item the leaf node contains \textbf{pointers to the blocks} of the database that contain tuples with the same key value
         \begin{itemize}
           \item the data structure is called \textbf{indirect}
           \item the tuples can be anywhere in the file, allowing the access of a tuple allocated via any other primary mechanism
@@ -2122,8 +2126,8 @@ At each intermediate node:
 The search continues until a leaf node is found:
 
 \begin{itemize}
-  \item in case of a key-sequenced leaf node, the search is completed as the tuple is found
-  \item in case of an indirect leaf node, it's necessary to access the memory block pointed by the pointer \(P_j, \ 0 \leq j \leq F\)
+  \item in case of a \textbf{key-sequenced} leaf node, the \textbf{search is completed} as the tuple is found
+  \item in case of an \textbf{indirect} leaf node, it's necessary to \textbf{access the memory block pointed by the pointer} \(P_j, \ 0 \leq j \leq F\)
 \end{itemize}
 
 \paragraph{Difference between B and B+ trees}
@@ -2340,9 +2344,7 @@ The objective of \textbf{ranking} is to find the best possible result for a give
 It is formulated as a multi-objective optimization problem, in which the objective is the simultaneous optimization of multiple criteria \textit{(such as different attributes of objects in a dataset)}.
 A general formulation is:
 
-\begin{center}
-  Given \(N\) \textbf{objects} described by \(d\) \textbf{attributes} and a notion of \textbf{goodness} \(g_i\) for each object \(i\),\\ find the \(k\) objects that maximize the goodness.
-\end{center}
+Given \(N\) \textbf{objects} described by \(d\) \textbf{attributes} and a notion of \textbf{goodness} \(g_i\) for each object \(i\), find the \(k\) objects that maximize the goodness.
 
 The two main approaches are:
 
@@ -2353,7 +2355,7 @@ The two main approaches are:
 
 \subsection{Rank Aggregation}
 
-The rank Aggregation problem regards finding the best possible entity among a set of \(n\) candidates based on the ranking of \(m\) voters.
+The \textbf{Rank Aggregation} problem regards finding the best possible entity among a set of \(n\) candidates based on the ranking of \(m\) voters.
 Once more, two different approaches are possible:
 
 \begin{enumerate}
@@ -2404,11 +2406,11 @@ Furthermore, Spearman's Footrule distance admits efficient approximations, such 
 
 Opaque rankings are defined as rankings that have no visible score;
 as such, they cannot be compared directly.
-To handle this problem, techniques using only the position of a candidate in the ranking have been created: one of the most famous is the MedRank method.
+To handle this problem, techniques using only the position of a candidate in the ranking have been created: one of the most famous is the \textbf{MedRank method}.
 As an output, it provides an approximation of the Footrule distance, which is then used to find the best candidate.
 
 \begin{itemize}
-  \item[\(\leftarrow\)] \textbf{Input}: integer \(k\), ranked lists \(R_1 \,\ldots \, R_N\) of \(N\) elements
+  \item[\(\leftarrow\)] \textbf{Input}: integer \(k\), \(m\) ranked lists \(R_1 \,\ldots \, R_N\) of \(N\) elements
   \item[\(\rightarrow\)] \textbf{Output}: the top \(k\) elements
   \item \textbf{Procedure}:
         \begin{enumerate}[label=step \arabic*., ref=step (\arabic*), widest*=7, leftmargin=*, labelindent=1em]
@@ -2423,7 +2425,8 @@ When the median ranks are all distinct, the algorithm provides the best possible
 
 \subsubsection{Instance Optimality}
 
-\textbf{Instance Optimality} is a form of optimality applied when standard optimality is unachievable.
+An algorithm is defined \textbf{optimal} if its execution cost is never worse than any other algorithm on any input;
+\textbf{instance Optimality} is a form of optimality applied when standard optimality is unachievable.
 
 Let \(A\) be a family of algorithms, \(I\) a family of instances, and \(c\) a cost function that maps an algorithm and an instance to a cost.
 Then algorithm \(A^\ast\) is instance optimal with regards to \(A\) and \(I\) for the cost metric \(c\) if there exists constants \(k_1, \ k_2\) such that, for all \(A_i \in A\) and \(I_j \in I\):
@@ -2434,15 +2437,13 @@ Instance optimality is a much stronger notion than standard optimality in the av
 
 \paragraph{Optimality of MedRank}
 
-An algorithm is defined \textbf{optimal} if its execution cost is never worse than any other algorithm on any input.
 
-MedRank is \textbf{not optima}l;
-however, it's \textbf{instance optimal}:
+MedRank is \textbf{not optimal}, but it's \textbf{instance optimal}:
 among the algorithms that access the lists in sorted order, this is the best possible one \textit{(up to a constant factor)} on every input instance.
 
 \subsection{Ranking Queries - Top-k}
 
-The Ranking Queries technique, also called Top-k, aims to retrieve the best \(k\) answers from a (potentially large) set of \(n\) answers;
+The \textbf{Ranking Queries} technique, also called \textbf{Top-k}, aims to retrieve the best \(k\) answers from a (potentially large) set of \(n\) answers;
 the notion of best depends on the context and application.
 
 The method requires being able to order objects according to their relevance.
@@ -2488,12 +2489,12 @@ if more than one set of \(k\) tuples satisfies the \texttt{ORDER BY} directive, 
 
 In the simplest case, the Top-k query is evaluated via a single relation:
 \begin{itemize}
-  \item if the tuples are sorted according to the scoring function, the query can be evaluated in \(O(k)\) time
+  \item if the tuples are \textbf{sorted} according to the scoring function, the query can be evaluated in \(O(k)\) time
         \begin{itemize}
-          \item only the first \(k\) tuples are read and returned
-          \item there's no need to scan the entire input
+          \item only \textbf{the first \(k\) tuples} are read and returned
+          \item there's \textbf{no need to scan the entire input}
         \end{itemize}
-  \item if the tuples are not sorted and \(k\) is not too large, the query can be evaluated in \(O(n\log(n))\) time
+  \item if the tuples are \textbf{not sorted} and \(k\) is not too large, the query can be evaluated in \(O(k + n\log(n)) = O(n\log(n))\) time
         \begin{itemize}
           \item the entire input is scanned and sorted
         \end{itemize}
@@ -2692,10 +2693,10 @@ The stopping criterion is independent of the scoring function and the algorithm 
 A visual representation of the algorithm is shown in Figure~\ref{fig:fagin-algorithm}:
 
 \begin{itemize}
-  \item the threshold point \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
-  \item the yellow region contains the points seen in all regions
-  \item the grey regions contain the points seen in at least one ranking
-  \item the blue region contains the points not seen in any ranking
+  \item the \textbf{threshold point} \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
+  \item the \textbf{yellow region} contains the points seen in all regions
+  \item the \textbf{orange regions} contain the points seen in at least one ranking
+  \item the \textbf{blue region} contains the points not seen in any ranking
   \item the algorithm stops when the yellow region contains at least \(k\) points
 \end{itemize}
 
@@ -2743,10 +2744,10 @@ the stopping criterion depends on the scoring function.
 A visual representation of the algorithm is shown in Figure~\ref{fig:treshold-algorithm}:
 
 \begin{itemize}
-  \item the threshold point \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
-  \item the dashed red line separates the region of points with a higher score than \(\tau\) from the rest
-  \item the yellow region contains the points seen in all regions
-  \item the blue region contains the points not seen in any ranking
+  \item the \textbf{threshold point} \(\tau\) is the point with the smallest seen values on all lists in the sorted access phase
+  \item the \textbf{dashed red line} separates the region of points with a higher score than \(\tau\) from the rest
+  \item the \textbf{yellow region} contains the points seen in all regions
+  \item the \textbf{blue region} contains the points not seen in any ranking
   \item the algorithm stops when the yellow region contains at least \(k\) points with a score higher than \(\tau\)
 \end{itemize}
 
@@ -3089,11 +3090,11 @@ The properties of an entity are:
 Entities must respect the following \textbf{constraints}:
 
 \begin{itemize}
-  \item the entity class must have a \texttt{public} or \texttt{protected} constructor with \textbf{no arguments}
-  \item the entity class must not be \texttt{final}
-  \item no method or persistent instance variables of the entity class may be \texttt{final}
-  \item if an entity instance is to be passed by value, it must be \texttt{Serializable}
-  \item The persistent state of an entity is represented by instance variables, which correspond to \javab properties
+  \item the entity class must have a \textbf{\texttt{public} or \texttt{protected} constructor} with \textbf{no arguments}
+  \item the entity class must \textbf{not be \texttt{final}}
+  \item \textbf{no persistent method or attribute} of the entity class \textbf{may be \texttt{final}}
+  \item if an entity instance is to be \textbf{passed by value}, it \textbf{must be \texttt{Serializable}}
+  \item the persistent state of an entity is \textbf{represented by instance variables}, which correspond to \javab properties
 \end{itemize}
 
 \subsubsection{Entity Identification}
@@ -3119,7 +3120,7 @@ public class <class name> implements Serializable {
 \end{lstlisting}
 
 where:
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{@Entity}: is an annotation indicating the \textbf{nature} of the entity class
   \item \texttt{@Id}: is an annotation indicating the \textbf{simple primary keys} of the entity
   \item \texttt{@EmbeddedId}: is an annotation indicating the \textbf{composite primary keys} of the entity
@@ -3136,10 +3137,10 @@ there are \(4\) different strategies for identifier generation, shown in Table~\
   \bigskip
   \begin{tblr}{colspec={rl}, hline{2}={solid}, vline{2}={solid}, row{1}={font=\itshape}, cell{2-5}{1}={font=\ttfamily}, cells={valign=t}}
     strategy & description                                                \\
-    AUTO     & {the provider generates identifiers                        \\ \ using whatever strategy is appropriate for the underlying database} \\
-    TABLE    & {identifiers are generated                                 \\ \ according to a generator table}                                                 \\
-    SEQUENCE & {identifiers are generated via sequences                   \\ \ if the underlying \dbms supports it}                             \\
-    IDENTITY & {identifiers are generated via primary key identity column \\ \ if the underlying \dbms supports it}           \\
+    AUTO     & {the provider generates identifiers                        \\ \quad using whatever strategy is appropriate for the underlying database} \\
+    TABLE    & {identifiers are generated                                 \\ \quad according to a generator table}                                                 \\
+    SEQUENCE & {identifiers are generated via sequences                   \\ \quad if the underlying \dbms supports it}                             \\
+    IDENTITY & {identifiers are generated via primary key identity column \\ \quad if the underlying \dbms supports it}           \\
   \end{tblr}
   \caption{Identifier Generation Strategies}
   \label{tab:identifier-generation-strategies}
@@ -3182,7 +3183,7 @@ Persistent attributes can be:
   \item \textbf{Serializable} Types
 \end{itemize}
 
-Furthermore the fetch policy can be specified for the attributes of the entity, between the:
+Furthermore, the fetch policy can be specified for the attributes of the entity, between the:
 
 \begin{itemize}
   \item \textbf{\texttt{LAZY}}: the attribute is loaded when it is \textbf{first accessed}
@@ -3210,7 +3211,7 @@ public class <class name> implements Serializable {
 
 \subparagraph*{Object to Table Mapping}
 By default entities are mapped to tables with the same name and attributes are mapped to columns with the same name;
-default value can be overridden by using the \texttt{@Table} annotation.
+a default value can be overridden by using the \texttt{@Table} annotation.
 
 Some annotations \textit{(for example \texttt{@Column})} may have attributes used for generating the database schema from the entity classes.
 
@@ -3223,7 +3224,7 @@ public class <class name> implements Serializable {
 }
 \end{lstlisting}
 
-\subsubsection{Entity and Relationships}
+\subsubsection{Entities and Relationships}
 
 If entities contained only a simple persistent state, the issuing of the \textit{ORM} would be trivial;
 however, in most cases, entities are related to each other, and the \textit{ORM} must be able to handle these relationships.
@@ -3245,19 +3246,19 @@ Every \textit{OMR} has 4 characteristics:
 \begin{enumerate}
   \item \textbf{Directionality}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item each of the two entities may have an attribute that enables access to the other entity
+          \item each of the two entities may have an attribute that enables \textbf{access to the other entity}
         \end{itemize}
   \item \textbf{Role}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item each entity is said to play a role with respect to the relationship direction of access
+          \item each entity is said to \textbf{play a role with} respect to the relationship direction of access
         \end{itemize}
   \item \textbf{Cardinality}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item the number of entities that can exist on each side of the relationship
+          \item the \textbf{number of entities} that can exist on \textbf{each side of the relationship}
         \end{itemize}
   \item \textbf{Ownership}
         \begin{itemize}[label=\(\rightarrow\)]
-          \item one of the two entities is said to own the relationship
+          \item one of the two entities is said to \textbf{own} the relationship
         \end{itemize}
 \end{enumerate}
 
@@ -3315,8 +3316,9 @@ The possible relationships between entities are:
   \item \(N:M\) - bidirectional, unidirectional
 \end{itemize}
 
-The choice between uni- and bidirectional relationships is a matter of design and implementation;
-generally speaking, if the relationship is accessed from one side only, it is unidirectional, otherwise, it is bidirectional.
+The choice between uni- and bi-directional relationships is a matter of design and implementation;
+generally speaking, if the relationship is accessed from one side only, it is unidirectional;
+otherwise, it is bidirectional.
 
 Bi-directionality can be implemented with unidirectional relationship mapping and set-valued queries.
 Performance considerations may prompt the use of bidirectional mappings even if only one direction is used.
@@ -3386,7 +3388,7 @@ public class One {
   however, two alternatives are available performance-wise:
 
   \begin{itemize}
-    \item Map the relationship as in the bi=directional case and use only the one-to-many direction
+    \item Map the relationship as in the bi-directional case and use only the one-to-many direction
     \item Do not map the collection attribute in the entity that participates with one instance and use a query instead to retrieve the correlated instances, relying on the inverse \textit{(many-to-one)} relationship direction mapping
   \end{itemize}
 \end{onepage}
@@ -3525,12 +3527,12 @@ The converse however is not true: specifying that an attribute is to be fetched 
 \subsection{Entity Manager}
 
 Since entity instances are plain \java objects, they do not become managed until the application invokes an \texttt{API} to initiate the process.
-The Entity Manager is the central authority for all operations involving entities:
+The \textbf{Entity Manager} is the central authority for all operations involving entities:
 it manages the mapping between a fixed set of entity instances and an underlying data source while providing an \texttt{API} for the application to access and manipulate the data.
 
 \subsubsection{Entity Manager Interface}
 
-The Entity Manager exposes all the operations needed to synchronize the managed entities in the persistence context to the database;
+The \textbf{Entity Manager} exposes all the operations needed to synchronize the managed entities in the persistence context to the database;
 the methods signatures and their descriptions are shown in Table~\ref{tab:entity-manager-interface}.
 
 \begin{table}[htbp]
@@ -3538,11 +3540,11 @@ the methods signatures and their descriptions are shown in Table~\ref{tab:entity
   \bigskip
   \begin{tblr}{colspec={ll}, cells={valign=t}, vline{2}={solid}, hline{2}={solid}, row{1}={font=\itshape, halign=m}, cell{2-6}{1}={font=\ttfamily}, rowsep=1ex}
     signature                                                      & description                   \\
-    \textbf{public} \textbf{void} persist(Object entity);          & {persists an entity instance  \\ in the database}           \\
-    {\textbf{public} <T> T \textbf{find} (Class<T> entityClass,                                    \\ \hspace{4ex} Object primaryKey);} & {finds an entity instance \\ by its primary key }\\
-    \textbf{public} \textbf{void} \textbf{remove}(Object entity);  & {removes an entity instance   \\ from the database}             \\
-    \textbf{public} \textbf{void} \textbf{refresh}(Object entity); & {resets the entity instance   \\ from the database}            \\
-    \textbf{public} \textbf{void} \textbf{flush}();                & {writes the state of entities \\ to the database \textbf{immediately}}            \\
+    \textbf{public} \textbf{void} persist(Object entity);          & {persists an entity instance  \\ \quad in the database}           \\
+    {\textbf{public} <T> T \textbf{find} (Class<T> entityClass,                                    \\ \quad Object primaryKey);} & {finds an entity instance \\ \quad by its primary key }\\
+    \textbf{public} \textbf{void} \textbf{remove}(Object entity);  & {removes an entity instance   \\ \quad from the database}             \\
+    \textbf{public} \textbf{void} \textbf{refresh}(Object entity); & {resets the entity instance   \\ \quad from the database}            \\
+    \textbf{public} \textbf{void} \textbf{flush}();                & {writes the state of entities \\ \quad to the database \textbf{immediately}}            \\
   \end{tblr}
   \caption{Entity Manager Interface}
   \label{tab:entity-manager-interface}
@@ -3561,16 +3563,13 @@ If an entity has a relationship with another dependent entity, normally the chil
 The \texttt{cascade} attribute is used to define when operations should be automatically cascaded across the relationship;
 it accepts several possible values specified in the \texttt{CascateType} enum:
 
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{PERSIST}
   \item \texttt{REFRESH}
   \item \texttt{REMOVE}
   \item \texttt{MERGE}
   \item \texttt{DETACH}
-  \item \texttt{ALL}
-        \begin{itemize}[label=\(\rightarrow\)]
-          \item this is a shorthand to specify that all operations should be cascaded
-        \end{itemize}
+  \item \texttt{ALL} - \textit{(this is a shorthand to specify that all operations should be cascaded)}
 \end{itemize}
 
 Like in relations, the cascade settings are unidirectional: they must be specified explicitly on both sides of the relationship if the default behaviour is not desired.
@@ -3590,7 +3589,7 @@ the \texttt{orphanRemoval} automatically deletes them.
 
 \subsubsection{Persistence Context}
 
-The persistence context is a fundamental component of \jpa:
+The \textbf{Persistence Context} is a fundamental component of \jpa:
 it's a kind of main memory database that holds the objects that are being manipulated by the application \textit{(in the managed state)}.
 A managed object is tracked and all the modifications to its state are monitored for automatic alignment to the database;
 each of them has two lives: one as a \java object and one as a relational tuple \textit{(the ID of the POJO is the primary key of the relational tuple)}.
@@ -3633,27 +3632,12 @@ The entity still exists but its changes are no longer tracked for being synchron
 
 The life cycle of an entity is divided into five states:
 
-\begin{itemize}[label=\texttt{>}]
-  \item \texttt{NEW}
-        \begin{itemize}
-          \item unknown to the Entity Manager, not yet associated with a Persistence Context
-        \end{itemize}
-  \item \texttt{MANAGED}
-        \begin{itemize}
-          \item associated with a Persistence Context, changes to its state are tracked for being synchronized to the database
-        \end{itemize}
-  \item \texttt{DETACHED}
-        \begin{itemize}
-          \item its identity is potentially associated with a database tuple but changes are not automatically propagated to the database
-        \end{itemize}
-  \item \texttt{REMOVED}
-        \begin{itemize}
-          \item scheduled for removal from the database
-        \end{itemize}
-  \item \texttt{DELETED}
-        \begin{itemize}
-          \item erased from the database
-        \end{itemize}
+\begin{itemize}[label=\textbf{\texttt{>}}]
+  \item \texttt{NEW}, unknown to the Entity Manager, not yet associated with a Persistence Context
+  \item \texttt{MANAGED}, associated with a Persistence Context, changes to its state are tracked for being synchronized to the database
+  \item \texttt{DETACHED}, its identity is potentially associated with a database tuple but changes are not automatically propagated to the database
+  \item \texttt{REMOVED}, scheduled for removal from the database
+  \item \texttt{DELETED}, erased from the database
 \end{itemize}
 
 \subsection{\jpa Application Architectures}
@@ -3780,7 +3764,7 @@ A method can be annotated to obtain the desired transactional behaviour with the
 
 where \texttt{type} can be:
 
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{REQUIRED} - if no transaction is active, then one is started; otherwise, the method is executed in the active transaction. This is the default type.
   \item \texttt{MANDATORY} - a transaction is expected to have already been started and be active when the method is called; otherwise, an exception is thrown
   \item \texttt{REQUIRES\_NEW} - a new transaction is started, and the method is executed in it; if a transaction is already active, it is suspended during the execution of the method
@@ -3793,12 +3777,12 @@ where \texttt{type} can be:
 
 \section{Reliability}
 
-Reliability is defined as the ability of an item to perform a required function under stated conditions for a stated time length.
+\textbf{Reliability} is defined as the ability of an item to perform a required function under stated conditions for a stated time length.
 In databases, reliability control ensures fundamental properties of transactions:
 
 \begin{itemize}
-  \item Atomicity: all-or-nothing execution of a transaction
-  \item Durability: once a transaction is committed, its effects are permanent
+  \item \textbf{atomicity}: all-or-nothing execution of a transaction
+  \item \textbf{durability}: once a transaction is committed, its effects are permanent
 \end{itemize}
 
 The \dbms implements a specific architecture for reliability control;
@@ -3806,7 +3790,7 @@ the keys components are found in \textbf{stable memory} and \textbf{log manageme
 
 \subsection{Reliability Manager}
 
-The Reliability Manager of the \dbms realizes the transactional commands \texttt{COMMIT} and \texttt{ABORT}, which are executed by the \texttt{Transaction Manager}.
+The \textbf{Reliability Manager} of the \dbms realizes the transactional commands \texttt{COMMIT} and \texttt{ABORT}, which are executed by the \texttt{Transaction Manager}.
 Furthermore, it orchestrates read and write access to pages \textit{(of data and log)} and handles recovery after failures.
 
 \subsubsection{Persistence of Memory}
@@ -3814,9 +3798,9 @@ Furthermore, it orchestrates read and write access to pages \textit{(of data and
 Durability implies a memory whose content lasts forever, which is an abstraction built on top of existing storage technology levels.
 
 \begin{itemize}
-  \item Main Memory: non-persistent
-  \item Mass Memory: persistent but can be lost
-  \item Stable Memory: cannot be lost, the probability of failure is zero
+  \item \textbf{main memory}: non-persistent
+  \item \textbf{mass memory}: persistent but can be lost
+  \item \textbf{stable memory}: cannot be lost, the probability of failure is zero
 \end{itemize}
 
 Since achieving zero probability of failure is impossible, the objective is to reduce the probability of failure to a negligible value;
@@ -3827,12 +3811,12 @@ The failure of stable memory is the subject of the discipline called disaster re
 Stable memory can be guaranteed via:
 
 \begin{itemize}
-  \item On-line replication
+  \item \textbf{on-line} replication
         \begin{itemize}
           \item the data is replicated on multiple disks
           \item the RAID disk architecture is an example of online replication
         \end{itemize}
-  \item Off-line replication
+  \item \textbf{off-line} replication
         \begin{itemize}
           \item the data is replicated on backup units
         \end{itemize}
@@ -3840,20 +3824,20 @@ Stable memory can be guaranteed via:
 
 \subsubsection{Main Memory Management}
 
-The objective of Main Memory Management is to reduce data access time without compromising memory stability, via buffers to cache data in faster memory and deferred writing onto the secondary storage.
+The objective of \textbf{Main Memory Management} is to reduce data access time without compromising memory stability, via buffers to cache data in faster memory and deferred writing onto the secondary storage.
 
 A page of the buffer can contain multiple rows and have a:
 
 \begin{itemize}
-  \item transaction counter, stating how many transactions are accessing it
-  \item dirty flag, stating whether the page has been modified and must be aligned to the secondary storage
+  \item \textbf{transaction counter}, stating how many transactions are accessing it
+  \item \textbf{dirty flag}, stating whether the page has been modified and must be aligned to the secondary storage
 \end{itemize}
 
 On dedicated \dbms servers, up to \(80\%\) of the memory is allocated to the buffer.
 
 \subparagraph*{Buffer Management Primitives}
 
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{fix}: responds to the request of a transaction to load a page into the buffer; returns a reference to the page and increments transaction counter
   \item \texttt{unfix}: unloads a page from the buffer; decrements transaction counter
   \item \texttt{force}: moves a page from the buffer to the secondary storage
@@ -3864,18 +3848,18 @@ On dedicated \dbms servers, up to \(80\%\) of the memory is allocated to the buf
 \subparagraph*{Buffer Management Policies}
 
 \begin{itemize}
-  \item Write Policies: page writing to disk is normally asynchronous with respect to the transactions
-        \begin{itemize}[label=\texttt{>}]
+  \item \textbf{Write Policies}: page writing to disk is normally asynchronous with respect to the transactions
+        \begin{itemize}[label=\textbf{\texttt{>}}]
           \item \texttt{force}: pages are always transferred at commit
           \item \texttt{no\_force}: transfer of pages can be delayed by the buffer manager
         \end{itemize}
-  \item De-allocation Policies
-        \begin{itemize}[label=\texttt{>}]
+  \item D\textbf{e-allocation} Policies
+        \begin{itemize}[label=\textbf{\texttt{>}}]
           \item \texttt{steal}: a page in an active transaction is discarded and flushed to disk
           \item \texttt{no\_steal}: the transaction is put on a waitlist and the request is managed when the page is no longer needed
         \end{itemize}
-  \item Pre-fetch Policies: pages that are likely to be read are loaded in the buffer before they are needed
-  \item Pre-flushing Policies: pages that are likely to be written are de-allocated from the buffer before they are needed
+  \item \textbf{Pre-fetch Policies}: pages that are likely to be read are loaded in the buffer before they are needed
+  \item \textbf{Pre-flushing Policies}: pages that are likely to be written are de-allocated from the buffer before they are needed
 \end{itemize}
 
 \paragraph{Execution of a \texttt{fix} primitive}
@@ -3888,7 +3872,7 @@ The execution of a \texttt{fix} primitive is performed in the following steps:
   \item if found, increment the transaction counter and return a reference to the page
   \item if the dirty flag is true, flush the current page to disk before loading the new page
   \item if no page is found, select a page to be discarded, with one of two policies:
-        \begin{itemize}[label=\texttt{>}]
+        \begin{itemize}[label=\textbf{\texttt{>}}]
           \item \textbf{\texttt{steal} policy}: the new page is loaded, the transaction counter is incremented and a reference to the page is returned
           \item \textbf{\texttt{no\_steal} policy}: the transaction is put in a waitlist
         \end{itemize}
@@ -3901,9 +3885,9 @@ A transaction is an atomic transformation from an initial state into a final sta
 The possible outcomes of a transaction are:
 
 \begin{itemize}
-  \item commit: success
-  \item rollback or fault before commit: undo
-  \item fault after commit: redo
+  \item \textbf{commit}: success
+  \item \textbf{rollback} or fault before commit: undo
+  \item \textbf{fault} after commit: redo
 \end{itemize}
 
 \subparagraph*{Implications for recovery after failure}
@@ -3953,7 +3937,7 @@ If an update (\texttt{U}) operation transforms object \(O\) from value \(v_1\) t
 
 Logging \texttt{INSERT} and \texttt{DELETE} operations is the same as logging \texttt{UPDATE} operations, but:
 
-\begin{itemize}[label=\texttt{>}]
+\begin{itemize}[label=\textbf{\texttt{>}}]
   \item \texttt{INSERT} log record does not have a \texttt{BEFORE-STATE}
   \item \texttt{DELETE} log record does not have an \texttt{AFTER-STATE}
 \end{itemize}
@@ -3985,7 +3969,7 @@ This property ensures that the Reliability Manager can apply the operations mult
 
 \begin{itemize}
   \item Records concerning a transactional command:
-        \begin{itemize}[label=\texttt{>}]
+        \begin{itemize}[label=\textbf{\texttt{>}}]
           \item \texttt{B(T)} - begin transaction \texttt{T}
           \item \texttt{C(T)} - commit transaction \texttt{T}
           \item \texttt{A(T)} - abort transaction \texttt{T}
@@ -4017,21 +4001,21 @@ rule \ref{enum:transactional-rules-3} ensures that actions can be redone in case
 There are \(3\) types of failures:
 
 \begin{itemize}
-  \item Soft failure
+  \item \textbf{Soft failure}
         \begin{itemize}
-          \item loss of part or all of the main memory
-          \item requires a warm restart
-          \item log is exploited to replay the transactions
+          \item \textbf{loss} of part or all of the \textbf{main memory}
+          \item requires a \textbf{warm restart}
+          \item \textbf{log} is exploited to replay the transactions
         \end{itemize}
-  \item Hard failure
+  \item \textbf{Hard failure}
         \begin{itemize}
-          \item failure or loss of part or all of the secondary memory devices
-          \item requires a cold restart
-          \item dump is exploited to replay the transactions
+          \item failure or loss of part or all of the \textbf{secondary memory devices}
+          \item requires a \textbf{cold restart}
+          \item \textbf{dump} is exploited to replay the transactions
         \end{itemize}
-  \item Disaster
+  \item \textbf{Disaster}
         \begin{itemize}
-          \item loss of stable memory (of the log and the dump)
+          \item loss of \textbf{stable memory} \textit{(of the log and the dump)}
           \item not treated in this course
         \end{itemize}
 \end{itemize}
@@ -4075,11 +4059,11 @@ The warm restart is performed according to the following steps:
 UNDO := active transactions in the checkpoint
 REDO := {}
 for log records from the checkpoint to the top of the log do:
-  if B(T\_i) then
-    UNDO := UNDO $\cup$ {T\_i} // started, maybe undone
+  if B(T_i) then
+    UNDO := UNDO $\cup$ {T_i} // started, maybe undone
   else if C(T_i) then
-    UNDO := UNDO $\setminus$ {T\_i}
-    REDO := REDO $\cup$ {T\_i} // ended, to redo
+    UNDO := UNDO $\setminus$ {T_i}
+    REDO := REDO $\cup$ {T_i} // ended, to redo
   end
 end
   \end{lstlisting}
