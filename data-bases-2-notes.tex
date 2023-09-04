@@ -54,7 +54,7 @@ A \textbf{\dbms} \textit{(short for Data Base Management System)} is a system \t
 \begin{itemize}
   \item \textbf{Transaction} management
         \begin{itemize}[label=\(\rightarrow\)]
-          \item \textit{ACID} properties make sure that a set of operations is performed as a single unit
+          \item \textit{ACID} properties \textit{(Section~\ref{sec:ACID-properties})} make sure that a set of operations is performed as a single unit
         \end{itemize}
   \item \textbf{Concurrency} control
         \begin{itemize}[label=\(\rightarrow\)]
@@ -129,6 +129,7 @@ A transaction is defined as \textbf{well formed} if it fulfils the following con
 An application is normally composed of multiple transactions, which are executed in a sequence.
 
 \subsection{ACID properties}
+\label{sec:ACID-properties}
 
 A transaction must possess \(4\) peculiar properties \textit{(called \textbf{ACID})}:
 
@@ -275,7 +276,7 @@ To enable Concurrency Control, two components are needed:
 A \textbf{serializable schedule} is a schedule that leaves the database in the same state as some serial schedule of the same transactions;
 this property is commonly accepted as a notion of \textbf{schedule correctness}.
 
-To identify classes of schedules that ensure serializability, it's required to establish a notion of \textbf{schedule equivalence}.
+To identify classes of schedules that ensure serializability, the notion of \textbf{schedule equivalence} is needed;
 However, there's a difference between real life and theory:
 
 \begin{itemize}
@@ -296,7 +297,7 @@ However, there's a difference between real life and theory:
   \bigskip
 \end{figure}
 
-And finally:
+Finally, the following definitions are introduced:
 
 \begin{itemize}
   \item \textbf{Reads-from} relation: \(r_i(x)\) reads from \(w_j(x)\) in a schedule \(S\) when \(w_j(x)\) precedes \(r_i(x)\) in \(S\) and there's no \texttt{WRITE} operation between them
@@ -335,7 +336,7 @@ First, the notion of \textbf{conflict} is introduced:
 Then, the notion of \textbf{conflict serializability} is defined:
 
 \begin{itemize}
-  \item Two schedules \(S_i\) and \(S_j\) are \textbf{conflict-equivalent} \textit{(\(S_i \approx_C S_k\))} if they contain the same operations and in all the conflicting pairs the transactions occur in the same order
+  \item Two schedules \(S_i\) and \(S_j\) are \textbf{conflict-equivalent} \textit{(\(S_i \approx_C S_k\))} if they contain the \textbf{same operations} and in all the conflicting pairs the transactions occur in the \textbf{same order}
   \item A schedule is \textbf{conflict-serializable} if it is \textbf{conflict-equivalent to a serial schedule} of the same transactions
   \item The class of conflict-serializable schedules is called \textbf{\csr}
 \end{itemize}
@@ -527,7 +528,7 @@ to achieve this goal, a new type of lock is introduced: the \textbf{predicate lo
 Predicate locks extend the notion of data locks to future data:
 \begin{itemize}
   \item the \textbf{lock manager} can \textbf{acquire} a predicate lock on a predicate \(\phi\)
-  \item Other \textbf{transactions cannot insert, delete or upgrade} any tuple satisfying \(\phi\)
+  \item other \textbf{transactions cannot insert, delete or upgrade} any tuple satisfying \(\phi\)
   \item if the predicate lock is not supported, the transaction must acquire a lock on all the tuples satisfying \(\phi\); otherwise, the lock is managed via the help of \textbf{indexes}
 \end{itemize}
 
@@ -783,7 +784,7 @@ Normally, commercial systems use locks and timestamp-based concurrency control m
 \end{table}
 
 \bigskip
-It's important to notice that serializable transactions don't necessarily execute serially:
+It's important to notice that \textbf{serializable transactions don't necessarily execute serially}:
 the requirement is that transactions can only commit if the result would be as if they had been executed serially in any order.
 
 The locking requirements to achieve this level of isolation can frequently lead to deadlocks where one of the transactions needs to be rolled back.
@@ -987,7 +988,7 @@ each of them sends messages in different orders, while every one of them can det
 
 \paragraph{Distributed Deadlock Detection}
 
-To implement the aforementioned algorithm in the context of a distributed system, a distributed dependency graph is created:
+To implement the aforementioned algorithm in the context of a distributed system, a \textbf{distributed dependency graph} is created:
 external call nodes represent a sub-transaction activating another sub-transaction at a different node.
 An illustration of such a graph is shown in Figure~\ref{fig:distributed-dep-graph}.
 
@@ -1175,13 +1176,13 @@ The concurrency control with timestamps works as follows:
 This method is the easiest to implement, but it's less efficient than then \tpl;
 compared to the former \textit{(which is described as pessimistic)}, \textbf{this method is optimistic} as it does not assume that collisions will arise.
 
-\subsubsection{Timestamps in distributed systems}
+\subsubsection{Lamport Method - \ts MONO}
 
 Concurrency control in a distributed environment causes theoretical difficulties because the system clock is not synchronized among the different nodes:
-the timestamp is not an indicator of global time.
+\textbf{the timestamp is not an indicator of global time}.
 To solve this issue, a system function must give out timestamps on requests.
 
-This technique is called \textbf{Lamport Method} \textit{(or TS MONO)}.
+This technique is called \textbf{Lamport Method} \textit{(or \ts MONO)}.
 Using this method, a timestamp is a number characterized by two groups of digits:
 
 \begin{itemize}
@@ -1222,9 +1223,9 @@ To cope with dirty reads, a variant of basic \ts has been introduced: a transact
 
 This method works similarly to long-duration write locks, but buffering operations might introduce big delays.
 
-\subsubsection{Thomas Rule}
+\subsubsection{Thomas Rule - \ts MULTI}
 
-In order to reduce the kill rate, the \textbf{Thomas Rule} \textit{(or TS MULTI)} has been introduced.
+In order to reduce the kill rate, the \textbf{Thomas Rule} \textit{(or \ts MULTI)} has been introduced.
 It makes a slight change to the \texttt{write(x, ts)} request:
 
 \begin{itemize}
@@ -1364,7 +1365,7 @@ However, this method introduces a \textbf{write skew anomaly}, since:
 
 \section{Triggers}
 
-Triggers are a set of actions that are executed automatically by the \dbms when an \texttt{INSERT}, \texttt{UPDATE}, or \texttt{DELETE} operation is performed on a specific table.
+\textbf{Triggers} are sets of actions that are executed automatically by the \dbms when an \texttt{INSERT}, \texttt{UPDATE}, or \texttt{DELETE} operation is performed on a specific table.
 They are performed in addition to integrity constraints, allowing the \dbms to perform supplementary, more complex, checks;
 they are stored in the \dbms similarly to stored procedures.
 
@@ -1376,7 +1377,7 @@ Triggers define the \textbf{Event-Condition-Action} \textit{(ECA)} paradigm:
           \item normally a modification of the database status: \texttt{INSERT}, \texttt{UPDATE} or \texttt{DELETE}
         \end{itemize}
   \item if a \textbf{condition} \(C\) is true
-        \begin{itemize}
+        \begin{itemize}[label=\(\rightarrow\)]
           \item a predicate that identifies those situations in which the execution of the trigger's action is required
         \end{itemize}
   \item then \textbf{action} \(A\) is executed
@@ -1430,7 +1431,7 @@ As such, the \textbf{acyclicity condition is sufficient for termination}, but no
 
 \begin{minipage}{\textwidth}
   \bigskip
-  \begin{lstlisting}[language=SQL, caption={Trigger Syntax}, label={lst:trigger-syntax}]
+  \begin{lstlisting}[language=SQL, caption={Trigger Syntax}, label={lst:trigger-syntax}, morekeywords={NEW, OLD, ROW, BEFORE, AFTER, REFERENCES, STATEMENT, EACH}]
 CREATE TRIGGER <trigger_name>
   [BEFORE | AFTER] -- EXECUTION MODE
   [INSERT | UPDATE | DELETE [ OF <column> ]] ON <table_name> -- EVENT
@@ -1444,9 +1445,17 @@ CREATE TRIGGER <trigger_name>
 \end{lstlisting}
 \end{minipage}
 
+\subparagraph*{Trigger actions}
+The trigger action is either:
+
+\begin{itemize}
+  \item a \textbf{sequence of SQL statements} that are executed when the trigger is activated.
+  \item \texttt{rollback} to undo the effect of the triggering event
+\end{itemize}
+
 \subparagraph*{Multiple triggers on the same event}
 \sql \texttt{1999} specifies the ordered execution of multiple triggers on the same event;
-if multiple triggers on the same level exist, then the order of execution is implementation-dependent (normally either alphabetically ordered or in the order of creation).
+if multiple triggers on the same level exist, then \textbf{the order of execution is implementation-dependent} \textit{(normally either alphabetically ordered or in the order of creation)}.
 The execution sequence is:
 
 \begin{enumerate}
@@ -1503,7 +1512,7 @@ A \textbf{view} is a virtual table defined with a query stored in the database c
 When a view is mentioned in a \texttt{SELECT} query, the query processor of the \dbms rewrites the query via the view definition:
 the executed query only uses the base tables to the view.
 
-When the queries to a view are more frequent than the updates on the base tables that change the view content, then the view can be materialized:
+When the queries to a view are more frequent than the updates on the base tables that change the view content, then the view can be \textbf{materialized}:
 the results of the query that defines the view are stored in a table, and the view is defined as a \texttt{SELECT} query on that table.
 
 Some systems support the \texttt{CREATE MATERIALIZED VIEW} command, which makes the view automatically materialized by the \dbms;
@@ -1604,18 +1613,18 @@ an illustration of an HDD is shown in Figure~\ref{figure:hdd-structure}.
 \subparagraph*{Access Time}
 The access time of the secondary memory can be measured as the sum of:
 \begin{itemize}
-  \item \textbf{seek} time \(8-12 \, ms\), head positioning time on the correct track
-  \item \textbf{latency} time \(2-8 \, ms\), disc rotation on the correct sector
-  \item \textbf{transfer} time \(0.1-1 \, ms\), data transfer from the disk to the buffer
+  \item \textbf{seek} time \(8 \div 12 \, ms\), head positioning time on the correct track
+  \item \textbf{latency} time \(2 \div 8 \, ms\), disc rotation on the correct sector
+  \item \textbf{transfer} time \(0.1 \div 1 \, ms\), data transfer from the disk to the buffer
 \end{itemize}
 
-The cost of access to secondary memory is about \(4\) orders of magnitude (\(10^4\)) higher than the one of access to main memory.
+The cost of access to secondary memory is about \(4\) orders of magnitude (\(\approx 10^4\)) higher than the one of access to main memory.
 In I/O bound applications, the cost exclusively depends on the number of accesses to secondary memory.
 
 The cost of a query is closely related to the amount of data that is read \textit{(moved)} from secondary memory.
 
 \subparagraph*{\dbms and file systems}
-The File System \textit{(FS)} is the layer of the operating system that manages the secondary memory:
+The \textbf{File System} \textit{(FS)} is the layer of the operating system that manages the secondary memory:
 \dbms make limited use of \textit{FS} functionalities \textit{(such as creating or deleting files, reading or writing blocks, etc.)}, since they manage directly the file organization, both in terms of the distribution of data within the blocks and with respect to the internal structures of the blocks.
 Furthermore, a \dbms may also control the physical allocation of blocks onto the disk, to optimize the access time or increase the reliability.
 
@@ -1671,7 +1680,7 @@ It's fundamental to estimate the cost of queries:
 \end{itemize}
 
 The block factor is defined as:
-\[ B = \left\lfloor \frac{\text{SB}}{\text{SR}} \right\rfloor \]
+\[ B = \left\lceil \frac{\text{SB}}{\text{SR}} \right\rceil \]
 The rest of the space can be:
 
 \begin{itemize}
@@ -1716,13 +1725,13 @@ A comparison of the two entities is shown in Table~\ref{tab:primary-key-search-k
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tblr}{colspec={c|c}, row{1}={font=\itshape}}
-    primary key                & search key                   \\
-    \hline
-    does not imply access path & defines a common access path \\
-    defines a constraint       & defines a common access path \\
-    unique                     & not necessarily unique       \\
-    implemented by an index    & -                            \\
+  \begin{tblr}{colspec={r|c|c}, row{1}={font=\itshape}, column{1}={font=\itshape}}
+    & primary key                & search key                   \\
+    & \hline
+    access path defined & \colorxmark & \colorcmark \\
+    constraint defined & \colorcmark       & \colorxmark \\
+    unique & \colorcmark                     & \colorxmark \\
+    implementation by index& \colorcmark    & \colorxmark                            \\
   \end{tblr}
   \caption{Comparison between primary key and search key}
   \label{tab:primary-key-search-key}
@@ -1737,6 +1746,8 @@ this operation may be costly and may slow it down.
 \bigskip
 Indexes can be categorized into \textbf{sparse} and \textbf{dense}:
 while the former associate a search key to a single tuple, the latter associate a search key to a block of tuples.
+
+\textbf{Density}: number of tuples referenced by an index entry.
 
 \subparagraph*{Sparse indexes}
 \begin{itemize}
@@ -1862,7 +1873,7 @@ Not all types of structures are equally suited for implementing the primary or s
 \begin{table}
   \centering
   \bigskip
-  \begin{tblr}{colspec={r|l|l}, row{1}={font=\itshape}}
+  \begin{tblr}{colspec={r|l|l}, row{1}={font=\itshape}, column{1}={font=\itshape}}
                & primary                     & secondary             \\
     \hline
     sequential & \colorcmark (typical)       & \colorxmark           \\
@@ -2035,22 +2046,17 @@ They support associative access based on the value of a key search field.
 
 A commonly used tree-based structure is the \textbf{B-tree}.
 
-\subparagraph*{B-trees}
-Balanced trees \textit{(or B-trees)} are a generalization binary search trees;
+\paragraph{B-trees}
+\textbf{Balanced trees} \textit{(or B-trees)} are a generalization binary search trees;
 the length of all the possible paths from the root node to the leaves is the same, while a node can have any number of children in a predefined range.
 This constraint improves the performance of the database.
 
-There are two types of B-trees:
-
-\begin{enumerate}
-  \item \textbf{B trees}: the key values are stored in \textbf{leaf nodes and internal nodes}
-  \item \textbf{B+ trees}: the key values are stored in \textbf{leaf nodes} only
-\end{enumerate}
+In B-trees, the key values are stored in \textbf{leaf nodes and internal nodes}.
 
 \paragraph{B+ trees}
 
 The \textbf{B+ tree} represents an evolution from the B-tree.
-Each node is stored in a block, and the key values are stored in the leaf nodes only;
+Each node is stored in a block, and the key values are stored in the \textbf{leaf nodes only};
 since the majority of the nodes are leaves, the B+ tree is more efficient than the B-tree.
 
 The fan-out depends on the size of the block, the size of the key and the size of the pointer.
@@ -2062,8 +2068,8 @@ Each key \(K_j, \ 1 \leq j \leq F\) is followed by a pointer \(P_j\), while \(K_
 Each pointer addresses a sub-tree:
 
 \begin{itemize}
-  \item \(P_0\) points to the subtree containing all the keys less than \(K_1\)
-  \item \(P_F\) points to the subtree containing all the keys greater or equal to \(K_F\)
+  \item \(P_0\) points to the subtree containing all the keys \textbf{less than} \(K_1\)
+  \item \(P_F\) points to the subtree containing all the keys \textbf{greater or equal to} \(K_F\)
   \item each intermediate pointer addresses a sub-tree that contains all the information about the keys \(K\) included in the interval \(K_j \leq K < K_{j + 1}\)
 \end{itemize}
 
@@ -2429,14 +2435,13 @@ An algorithm is defined \textbf{optimal} if its execution cost is never worse th
 \textbf{instance Optimality} is a form of optimality applied when standard optimality is unachievable.
 
 Let \(A\) be a family of algorithms, \(I\) a family of instances, and \(c\) a cost function that maps an algorithm and an instance to a cost.
-Then algorithm \(A^\ast\) is instance optimal with regards to \(A\) and \(I\) for the cost metric \(c\) if there exists constants \(k_1, \ k_2\) such that, for all \(A_i \in A\) and \(I_j \in I\):
-\[ c\left( A_i, I_j \right) \leq k_1 \cdot c\left( A^\ast, I_j \right) \leq k_2 \cdot c\left( A_i, I_j \right) \]
+Then algorithm \(A^\ast\) is \textbf{instance optimal} with regards to \(A\) and \(I\) for the cost metric \(c\) if there exists constants \(k_1, \ k_2\) such that, for all \(A_i \in A\) and \(I_j \in I\):
+\[ k_1 \cdot c\left( A_i, I_j \right) \leq k_1 c\left( A^\ast, I_j \right) \leq k_2 \cdot c\left( A_i, I_j \right) \]
 If \(A^\ast\) is instance-optimal, then any algorithm can improve with respect to \(A^\ast\) by only a constant factor, called the \textbf{optimality ratio} of \(A^\ast\).
 
 Instance optimality is a much stronger notion than standard optimality in the average or worst case since it guarantees that the algorithm is optimal on every input instance.
 
 \paragraph{Optimality of MedRank}
-
 
 MedRank is \textbf{not optimal}, but it's \textbf{instance optimal}:
 among the algorithms that access the lists in sorted order, this is the best possible one \textit{(up to a constant factor)} on every input instance.
@@ -2839,7 +2844,7 @@ Tuple \(t\) \textbf{dominates} tuple \(s\) \textit{(denoted \(t \prec s\))} if a
 
 \begin{enumerate}
   \item \(\forall \, i \ 1 \leq i \leq m: t[A_i] \leq s[A_i]\) - tuple \(t\) is better than \(s\) on all attributes
-  \item \(\exists \, k \, \mid t[A_k] < s[A_j]\) - tuple \(t\) is better than \(s\) on at least one attribute
+  \item \(\exists \, k : t[A_k] < s[A_j]\) - tuple \(t\) is better than \(s\) on at least one attribute
 \end{enumerate}
 
 Note that these conditions assume that a lower score is better;
@@ -2977,7 +2982,7 @@ A simple comparison of the two techniques is shown in Table~\ref{tab:comparison-
 \begin{table}[htbp]
   \centering
   \bigskip
-  \begin{tblr}{colspec={r|c|c}, columns={valign=m}, row{1}={font=\itshape}}
+  \begin{tblr}{colspec={r|c|c}, columns={valign=m}, row{1}={font=\itshape}, column{1}={font=\itshape}}
                                         & ranking queries & skyline queries \\
     \hline
     simplicity                          & \colorxmark     & \colorcmark     \\
@@ -3103,7 +3108,7 @@ the key can be:
 
 \begin{itemize}
   \item \textbf{simple primary key}, which is a persistent field of the \javab used to represent its identity
-  \item \textbf{composite primary key,} which is a set of persistent fields of the \javab used to represent its identity
+  \item \textbf{composite primary key}, which is a set of persistent fields of the \javab used to represent its identity
 \end{itemize}
 
 Compared to \textit{POJOs}, the persistent identity is a new and different concept: \textit{POJOs} don't have a \textbf{durable identity}.
@@ -4138,5 +4143,12 @@ A comparison of indexing methods related to the data structures is shown in Tabl
   \label{tab:indexing-techniques}
   \bigskip
 \end{table}
+
+\bigskip
+
+\begin{itemize}
+  \item Hash-based structures are best for random-accesses
+  \item B+ trees are best for sequential accesses \textit{(interval queries)}
+\end{itemize}
 
 \end{document}
